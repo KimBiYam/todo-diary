@@ -11,7 +11,7 @@ yarn-error.log*
 lerna-debug.log*
 
 # DB
-mariadb/data
+server/mariadb/data
 
 # OS
 .DS_Store
