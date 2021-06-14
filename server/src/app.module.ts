@@ -6,14 +6,12 @@ import { APP_FILTER } from '@nestjs/core';
 import { configModuleOption, typeormConfig } from 'src/config/';
 import { ConfigModule } from '@nestjs/config';
 import { CustomExceptionFilter } from 'src/filters/custom-exception.filter';
-import { PostModule } from './modules/post';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeormConfig),
     UserModule,
     AuthModule,
-    PostModule,
     ConfigModule.forRoot(configModuleOption),
   ],
   providers: [{ provide: APP_FILTER, useClass: CustomExceptionFilter }],

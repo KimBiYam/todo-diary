@@ -5,10 +5,8 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   CreateDateColumn,
-  OneToMany,
   Index,
 } from 'typeorm';
-import { Post } from './post';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
@@ -53,7 +51,4 @@ export class User {
 
   @Column({ type: 'tinyint', default: true })
   isActive: boolean;
-
-  @OneToMany(() => Post, (posts) => posts.user)
-  posts: Post[];
 }
