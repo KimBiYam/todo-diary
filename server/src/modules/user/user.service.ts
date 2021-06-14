@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { RegsiterUserDto, UpdateUserDto } from '../auth';
+import { DeleteResult, Repository } from 'typeorm';
+import { RegsiterUserDto } from './dto';
 
 @Injectable()
 export class UserService {
@@ -10,15 +10,17 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+  private readonly logger = new Logger('User');
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find({
-      select: ['userId', 'name', 'email', 'isActive', 'createdAt'],
-    });
-  }
+  async create(regsiterUserDto: RegsiterUserDto): Promise<User> {
+    const { email } = regsiterUserDto;
+    const user = await this.findOneByEmail(email);
+    if (user) {
+      this.logger.error('Is exist user id');
+      throw new BadRequestException('Is exist email');
+    }
 
-  async create(registerUserPayloadDto: RegsiterUserDto): Promise<User> {
-    return await this.userRepository.save(registerUserPayloadDto);
+    return await this.userRepository.save(regsiterUserDto);
   }
 
   async findOneById(id: number): Promise<User> {
@@ -26,40 +28,14 @@ export class UserService {
     return user;
   }
 
-  async findOneByUserId(userId: string): Promise<User> {
+  async findOneByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({
-      where: { userId },
+      where: { email },
     });
     return user;
   }
 
-  async findOneByUserIdExceptPassword(userId: string): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { userId },
-      select: ['id', 'userId', 'name', 'email', 'createdAt', 'isActive'],
-    });
-    return user;
-  }
-
-  async remove(userId: string): Promise<DeleteResult> {
-    return await this.userRepository.delete({ userId });
-  }
-
-  async update(
-    userId: string,
-    updateUserPayloadDto: UpdateUserDto,
-  ): Promise<UpdateResult> {
-    await this.findOneByUserId(userId);
-    return await this.userRepository.update(userId, updateUserPayloadDto);
-  }
-
-  async updatePassword(
-    userId: string,
-    newPassword: string,
-  ): Promise<UpdateResult> {
-    return await this.userRepository.update(
-      { userId },
-      { password: newPassword },
-    );
+  async remove(id: number): Promise<DeleteResult> {
+    return await this.userRepository.delete(id);
   }
 }

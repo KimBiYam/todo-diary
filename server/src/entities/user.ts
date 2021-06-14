@@ -1,30 +1,17 @@
-import { PasswordTransformer } from '../util/password-transformer';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  Unique,
   CreateDateColumn,
   Index,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 @Entity({ name: 'user' })
-@Unique(['userId', 'email'])
 export class User {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
-
-  @ApiProperty({ example: 'userId', description: '유저 ID', required: true })
-  @IsString()
-  @Column({ type: 'varchar' })
-  userId: string;
-
-  @ApiProperty({ example: 'name', description: '유저명', required: true })
-  @IsString()
-  @Column({ type: 'varchar' })
-  name: string;
 
   @ApiProperty({
     example: 'userId@gmail.com',
@@ -32,23 +19,28 @@ export class User {
     required: true,
   })
   @IsEmail()
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @ApiProperty({ example: '12345678', description: '비밀번호', required: true })
+  @ApiProperty({ example: 'username', description: '유저 ID', required: false })
   @IsString()
-  @MinLength(8)
-  @MaxLength(16)
-  @Column({
-    type: 'varchar',
-    transformer: new PasswordTransformer(),
+  @Index()
+  @Column({ type: 'varchar', nullable: true })
+  username: string;
+
+  @ApiProperty({
+    example: 'displayName',
+    description: '유저이름',
+    required: true,
   })
-  password: string;
+  @IsString()
+  @Column({ name: 'display_name', type: 'varchar' })
+  displayName: string;
 
   @Index()
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @Column({ type: 'tinyint', default: true })
-  isActive: boolean;
+  @Column({ name: 'is_certified', type: 'tinyint', default: false })
+  isCertified: boolean;
 }
