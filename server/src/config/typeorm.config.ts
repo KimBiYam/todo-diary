@@ -1,4 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { User } from 'src/entities';
+import { SocialAccount } from 'src/entities/socialAccount';
 
 const type: any = String(process.env.DB_TYPE);
 
@@ -9,9 +11,9 @@ export const typeormConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DEFAULT_DATABASE,
-  autoLoadEntities: true,
   synchronize: true,
   charset: process.env.DB_CHARSET,
   keepConnectionAlive: true,
   logging: true,
+  entities: [User, SocialAccount],
 };
