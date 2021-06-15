@@ -35,3 +35,8 @@ server/mariadb/data
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# environment
+server/.env
+server/.env.dev
+

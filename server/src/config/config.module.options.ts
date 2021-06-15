@@ -3,7 +3,7 @@ import Joi from 'joi';
 
 export const configModuleOption: ConfigModuleOptions = {
   isGlobal: true,
-  envFilePath: process.env.NODE_ENV === 'DEVELOPMENT' ? '.env-dev' : '.env',
+  envFilePath: process.env.NODE_ENV === 'DEVELOPMENT' ? '.env.dev' : '.env',
   validationSchema: Joi.object({
     NODE_ENV: Joi.string()
       .valid('DEVELOPMENT', 'PRODUCTION', 'TEST')
