@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
-  async googleLogin(user: Request) {
+  async googleLogin(user) {
     return {
       message: 'User information from google',
       user: user,
