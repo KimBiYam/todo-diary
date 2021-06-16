@@ -3,14 +3,10 @@ import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
-  async googleLogin(req: Request) {
-    if (!req.user) {
-      return 'No user from google';
-    }
-
+  async googleLogin(user: Request) {
     return {
       message: 'User information from google',
-      user: req.user,
+      user: user,
     };
   }
 }
