@@ -19,13 +19,13 @@ export class User {
     required: true,
   })
   @IsEmail()
-  @Column({ type: 'varchar', unique: true })
+  @Column({ type: 'varchar', unique: true, length: 100 })
   email: string;
 
   @ApiProperty({ example: 'username', description: '유저 ID', required: false })
   @IsString()
   @Index()
-  @Column({ type: 'varchar', nullable: true })
+  @Column({ type: 'varchar', nullable: true, length: 16 })
   username: string;
 
   @ApiProperty({
@@ -34,11 +34,15 @@ export class User {
     required: true,
   })
   @IsString()
-  @Column({ name: 'display_name', type: 'varchar' })
+  @Column({ name: 'display_name', type: 'varchar', length: 64 })
   displayName: string;
 
+  @IsString()
+  @Column({ name: 'picture', type: 'varchar', length: 500 })
+  picture: string;
+
   @Index()
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
   @Column({ name: 'is_certified', type: 'tinyint', default: false })
