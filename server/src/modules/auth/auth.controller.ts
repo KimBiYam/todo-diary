@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
+import { RegistorSocialAcountDto } from './dto';
+import { AccessTokenDto } from './dto/access-token.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -12,14 +14,31 @@ export class AuthController {
 
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
-  async googleAuthRedirect(@RequestUser() user: any): Promise<any> {
+  async signinGoogleAccount(@RequestUser() user: any): Promise<any> {
     return await this.authService.googleLogin(user);
+  }
+
+  @Post('/google/signup')
+  @UseGuards(AuthGuard('google'))
+  @ApiOAuth2(['google'])
+  async signupGoogleAccount(@Body() body: AccessTokenDto): Promise<any> {
+    const { accessToken } = body;
+    const registorSocialAcountDto = await this.authService.getGoogleProfile(
+      accessToken,
+    );
+
+    // return await this.authService.registorGoogleAccount(
+    //   registorSocialAcountDto,
+    // );
   }
 
   @Post('/google/check')
   @UseGuards(AuthGuard('google'))
-  async checkGoogleAuth(@Body() body: { token: string }): Promise<any> {
-    const { token } = body;
-    // return await this.authService.getGoogleProfile(token);
+  @ApiOAuth2(['google'])
+  async checkGoogleAuth(
+    @Body() body: AccessTokenDto,
+  ): Promise<RegistorSocialAcountDto> {
+    const { accessToken } = body;
+    return await this.authService.getGoogleProfile(accessToken);
   }
 }
