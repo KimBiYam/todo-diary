@@ -10,7 +10,7 @@ import { AccessTokenDto } from './dto/access-token.dto';
 @ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-  private readonly logger = new Logger('Auth');
+  private readonly logger = new Logger('AuthController');
 
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
@@ -19,8 +19,6 @@ export class AuthController {
   }
 
   @Post('/google/signup')
-  @UseGuards(AuthGuard('google'))
-  @ApiOAuth2(['google'])
   async signupGoogleAccount(@Body() body: AccessTokenDto): Promise<any> {
     const { accessToken } = body;
     const registerSocialAcountDto = await this.authService.getGoogleProfile(

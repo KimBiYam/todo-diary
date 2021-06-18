@@ -1,8 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
+import { User } from 'src/entities';
 import { SocialAccount } from 'src/entities/socialAccount';
-import { Repository } from 'typeorm';
+import { Repository, Transaction } from 'typeorm';
 import { RegisterSocialAcountDto } from './dto';
 
 @Injectable()
@@ -10,6 +11,8 @@ export class AuthService {
   constructor(
     @InjectRepository(SocialAccount)
     private readonly socialAccountRepository: Repository<SocialAccount>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
   private readonly logger = new Logger('AuthService');
@@ -51,7 +54,37 @@ export class AuthService {
   async registerGoogleAccount(
     registerSocialAcountDto: RegisterSocialAcountDto,
   ): Promise<any> {
-    this.logger.debug(registerSocialAcountDto);
-    return true;
+    const {
+      socialId,
+      email,
+      displayName,
+      picture,
+      provider,
+    } = registerSocialAcountDto;
+
+    const isExist = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (isExist) {
+      throw new BadRequestException('This user is exist');
+    }
+
+    const user = new User();
+    user.displayName = socialId;
+    user.isCertified = true;
+    user.email = email;
+    user.picture = picture ?? undefined;
+    user.displayName = displayName;
+    await this.userRepository.save(user);
+
+    const socialAccount = new SocialAccount();
+    socialAccount.provider = provider;
+    socialAccount.socialId = socialId;
+    socialAccount.user = user;
+
+    const result = await this.socialAccountRepository.save(socialAccount);
+
+    return result;
   }
 }

@@ -38,8 +38,8 @@ export class User {
   displayName: string;
 
   @IsString()
-  @Column({ name: 'picture', type: 'varchar', length: 500 })
-  picture: string;
+  @Column({ name: 'picture', type: 'varchar', length: 500, nullable: true })
+  picture?: string;
 
   @Index()
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
