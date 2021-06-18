@@ -21,13 +21,7 @@ export class AuthController {
   @Post('/google/signup')
   async signupGoogleAccount(@Body() body: AccessTokenDto): Promise<any> {
     const { accessToken } = body;
-    const registerSocialAcountDto = await this.authService.getGoogleProfile(
-      accessToken,
-    );
-
-    return await this.authService.registerGoogleAccount(
-      registerSocialAcountDto,
-    );
+    return await this.authService.registerGoogleAccount(accessToken);
   }
 
   @Post('/google/check')

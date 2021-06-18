@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
 import { User } from 'src/entities';
 import { SocialAccount } from 'src/entities/socialAccount';
-import { Repository, Transaction } from 'typeorm';
+import { Repository } from 'typeorm';
 import { RegisterSocialAcountDto } from './dto';
 
 @Injectable()
@@ -51,9 +51,9 @@ export class AuthService {
     return registerSocialAccountDto;
   }
 
-  async registerGoogleAccount(
-    registerSocialAcountDto: RegisterSocialAcountDto,
-  ): Promise<any> {
+  async registerGoogleAccount(accessToken: string): Promise<any> {
+    const registerSocialAcountDto = await this.getGoogleProfile(accessToken);
+
     const {
       socialId,
       email,
