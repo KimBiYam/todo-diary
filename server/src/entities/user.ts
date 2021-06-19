@@ -22,12 +22,6 @@ export class User {
   @Column({ type: 'varchar', unique: true, length: 100 })
   email: string;
 
-  @ApiProperty({ example: 'username', description: '유저 ID', required: false })
-  @IsString()
-  @Index()
-  @Column({ type: 'varchar', nullable: true, length: 16 })
-  username: string;
-
   @ApiProperty({
     example: 'displayName',
     description: '유저이름',

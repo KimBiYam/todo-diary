@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOAuth2, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
 import { RegisterSocialAcountDto } from './dto';
@@ -25,8 +25,6 @@ export class AuthController {
   }
 
   @Post('/google/check')
-  @UseGuards(AuthGuard('google'))
-  @ApiOAuth2(['google'])
   async checkGoogleAuth(
     @Body() body: AccessTokenDto,
   ): Promise<RegisterSocialAcountDto> {
