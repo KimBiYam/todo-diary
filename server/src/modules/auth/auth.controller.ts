@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
 import { RegisterSocialAcountDto } from './dto';
@@ -15,7 +15,8 @@ export class AuthController {
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
   async signinGoogleAccount(@RequestUser() user: any): Promise<any> {
-    return await this.authService.googleLogin(user);
+    const { accessToken } = user;
+    return await this.authService.googleLogin(accessToken);
   }
 
   @Post('/google/signup')
@@ -30,5 +31,12 @@ export class AuthController {
   ): Promise<RegisterSocialAcountDto> {
     const { accessToken } = body;
     return await this.authService.getGoogleProfile(accessToken);
+  }
+
+  @Get('/test')
+  @UseGuards(AuthGuard('local'))
+  @ApiBearerAuth()
+  async testToken() {
+    return true;
   }
 }

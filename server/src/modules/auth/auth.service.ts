@@ -4,6 +4,7 @@ import { google } from 'googleapis';
 import { User } from 'src/entities';
 import { SocialAccount } from 'src/entities/socialAccount';
 import { Repository } from 'typeorm';
+import { UserService } from '../user';
 import { RegisterSocialAcountDto } from './dto';
 
 @Injectable()
@@ -13,16 +14,22 @@ export class AuthService {
     private readonly socialAccountRepository: Repository<SocialAccount>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly userService: UserService,
   ) {}
 
   private readonly logger = new Logger('AuthService');
 
-  async googleLogin(user: any) {
-    const { accessToken } = user;
+  async googleLogin(accessToken: string): Promise<any> {
+    const RegisterSocialAcountDto = await this.getGoogleProfile(accessToken);
+    const { email } = RegisterSocialAcountDto;
 
-    return {
-      accessToken,
-    };
+    const user = await this.userService.findOneByEmail(email);
+
+    if (!user) {
+      throw new BadRequestException('This user is not exist!');
+    }
+
+    return { ...user, accessToken };
   }
 
   async getGoogleProfile(

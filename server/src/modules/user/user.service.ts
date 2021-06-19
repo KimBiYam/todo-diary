@@ -23,16 +23,14 @@ export class UserService {
     return await this.userRepository.save(regsiterUserDto);
   }
 
-  async findOneById(id: number): Promise<User> {
-    const user = await this.userRepository.findOne(id);
-    return user;
+  async findOneById(id: number): Promise<User | undefined> {
+    return await this.userRepository.findOne(id);
   }
 
-  async findOneByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({
       where: { email },
     });
-    return user;
   }
 
   async remove(id: number): Promise<DeleteResult> {
