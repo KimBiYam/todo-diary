@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
 import { SocialAcountDto } from './dto';
@@ -9,20 +17,30 @@ import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 @ApiTags('Auth')
+@ApiResponse({ status: 400, description: '잘못된 요청' })
+@ApiResponse({ status: 500, description: '서버 에러' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   private readonly logger = new Logger('AuthController');
 
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
-  async signinGoogleAccount(@RequestUser() user: any): Promise<any> {
+  @ApiResponse({ status: 201, description: '로그인 성공' })
+  async signinGoogleAccount(): Promise<any> {}
+
+  @Get('/google/signin/redirect')
+  @UseGuards(AuthGuard('google'))
+  @ApiResponse({ status: 201, description: '로그인 성공' })
+  async signinGoogleCallback(@RequestUser() user: any): Promise<any> {
     const { accessToken } = user;
     return await this.authService.googleLogin(accessToken);
   }
 
   @Post('/google/signup')
-  async signupGoogleAccount(@Body() body: AccessTokenDto): Promise<any> {
-    const { accessToken } = body;
+  @UseGuards(AuthGuard('google'))
+  @ApiResponse({ status: 201, description: '회원가입 성공' })
+  async signupGoogleAccount(@RequestUser() user: any): Promise<any> {
+    const { accessToken } = user;
     return await this.authService.registerGoogleAccount(accessToken);
   }
 

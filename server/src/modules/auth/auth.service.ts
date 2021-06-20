@@ -21,13 +21,14 @@ export class AuthService {
 
   private readonly logger = new Logger('AuthService');
 
-  async login(socialAccountDto: SocialAcountDto) {
-    const { email, displayName } = socialAccountDto;
+  async login(user: User) {
+    const { email, displayName } = user;
 
     const payload = { username: email, sub: displayName };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      ...user,
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
@@ -41,7 +42,7 @@ export class AuthService {
       throw new BadRequestException('This user is not exist!');
     }
 
-    return await this.login(socialAcountDto);
+    return await this.login(user);
   }
 
   async getGoogleProfile(accessToken: string): Promise<SocialAcountDto> {
@@ -82,7 +83,6 @@ export class AuthService {
     }
 
     const user = new User();
-    user.displayName = socialId;
     user.isCertified = true;
     user.email = email;
     user.picture = picture ?? undefined;
