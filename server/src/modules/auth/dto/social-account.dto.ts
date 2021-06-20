@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
 
-export class RegisterSocialAcountDto {
+export class SocialAcountDto {
   @ApiProperty({ maxLength: 255 })
   @IsString()
   socialId: string;

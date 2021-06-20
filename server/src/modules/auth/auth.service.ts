@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
 import { User } from 'src/entities';
 import { SocialAccount } from 'src/entities/socialAccount';
 import { Repository } from 'typeorm';
 import { UserService } from '../user';
-import { RegisterSocialAcountDto } from './dto';
+import { SocialAcountDto } from './dto';
 
 @Injectable()
 export class AuthService {
@@ -15,13 +16,24 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   private readonly logger = new Logger('AuthService');
 
+  async login(socialAccountDto: SocialAcountDto) {
+    const { email, displayName } = socialAccountDto;
+
+    const payload = { username: email, sub: displayName };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
+
   async googleLogin(accessToken: string): Promise<any> {
-    const RegisterSocialAcountDto = await this.getGoogleProfile(accessToken);
-    const { email } = RegisterSocialAcountDto;
+    const socialAcountDto = await this.getGoogleProfile(accessToken);
+    const { email } = socialAcountDto;
 
     const user = await this.userService.findOneByEmail(email);
 
@@ -29,12 +41,10 @@ export class AuthService {
       throw new BadRequestException('This user is not exist!');
     }
 
-    return { ...user, accessToken };
+    return await this.login(socialAcountDto);
   }
 
-  async getGoogleProfile(
-    accessToken: string,
-  ): Promise<RegisterSocialAcountDto> {
+  async getGoogleProfile(accessToken: string): Promise<SocialAcountDto> {
     const { data } = await google.people('v1').people.get({
       access_token: accessToken,
       resourceName: 'people/me',
@@ -46,7 +56,7 @@ export class AuthService {
     const email = data.emailAddresses[0].value;
     const socialId = data.names[0].metadata.source.id;
 
-    const registerSocialAccountDto: RegisterSocialAcountDto = {
+    const registerSocialAccountDto: SocialAcountDto = {
       displayName,
       picture,
       email,
@@ -59,15 +69,9 @@ export class AuthService {
   }
 
   async registerGoogleAccount(accessToken: string): Promise<any> {
-    const registerSocialAcountDto = await this.getGoogleProfile(accessToken);
+    const SocialAcountDto = await this.getGoogleProfile(accessToken);
 
-    const {
-      socialId,
-      email,
-      displayName,
-      picture,
-      provider,
-    } = registerSocialAcountDto;
+    const { socialId, email, displayName, picture, provider } = SocialAcountDto;
 
     const isExist = await this.userRepository.findOne({
       where: { email },

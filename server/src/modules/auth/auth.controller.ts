@@ -3,8 +3,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
-import { RegisterSocialAcountDto } from './dto';
+import { SocialAcountDto } from './dto';
 import { AccessTokenDto } from './dto/access-token.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -28,13 +29,13 @@ export class AuthController {
   @Post('/google/check')
   async checkGoogleAuth(
     @Body() body: AccessTokenDto,
-  ): Promise<RegisterSocialAcountDto> {
+  ): Promise<SocialAcountDto> {
     const { accessToken } = body;
     return await this.authService.getGoogleProfile(accessToken);
   }
 
   @Get('/test')
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   async testToken() {
     return true;
