@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  UseGuards,
-  Req,
-} from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/decorators/request-user.decorator';
