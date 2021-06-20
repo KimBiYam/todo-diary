@@ -53,13 +53,13 @@ export class AuthService {
     });
 
     const displayName = data.names[0].displayNameLastFirst;
-    const picture = data.photos[0].url;
+    const photoUrl = data.photos[0].url;
     const email = data.emailAddresses[0].value;
     const socialId = data.names[0].metadata.source.id;
 
     const registerSocialAccountDto: SocialAcountDto = {
       displayName,
-      picture,
+      photoUrl,
       email,
       socialId,
       provider: 'google',
@@ -70,9 +70,15 @@ export class AuthService {
   }
 
   async registerGoogleAccount(accessToken: string): Promise<any> {
-    const SocialAcountDto = await this.getGoogleProfile(accessToken);
+    const socialAcountDto = await this.getGoogleProfile(accessToken);
 
-    const { socialId, email, displayName, picture, provider } = SocialAcountDto;
+    const {
+      socialId,
+      email,
+      displayName,
+      photoUrl,
+      provider,
+    } = socialAcountDto;
 
     const isExist = await this.userRepository.findOne({
       where: { email },
@@ -85,7 +91,7 @@ export class AuthService {
     const user = new User();
     user.isCertified = true;
     user.email = email;
-    user.picture = picture ?? undefined;
+    user.photoUrl = photoUrl ?? undefined;
     user.displayName = displayName;
     await this.userRepository.save(user);
 
