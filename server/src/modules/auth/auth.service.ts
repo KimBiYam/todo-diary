@@ -3,8 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
 import { Repository } from 'typeorm';
-import { SocialAccount, User } from '../../entities';
-import { UserService } from '../user';
+import { SocialAccount, User } from '@src/entities';
+import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
 
 @Injectable()

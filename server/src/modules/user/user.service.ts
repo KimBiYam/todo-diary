@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../../entities';
+import { User } from '@src/entities';
 import { DeleteResult, Repository } from 'typeorm';
 import { RegsiterUserDto } from './dto';
 

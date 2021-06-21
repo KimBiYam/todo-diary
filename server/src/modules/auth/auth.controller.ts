@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RequestUser } from '../../decorators/request-user.decorator';
+import { RequestUser } from '@src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
-import { SocialAcountDto } from './dto';
-import { AccessTokenDto } from './dto/access-token.dto';
+import { SocialAcountDto, AccessTokenDto } from './dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
