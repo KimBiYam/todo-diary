@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString } from 'class-validator';
 
-export class AccessTokenDto {
+export class GoogleAccessTokenDto {
   @IsString()
   @ApiProperty()
-  accessToken: string;
+  googleAccessToken: string;
 }

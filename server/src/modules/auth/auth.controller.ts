@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { AuthService } from './auth.service';
-import { SocialAcountDto, AccessTokenDto } from './dto';
+import { SocialAcountDto, GoogleAccessTokenDto } from './dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('api/auth')
@@ -14,33 +14,36 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   private readonly logger = new Logger('AuthController');
 
+  @Get('/google/profile')
+  @UseGuards(AuthGuard('google'))
+  @ApiResponse({ status: 200, description: '프로필 조회 성공' })
+  async signinGoogleAccount(@RequestUser() user: any): Promise<any> {
+    const { accessToken: googleAccessToken } = user;
+    return await this.authService.getGoogleProfile(googleAccessToken);
+  }
+
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
-  @ApiResponse({ status: 201, description: '로그인 성공' })
-  async signinGoogleAccount(): Promise<any> {}
-
-  @Get('/google/signin/redirect')
-  @UseGuards(AuthGuard('google'))
-  @ApiResponse({ status: 201, description: '로그인 성공' })
+  @ApiResponse({ status: 200, description: '로그인 성공' })
   async signinGoogleCallback(@RequestUser() user: any): Promise<any> {
-    const { accessToken } = user;
-    return await this.authService.googleLogin(accessToken);
+    const { accessToken: googleAccessToken } = user;
+    return await this.authService.googleLogin(googleAccessToken);
   }
 
   @Post('/google/signup')
-  @UseGuards(AuthGuard('google'))
   @ApiResponse({ status: 201, description: '회원가입 성공' })
-  async signupGoogleAccount(@RequestUser() user: any): Promise<any> {
-    const { accessToken } = user;
-    return await this.authService.registerGoogleAccount(accessToken);
+  async signupGoogleAccount(
+    @Body() { googleAccessToken }: GoogleAccessTokenDto,
+  ): Promise<any> {
+    return await this.authService.registerGoogleAccount(googleAccessToken);
   }
 
   @Post('/google/check')
   async checkGoogleAuth(
-    @Body() body: AccessTokenDto,
-  ): Promise<SocialAcountDto> {
-    const { accessToken } = body;
-    return await this.authService.getGoogleProfile(accessToken);
+    @Body() body: GoogleAccessTokenDto,
+  ): Promise<{ user: SocialAcountDto; googleAccessToken: string }> {
+    const { googleAccessToken } = body;
+    return await this.authService.getGoogleProfile(googleAccessToken);
   }
 
   @Get('/test')

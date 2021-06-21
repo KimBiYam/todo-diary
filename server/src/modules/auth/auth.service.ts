@@ -31,8 +31,10 @@ export class AuthService {
     };
   }
 
-  async googleLogin(accessToken: string): Promise<any> {
-    const socialAcountDto = await this.getGoogleProfile(accessToken);
+  async googleLogin(googleAccessToken: string): Promise<any> {
+    const { user: socialAcountDto } = await this.getGoogleProfile(
+      googleAccessToken,
+    );
     const { email } = socialAcountDto;
 
     const user = await this.userService.findOneByEmail(email);
@@ -44,9 +46,11 @@ export class AuthService {
     return await this.login(user);
   }
 
-  async getGoogleProfile(accessToken: string): Promise<SocialAcountDto> {
+  async getGoogleProfile(
+    googleAccessToken: string,
+  ): Promise<{ user: SocialAcountDto; googleAccessToken: string }> {
     const { data } = await google.people('v1').people.get({
-      access_token: accessToken,
+      access_token: googleAccessToken,
       resourceName: 'people/me',
       personFields: 'names,emailAddresses,photos',
     });
@@ -56,7 +60,7 @@ export class AuthService {
     const email = data.emailAddresses[0].value;
     const socialId = data.names[0].metadata.source.id;
 
-    const registerSocialAccountDto: SocialAcountDto = {
+    const socialAccountDto: SocialAcountDto = {
       displayName,
       photoUrl,
       email,
@@ -64,12 +68,14 @@ export class AuthService {
       provider: 'google',
     };
 
-    this.logger.debug(registerSocialAccountDto);
-    return registerSocialAccountDto;
+    this.logger.debug(socialAccountDto);
+    return { user: socialAccountDto, googleAccessToken };
   }
 
-  async registerGoogleAccount(accessToken: string): Promise<any> {
-    const socialAcountDto = await this.getGoogleProfile(accessToken);
+  async registerGoogleAccount(googleAccessToken: string): Promise<any> {
+    const { user: socialAccountDto } = await this.getGoogleProfile(
+      googleAccessToken,
+    );
 
     const {
       socialId,
@@ -77,7 +83,7 @@ export class AuthService {
       displayName,
       photoUrl,
       provider,
-    } = socialAcountDto;
+    } = socialAccountDto;
 
     const isExist = await this.userRepository.findOne({
       where: { email },
