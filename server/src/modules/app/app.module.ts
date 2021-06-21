@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '../user';
 import { APP_FILTER } from '@nestjs/core';
-import { configModuleOption, typeormConfig } from 'src/config/';
 import { ConfigModule } from '@nestjs/config';
-import { CustomExceptionFilter } from 'src/filters/custom-exception.filter';
 import { AuthModule } from '../auth';
+import { configModuleOption, typeormConfig } from '../../config';
+import { CustomExceptionFilter } from '../../filters/custom-exception.filter';
 
 @Module({
   imports: [

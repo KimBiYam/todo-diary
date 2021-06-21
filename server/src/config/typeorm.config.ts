@@ -1,6 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User } from 'src/entities';
-import { SocialAccount } from 'src/entities/socialAccount';
+import { SocialAccount, User } from '../entities';
 
 const type: any = String(process.env.DB_TYPE);
 

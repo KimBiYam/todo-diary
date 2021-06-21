@@ -2,9 +2,8 @@ import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
-import { User } from 'src/entities';
-import { SocialAccount } from 'src/entities/socialAccount';
 import { Repository } from 'typeorm';
+import { SocialAccount, User } from '../../entities';
 import { UserService } from '../user';
 import { SocialAcountDto } from './dto';
 
