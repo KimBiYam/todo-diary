@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 import { SocialAcountDto, AccessTokenDto } from './dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
-@Controller('auth')
+@Controller('api/auth')
 @ApiTags('Auth')
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })

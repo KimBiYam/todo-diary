@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { RegsiterUserDto } from './dto';
 
-@Controller('user')
+@Controller('api/user')
 @ApiTags('User')
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
