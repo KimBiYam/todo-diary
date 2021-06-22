@@ -1,5 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { SocialAccount, User } from '../entities';
+import { SocialAccount, User, Diary, DiaryMeta } from '@src/entities';
 
 const type: any = String(process.env.DB_TYPE);
 
@@ -14,5 +14,5 @@ export const typeormConfig: TypeOrmModuleOptions = {
   charset: process.env.DB_CHARSET,
   keepConnectionAlive: true,
   logging: true,
-  entities: [User, SocialAccount],
+  entities: [User, SocialAccount, Diary, DiaryMeta],
 };
