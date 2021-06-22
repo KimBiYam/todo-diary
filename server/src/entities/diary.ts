@@ -3,8 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { DiaryMeta } from './diaryMeta';
 
 @Entity({ name: 'diary' })
 export class Diary {
@@ -21,4 +24,8 @@ export class Diary {
 
   @Column({ name: 'is_finished', type: 'tinyint', default: false })
   isFinished: boolean;
+
+  @OneToOne(() => DiaryMeta, (diaryMeta) => diaryMeta.diary)
+  @JoinColumn({ name: 'diary_meta_id' })
+  diaryMeta: DiaryMeta;
 }
