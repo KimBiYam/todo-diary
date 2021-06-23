@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { DiaryMeta } from './diaryMeta';
+import { DiaryMeta } from './diary-meta.entity';
 
 @Entity({ name: 'diary' })
 export class Diary {

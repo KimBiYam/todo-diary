@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from './user';
+import { User } from './user.entity';
 
 @Entity({ name: 'social_account' })
 export class SocialAccount {

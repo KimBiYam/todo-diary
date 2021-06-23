@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Diary } from './diary';
+import { Diary } from './diary.entity';
 
 @Entity({ name: 'diary_meta' })
 export class DiaryMeta {
