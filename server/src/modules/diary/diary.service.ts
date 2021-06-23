@@ -17,7 +17,8 @@ export class DiaryService {
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta.content'])
-      .getMany();
+      .getMany()
+      .then((diaries) => this.cascadingDiaries(diaries));
   }
 
   async registerDiary(registerDiaryDto: RegisterDiaryDto): Promise<any> {
@@ -32,5 +33,13 @@ export class DiaryService {
 
     await this.diaryMetaRepository.save(diaryMeta);
     return await this.diaryRepository.save(diary);
+  }
+
+  cascadingDiaries(diaries: Diary[]): Diary[] {
+    return diaries.map((diary) => {
+      const { content } = diary.diaryMeta;
+      delete diary.diaryMeta;
+      return { ...diary, content };
+    });
   }
 }
