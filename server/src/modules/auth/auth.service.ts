@@ -1,19 +1,17 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
-import { Repository } from 'typeorm';
 import { SocialAccount, User } from '@src/entities';
 import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
+import { SocialAccountRepository } from './social-account.repository';
+import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(SocialAccount)
-    private readonly socialAccountRepository: Repository<SocialAccount>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly socialAccountRepository: SocialAccountRepository,
+    private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}

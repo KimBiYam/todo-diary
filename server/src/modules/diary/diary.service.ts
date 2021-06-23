@@ -1,20 +1,18 @@
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Diary, DiaryMeta } from '@src/entities';
 import { Injectable, Logger } from '@nestjs/common';
 import { RegisterDiaryDto } from './dto/register-diary.dto';
+import { DiaryRepository } from './diary.repository';
+import { DiaryMetaRepository } from './diary-meta.repository';
 
 @Injectable()
 export class DiaryService {
   constructor(
-    @InjectRepository(Diary)
-    private readonly diaryRepository: Repository<Diary>,
-    @InjectRepository(DiaryMeta)
-    private readonly diaryMetaRepository: Repository<DiaryMeta>,
+    private readonly diaryRepository: DiaryRepository,
+    private readonly diaryMetaRepository: DiaryMetaRepository,
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async getDiaries(): Promise<any> {
+  async getDiaries(): Promise<Diary[]> {
     return await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
