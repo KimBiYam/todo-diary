@@ -11,7 +11,7 @@ import { DiaryMeta } from './diary-meta.entity';
 
 @Entity({ name: 'diary' })
 export class Diary {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ type: 'varchar', length: 100 })
