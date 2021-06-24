@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { RegisterDiaryDto } from './dto/register-diary.dto';
 import { DiaryRepository } from './diary.repository';
 import { DiaryMetaRepository } from './diary-meta.repository';
+import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 
 @Injectable()
 export class DiaryService {
@@ -21,7 +22,11 @@ export class DiaryService {
       .then((diaries) => this.cascadingDiaries(diaries));
   }
 
-  async registerDiary(registerDiaryDto: RegisterDiaryDto): Promise<any> {
+  @Transaction({ isolation: 'SERIALIZABLE' })
+  async registerDiary(
+    registerDiaryDto: RegisterDiaryDto,
+    @TransactionManager() manager?: EntityManager,
+  ): Promise<any> {
     const { content, title } = registerDiaryDto;
 
     const diaryMeta = new DiaryMeta();
@@ -31,8 +36,8 @@ export class DiaryService {
     diary.title = title;
     diary.diaryMeta = diaryMeta;
 
-    await this.diaryMetaRepository.save(diaryMeta);
-    return await this.diaryRepository.save(diary);
+    await manager.save(diaryMeta);
+    return await manager.save(diary);
   }
 
   cascadingDiaries(diaries: Diary[]): Diary[] {

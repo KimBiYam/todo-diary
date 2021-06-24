@@ -6,6 +6,7 @@ import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
 import { SocialAccountRepository } from './social-account.repository';
 import { UserRepository } from '../user/user.repository';
+import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +71,11 @@ export class AuthService {
     return { user: socialAccountDto, googleAccessToken };
   }
 
-  async registerGoogleAccount(googleAccessToken: string): Promise<any> {
+  @Transaction({ isolation: 'SERIALIZABLE' })
+  async registerGoogleAccount(
+    googleAccessToken: string,
+    @TransactionManager() manager?: EntityManager,
+  ): Promise<any> {
     const { user: socialAccountDto } = await this.getGoogleProfile(
       googleAccessToken,
     );
@@ -96,15 +101,13 @@ export class AuthService {
     user.email = email;
     user.photoUrl = photoUrl ?? undefined;
     user.displayName = displayName;
-    await this.userRepository.save(user);
 
     const socialAccount = new SocialAccount();
     socialAccount.provider = provider;
     socialAccount.socialId = socialId;
     socialAccount.user = user;
 
-    const result = await this.socialAccountRepository.save(socialAccount);
-
-    return result;
+    await manager.save(user);
+    return await manager.save(socialAccount);
   }
 }

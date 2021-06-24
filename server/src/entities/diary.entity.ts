@@ -22,7 +22,7 @@ export class Diary {
   @Index()
   createdAt: Date;
 
-  @Column({ name: 'is_finished', type: 'tinyint', default: false })
+  @Column({ name: 'is_finished', default: false })
   isFinished: boolean;
 
   @OneToOne(() => DiaryMeta, (diaryMeta) => diaryMeta.diary)

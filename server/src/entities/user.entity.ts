@@ -39,6 +39,6 @@ export class User {
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
 
-  @Column({ name: 'is_certified', type: 'tinyint', default: false })
+  @Column({ name: 'is_certified', default: false })
   isCertified: boolean;
 }
