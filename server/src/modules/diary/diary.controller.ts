@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
+import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto/request-user.dto';
 import { DiaryService } from './diary.service';
@@ -17,10 +26,13 @@ export class DiaryController {
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiResponse({ status: 200, description: '다이어리 글 가져오기 성공' })
+  @ApiResponse({
+    status: 200,
+    description: '자신의 다이어리 전체 글 가져오기 성공',
+  })
   async getDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
-  ): Promise<any> {
+  ): Promise<Diary[]> {
     this.logger.debug({ ...requestUserDto });
     return await this.diaryService.getDiaries(requestUserDto);
   }
@@ -37,5 +49,20 @@ export class DiaryController {
       requestUserDto,
       registerDiaryDto,
     );
+  }
+
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: '자신의 특정 다이어리 글 가져오기 성공',
+  })
+  async getDiary(
+    @RequestUser() requestUserDto: RequestUserDto,
+    @Param('id') id: number,
+  ): Promise<Diary> {
+    this.logger.debug(`controller : ${id}`);
+    return await this.diaryService.getDiary(requestUserDto, id);
   }
 }

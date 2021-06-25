@@ -1,5 +1,5 @@
 import { Diary, DiaryMeta } from '@src/entities';
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { RegisterDiaryDto } from './dto/register-diary.dto';
 import { DiaryRepository } from './diary.repository';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
@@ -23,9 +23,30 @@ export class DiaryService {
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta.content'])
-      .where('diary.id = :id', { id: user.id })
+      .where('diary.user_id = :userId', { userId: user.id })
       .getMany()
       .then((diaries) => this.cascadingDiaries(diaries));
+  }
+
+  async getDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
+    const { email } = requestUserDto;
+
+    const user = await this.userService.findOneByEmail(email);
+
+    const diary = await this.diaryRepository
+      .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .leftJoinAndSelect('diary.user', 'user')
+      .select(['diary', 'diary_meta.content', 'user.id'])
+      .where('diary.id = :id', { id })
+      .getOne();
+
+    if (diary.user.id !== user.id) {
+      this.logger.error('This diary is not your diary post');
+      throw new BadRequestException('This diary is not your diary post');
+    }
+
+    return diary;
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
