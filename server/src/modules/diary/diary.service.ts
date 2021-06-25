@@ -5,6 +5,7 @@ import { DiaryRepository } from './diary.repository';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 import { RequestUserDto } from '../user/dto/request-user.dto';
 import { UserService } from '../user';
+import { UpdateDiaryDto } from './dto/update-diary-dto';
 
 @Injectable()
 export class DiaryService {
@@ -19,13 +20,13 @@ export class DiaryService {
 
     const user = await this.userService.findOneByEmail(email);
 
-    return await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta.content'])
-      .where('diary.user_id = :userId', { userId: user.id })
-      .getMany()
-      .then((diaries) => this.cascadingDiaries(diaries));
+    return await this.diaryRepository.find({
+      join: {
+        alias: 'diary',
+        leftJoinAndSelect: { diaryMeta: 'diary.diaryMeta' },
+      },
+      where: { user },
+    });
   }
 
   async getOwnDiary(
@@ -36,13 +37,12 @@ export class DiaryService {
 
     const user = await this.userService.findOneByEmail(email);
 
-    const diary = await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .leftJoinAndSelect('diary.user', 'user')
-      .select(['diary', 'diary_meta.content', 'user.id'])
-      .where('diary.id = :id', { id })
-      .getOne();
+    const diary = await this.diaryRepository.findOne(id, {
+      join: {
+        alias: 'diary',
+        leftJoinAndSelect: { diaryMeta: 'diary.diaryMeta' },
+      },
+    });
 
     if (diary.user.id !== user.id) {
       this.logger.error('This diary is not your diary post');
@@ -53,16 +53,35 @@ export class DiaryService {
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
+  async updateDiary(
+    requestUserDto: RequestUserDto,
+    updateDiaryDto: UpdateDiaryDto,
+    id: number,
+    @TransactionManager() manager?: EntityManager,
+  ): Promise<any> {
+    // const { content, isFinished, title } = updateDiaryDto;
+    // const diary = await this.getOwnDiary(requestUserDto, id);
+    // const updateDiary = new Diary();
+    // updateDiary.title = title;
+    // updateDiary.isFinished = isFinished;
+    // updateDiary.id = diary.id;
+    // const updateDiartyMeta = new DiaryMeta();
+    // updateDiartyMeta.content = content;
+    // updateDiartyMeta.id = updateDiary.diaryMeta.id;
+    // await manager.save(updateDiartyMeta);
+    // return await manager.save(updateDiary);
+  }
+
+  @Transaction({ isolation: 'SERIALIZABLE' })
   async registerDiary(
     requestUserDto: RequestUserDto,
     registerDiaryDto: RegisterDiaryDto,
     @TransactionManager() manager?: EntityManager,
   ): Promise<any> {
     const { email } = requestUserDto;
+    const { content, title } = registerDiaryDto;
 
     const user = await this.userService.findOneByEmail(email);
-
-    const { content, title } = registerDiaryDto;
 
     const diaryMeta = new DiaryMeta();
     diaryMeta.content = content;
@@ -74,13 +93,5 @@ export class DiaryService {
 
     await manager.save(diaryMeta);
     return await manager.save(diary);
-  }
-
-  cascadingDiaries(diaries: Diary[]): Diary[] {
-    return diaries.map((diary) => {
-      const { content } = diary.diaryMeta;
-      delete diary.diaryMeta;
-      return { ...diary, content };
-    });
   }
 }

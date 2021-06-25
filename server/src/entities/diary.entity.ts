@@ -34,6 +34,7 @@ export class Diary {
   @ManyToOne(() => User, (user) => user.diaries, {
     onDelete: 'CASCADE',
     nullable: false,
+    eager: true,
   })
   @JoinColumn({ name: 'user_id' })
   user: User;

@@ -4,6 +4,7 @@ import {
   Get,
   Logger,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto/request-user.dto';
 import { DiaryService } from './diary.service';
 import { RegisterDiaryDto } from './dto/register-diary.dto';
+import { UpdateDiaryDto } from './dto/update-diary-dto';
 
 @Controller('api/diaries')
 @ApiTags('Diaries')
@@ -62,7 +64,25 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<Diary> {
-    this.logger.debug(`controller : ${id}`);
     return await this.diaryService.getOwnDiary(requestUserDto, id);
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: '자신의 특정 다이어리 글 수정 성공',
+  })
+  async updateDiary(
+    @RequestUser() requestUserDto: RequestUserDto,
+    @Body() updateDiaryDto: UpdateDiaryDto,
+    @Param('id') id: number,
+  ): Promise<any> {
+    return await this.diaryService.updateDiary(
+      requestUserDto,
+      updateDiaryDto,
+      id,
+    );
   }
 }
