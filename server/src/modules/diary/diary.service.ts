@@ -14,7 +14,7 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async getDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
+  async getOwnDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findOneByEmail(email);
@@ -28,7 +28,10 @@ export class DiaryService {
       .then((diaries) => this.cascadingDiaries(diaries));
   }
 
-  async getDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
+  async getOwnDiary(
+    requestUserDto: RequestUserDto,
+    id: number,
+  ): Promise<Diary> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findOneByEmail(email);

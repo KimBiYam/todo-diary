@@ -34,7 +34,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
   ): Promise<Diary[]> {
     this.logger.debug({ ...requestUserDto });
-    return await this.diaryService.getDiaries(requestUserDto);
+    return await this.diaryService.getOwnDiaries(requestUserDto);
   }
 
   @Post()
@@ -58,11 +58,11 @@ export class DiaryController {
     status: 200,
     description: '자신의 특정 다이어리 글 가져오기 성공',
   })
-  async getDiary(
+  async getOwnDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<Diary> {
     this.logger.debug(`controller : ${id}`);
-    return await this.diaryService.getDiary(requestUserDto, id);
+    return await this.diaryService.getOwnDiary(requestUserDto, id);
   }
 }
