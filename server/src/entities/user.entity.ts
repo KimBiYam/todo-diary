@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
+import { Diary } from './diary.entity';
 
 @Entity({ name: 'user' })
 export class User {
@@ -41,4 +43,7 @@ export class User {
 
   @Column({ name: 'is_certified', default: false })
   isCertified: boolean;
+
+  @OneToMany(() => Diary, (diary) => diary.user)
+  diaries: Diary[];
 }

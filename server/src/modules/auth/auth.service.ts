@@ -30,10 +30,8 @@ export class AuthService {
     };
   }
 
-  async googleLogin(googleAccessToken: string): Promise<any> {
-    const { user: socialAcountDto } = await this.getGoogleProfile(
-      googleAccessToken,
-    );
+  async googleLogin(accessToken: string): Promise<any> {
+    const { user: socialAcountDto } = await this.getGoogleProfile(accessToken);
     const { email } = socialAcountDto;
 
     const user = await this.userService.findOneByEmail(email);
@@ -46,10 +44,10 @@ export class AuthService {
   }
 
   async getGoogleProfile(
-    googleAccessToken: string,
-  ): Promise<{ user: SocialAcountDto; googleAccessToken: string }> {
+    accessToken: string,
+  ): Promise<{ user: SocialAcountDto; accessToken: string }> {
     const { data } = await google.people('v1').people.get({
-      access_token: googleAccessToken,
+      access_token: accessToken,
       resourceName: 'people/me',
       personFields: 'names,emailAddresses,photos',
     });
@@ -67,18 +65,15 @@ export class AuthService {
       provider: 'google',
     };
 
-    this.logger.debug(socialAccountDto);
-    return { user: socialAccountDto, googleAccessToken };
+    return { user: socialAccountDto, accessToken };
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
   async registerGoogleAccount(
-    googleAccessToken: string,
+    accessToken: string,
     @TransactionManager() manager?: EntityManager,
   ): Promise<any> {
-    const { user: socialAccountDto } = await this.getGoogleProfile(
-      googleAccessToken,
-    );
+    const { user: socialAccountDto } = await this.getGoogleProfile(accessToken);
 
     const {
       socialId,

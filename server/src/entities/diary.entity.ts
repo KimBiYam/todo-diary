@@ -4,10 +4,12 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { DiaryMeta } from './diary-meta.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'diary' })
 export class Diary {
@@ -28,4 +30,11 @@ export class Diary {
   @OneToOne(() => DiaryMeta, (diaryMeta) => diaryMeta.diary)
   @JoinColumn({ name: 'diary_meta_id' })
   diaryMeta: DiaryMeta;
+
+  @ManyToOne(() => User, (user) => user.diaries, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { User } from '@src/entities';
 import { DeleteResult } from 'typeorm';
 import { RegsiterUserDto } from './dto';
@@ -25,9 +30,14 @@ export class UserService {
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
-    return await this.userRepository.findOne({
-      where: { email },
-    });
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      this.logger.error('This user is not exist');
+      throw new NotFoundException('This user is not exist');
+    }
+
+    return user;
   }
 
   async remove(id: number): Promise<DeleteResult> {
