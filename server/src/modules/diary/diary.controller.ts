@@ -78,7 +78,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
-  ): Promise<any> {
+  ): Promise<Diary> {
     return await this.diaryService.updateDiary(
       requestUserDto,
       updateDiaryDto,

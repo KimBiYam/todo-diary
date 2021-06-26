@@ -58,18 +58,22 @@ export class DiaryService {
     updateDiaryDto: UpdateDiaryDto,
     id: number,
     @TransactionManager() manager?: EntityManager,
-  ): Promise<any> {
-    // const { content, isFinished, title } = updateDiaryDto;
-    // const diary = await this.getOwnDiary(requestUserDto, id);
-    // const updateDiary = new Diary();
-    // updateDiary.title = title;
-    // updateDiary.isFinished = isFinished;
-    // updateDiary.id = diary.id;
-    // const updateDiartyMeta = new DiaryMeta();
-    // updateDiartyMeta.content = content;
-    // updateDiartyMeta.id = updateDiary.diaryMeta.id;
-    // await manager.save(updateDiartyMeta);
-    // return await manager.save(updateDiary);
+  ): Promise<Diary> {
+    const { content, isFinished, title } = updateDiaryDto;
+
+    const diary = await this.getOwnDiary(requestUserDto, id);
+
+    const updateDiary = new Diary();
+    updateDiary.title = title;
+    updateDiary.isFinished = isFinished;
+    updateDiary.id = diary.id;
+
+    const updateDiartyMeta = new DiaryMeta();
+    updateDiartyMeta.content = content;
+    updateDiartyMeta.id = diary.diaryMeta.id;
+
+    await manager.save(updateDiartyMeta);
+    return await manager.save(updateDiary);
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
