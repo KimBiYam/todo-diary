@@ -6,16 +6,23 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
-import { EntityManager, Transaction, TransactionManager } from 'typeorm';
+import {
+  DeleteResult,
+  EntityManager,
+  Transaction,
+  TransactionManager,
+} from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
 import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
+import { DiaryMetaRepository } from './diary-meta.repository';
 
 @Injectable()
 export class DiaryService {
   constructor(
     private readonly diaryRepository: DiaryRepository,
+    private readonly diaryMetaRepository: DiaryMetaRepository,
     private readonly userService: UserService,
   ) {}
   private readonly logger = new Logger('DiaryService');
@@ -103,5 +110,14 @@ export class DiaryService {
 
     await manager.save(updateDiartyMeta);
     return await manager.save(updateDiary);
+  }
+
+  async deleteDiary(
+    requestUserDto: RequestUserDto,
+    id: number,
+  ): Promise<DeleteResult> {
+    const diary = await this.findDiary(requestUserDto, id);
+
+    return await this.diaryRepository.delete(diary.id);
   }
 }

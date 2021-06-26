@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
@@ -11,6 +12,7 @@ import {
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { Diary } from '@src/entities';
+import { DeleteResult } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
@@ -80,5 +82,19 @@ export class DiaryController {
       updateDiaryDto,
       id,
     );
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: '자신의 특정 다이어리 글 삭제 성공',
+  })
+  async deleteDiary(
+    @RequestUser() requestUserDto: RequestUserDto,
+    @Param('id') id: number,
+  ): Promise<any> {
+    return await this.diaryService.deleteDiary(requestUserDto, id);
   }
 }

@@ -9,6 +9,6 @@ export class DiaryMeta {
   @Column({ type: 'varchar', length: 5000 })
   content: string;
 
-  @OneToOne(() => Diary, (diary) => diary.diaryMeta)
+  @OneToOne(() => Diary, (diary) => diary.diaryMeta, { cascade: true })
   diary: Diary;
 }
