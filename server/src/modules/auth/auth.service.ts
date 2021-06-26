@@ -4,15 +4,11 @@ import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
 import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
-import { SocialAccountRepository } from './social-account.repository';
-import { UserRepository } from '../user/user.repository';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly socialAccountRepository: SocialAccountRepository,
-    private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
@@ -34,7 +30,7 @@ export class AuthService {
     const { user: socialAcountDto } = await this.getGoogleProfile(accessToken);
     const { email } = socialAcountDto;
 
-    const user = await this.userService.findOneByEmail(email);
+    const user = await this.userService.findUserByEmail(email);
 
     if (!user) {
       throw new BadRequestException('This user is not exist!');
@@ -83,11 +79,9 @@ export class AuthService {
       provider,
     } = socialAccountDto;
 
-    const isExist = await this.userRepository.findOne({
-      where: { email },
-    });
+    const findUser = await this.userService.findUserByEmail(email);
 
-    if (isExist) {
+    if (findUser) {
       throw new BadRequestException('This user is exist');
     }
 

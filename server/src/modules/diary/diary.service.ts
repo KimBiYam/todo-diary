@@ -1,11 +1,16 @@
 import { Diary, DiaryMeta } from '@src/entities';
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { RegisterDiaryDto } from './dto/register-diary.dto';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
-import { RequestUserDto } from '../user/dto/request-user.dto';
-import { UserService } from '../user';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
+import { CreateDiaryDto } from './dto';
+import { UserService } from '../user';
+import { RequestUserDto } from '../user/dto';
 
 @Injectable()
 export class DiaryService {
@@ -15,10 +20,10 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async getOwnDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
+  async findDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
     const { email } = requestUserDto;
 
-    const user = await this.userService.findOneByEmail(email);
+    const user = await this.userService.findUserByEmail(email);
 
     return await this.diaryRepository.find({
       join: {
@@ -29,13 +34,10 @@ export class DiaryService {
     });
   }
 
-  async getOwnDiary(
-    requestUserDto: RequestUserDto,
-    id: number,
-  ): Promise<Diary> {
+  async findDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
     const { email } = requestUserDto;
 
-    const user = await this.userService.findOneByEmail(email);
+    const user = await this.userService.findUserByEmail(email);
 
     const diary = await this.diaryRepository.findOne(id, {
       join: {
@@ -44,12 +46,39 @@ export class DiaryService {
       },
     });
 
+    if (!diary) {
+      throw new NotFoundException('This diary is not exist');
+    }
+
     if (diary.user.id !== user.id) {
       this.logger.error('This diary is not your diary post');
       throw new BadRequestException('This diary is not your diary post');
     }
 
     return diary;
+  }
+
+  @Transaction({ isolation: 'SERIALIZABLE' })
+  async createDiary(
+    requestUserDto: RequestUserDto,
+    createDiaryDto: CreateDiaryDto,
+    @TransactionManager() manager?: EntityManager,
+  ): Promise<any> {
+    const { email } = requestUserDto;
+    const { content, title } = createDiaryDto;
+
+    const user = await this.userService.findUserByEmail(email);
+
+    const diaryMeta = new DiaryMeta();
+    diaryMeta.content = content;
+
+    const diary = new Diary();
+    diary.title = title;
+    diary.diaryMeta = diaryMeta;
+    diary.user = user;
+
+    await manager.save(diaryMeta);
+    return await manager.save(diary);
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
@@ -61,7 +90,7 @@ export class DiaryService {
   ): Promise<Diary> {
     const { content, isFinished, title } = updateDiaryDto;
 
-    const diary = await this.getOwnDiary(requestUserDto, id);
+    const diary = await this.findDiary(requestUserDto, id);
 
     const updateDiary = new Diary();
     updateDiary.title = title;
@@ -74,28 +103,5 @@ export class DiaryService {
 
     await manager.save(updateDiartyMeta);
     return await manager.save(updateDiary);
-  }
-
-  @Transaction({ isolation: 'SERIALIZABLE' })
-  async registerDiary(
-    requestUserDto: RequestUserDto,
-    registerDiaryDto: RegisterDiaryDto,
-    @TransactionManager() manager?: EntityManager,
-  ): Promise<any> {
-    const { email } = requestUserDto;
-    const { content, title } = registerDiaryDto;
-
-    const user = await this.userService.findOneByEmail(email);
-
-    const diaryMeta = new DiaryMeta();
-    diaryMeta.content = content;
-
-    const diary = new Diary();
-    diary.title = title;
-    diary.diaryMeta = diaryMeta;
-    diary.user = user;
-
-    await manager.save(diaryMeta);
-    return await manager.save(diary);
   }
 }

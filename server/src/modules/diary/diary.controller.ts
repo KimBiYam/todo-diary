@@ -12,9 +12,9 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RequestUserDto } from '../user/dto/request-user.dto';
+import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import { RegisterDiaryDto } from './dto/register-diary.dto';
+import { CreateDiaryDto } from './dto';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
 
 @Controller('api/diaries')
@@ -32,25 +32,21 @@ export class DiaryController {
     status: 200,
     description: '자신의 다이어리 전체 글 가져오기 성공',
   })
-  async getDiaries(
+  async findDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
   ): Promise<Diary[]> {
-    this.logger.debug({ ...requestUserDto });
-    return await this.diaryService.getOwnDiaries(requestUserDto);
+    return await this.diaryService.findDiaries(requestUserDto);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({ status: 201, description: '다이어리 글 등록 성공' })
-  async registerDiary(
+  async createDiary(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Body() registerDiaryDto: RegisterDiaryDto,
+    @Body() createDiaryDto: CreateDiaryDto,
   ): Promise<any> {
-    return await this.diaryService.registerDiary(
-      requestUserDto,
-      registerDiaryDto,
-    );
+    return await this.diaryService.createDiary(requestUserDto, createDiaryDto);
   }
 
   @Get(':id')
@@ -60,11 +56,11 @@ export class DiaryController {
     status: 200,
     description: '자신의 특정 다이어리 글 가져오기 성공',
   })
-  async getOwnDiary(
+  async findDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<Diary> {
-    return await this.diaryService.getOwnDiary(requestUserDto, id);
+    return await this.diaryService.findDiary(requestUserDto, id);
   }
 
   @Patch(':id')

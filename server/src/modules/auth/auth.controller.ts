@@ -1,11 +1,10 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestGoogleUser } from '@src/decorators';
-import { GoogleUserDto } from '../user/dto/google-user.dto';
+import { GoogleUserDto } from '../user/dto';
 import { AuthService } from './auth.service';
-import { AccessTokenDto, SocialAcountDto } from './dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { AccessTokenDto } from './dto';
 
 @Controller('api/auth')
 @ApiTags('Auth')
@@ -18,7 +17,7 @@ export class AuthController {
   @Get('/google/profile')
   @UseGuards(AuthGuard('google'))
   @ApiResponse({ status: 200, description: '프로필 조회 성공' })
-  async signinGoogleAccount(
+  async getGoogleProfile(
     @RequestGoogleUser() googleUserDto: GoogleUserDto,
   ): Promise<any> {
     const { accessToken } = googleUserDto;
@@ -28,7 +27,7 @@ export class AuthController {
   @Get('/google/signin')
   @UseGuards(AuthGuard('google'))
   @ApiResponse({ status: 200, description: '로그인 성공' })
-  async signinGoogleCallback(
+  async googleLogin(
     @RequestGoogleUser() googleUserDto: GoogleUserDto,
   ): Promise<any> {
     const { accessToken } = googleUserDto;
@@ -41,20 +40,5 @@ export class AuthController {
     @Body() { accessToken }: AccessTokenDto,
   ): Promise<any> {
     return await this.authService.registerGoogleAccount(accessToken);
-  }
-
-  @Post('/google/check')
-  async checkGoogleAuth(
-    @Body() body: AccessTokenDto,
-  ): Promise<{ user: SocialAcountDto; accessToken: string }> {
-    const { accessToken } = body;
-    return await this.authService.getGoogleProfile(accessToken);
-  }
-
-  @Get('/test')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  async testToken() {
-    return true;
   }
 }

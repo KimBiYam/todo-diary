@@ -1,1 +1,2 @@
-export * from './register-diary.dto';
+export * from './create-diary.dto';
+export * from './update-diary-dto';
