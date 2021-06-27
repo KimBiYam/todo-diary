@@ -39,4 +39,5 @@ server/mariadb/data
 # environment
 server/.env
 server/.env.dev
+webapp/.env
 
