@@ -13,6 +13,6 @@ export default class ConvertResponseInterceptor implements NestInterceptor {
     ctx: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    return next.handle().pipe(map((data) => ({ status: 'SUCCESS', data })));
+    return next.handle().pipe(map((data) => ({ status: 'SUCCESS', ...data })));
   }
 }
