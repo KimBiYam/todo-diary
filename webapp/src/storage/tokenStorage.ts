@@ -1,7 +1,7 @@
 const ACCESS_TOKEN = 'ACCESS_TOKEN';
 
-const tokenStorage = () => {
-  const getToken = () => {
+const tokenStorage = {
+  getToken() {
     const accessToken = localStorage.getItem(ACCESS_TOKEN);
 
     if (accessToken === null) {
@@ -9,15 +9,15 @@ const tokenStorage = () => {
     }
 
     return accessToken;
-  };
+  },
 
-  const setToken = (accessToken: string) => {
+  setToken(accessToken: string) {
     localStorage.setItem(ACCESS_TOKEN, accessToken);
-  };
+  },
 
-  const clearToken = () => {
+  clearToken() {
     localStorage.removeItem(ACCESS_TOKEN);
-  };
+  },
 };
 
 export default tokenStorage;
