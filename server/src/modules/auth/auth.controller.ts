@@ -11,12 +11,13 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
   private readonly logger = new Logger('AuthController');
 
-  @Get('/google/profile')
+  @Get('/google/check')
   @ApiResponse({ status: 200, description: '프로필 조회 성공' })
-  async getGoogleProfile(
+  async checkGoogleAccount(
     @Query() { googleToken }: GoogleTokenDto,
-  ): Promise<any> {
-    return await this.authService.getGoogleProfile(googleToken);
+  ): Promise<{ exists: boolean }> {
+    const isExists = await this.authService.isExistsGoogleAccount(googleToken);
+    return { exists: isExists };
   }
 
   @Post('/google/sign-in')

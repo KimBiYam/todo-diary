@@ -5,12 +5,14 @@ import { SocialAccount, User } from '@src/entities';
 import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
+import { SocialAccountRepository } from './social-account.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly socialAccountRepository: SocialAccountRepository,
   ) {}
 
   private readonly logger = new Logger('AuthService');
@@ -27,7 +29,7 @@ export class AuthService {
   }
 
   async googleLogin(googleToken: string): Promise<any> {
-    const { user: socialAcountDto } = await this.getGoogleProfile(googleToken);
+    const socialAcountDto = await this.getGoogleProfile(googleToken);
     const { email } = socialAcountDto;
 
     const user = await this.userService.findUserByEmail(email);
@@ -39,9 +41,7 @@ export class AuthService {
     return await this.login(user);
   }
 
-  async getGoogleProfile(
-    googleToken: string,
-  ): Promise<{ user: SocialAcountDto }> {
+  async getGoogleProfile(googleToken: string): Promise<SocialAcountDto> {
     const { data } = await google.people('v1').people.get({
       access_token: googleToken,
       resourceName: 'people/me',
@@ -61,7 +61,25 @@ export class AuthService {
       provider: 'google',
     };
 
-    return { user: socialAccountDto };
+    return socialAccountDto;
+  }
+
+  async isExistsGoogleAccount(googleToken: string) {
+    const socialAccountDto = await this.getGoogleProfile(googleToken);
+    const { provider, socialId } = socialAccountDto;
+
+    const socialAccount = this.socialAccountRepository.find({
+      where: {
+        provider,
+        socialId,
+      },
+    });
+
+    if (!socialAccount) {
+      throw new BadRequestException('This user is not exist!');
+    }
+
+    return !!socialAccount;
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
@@ -69,7 +87,7 @@ export class AuthService {
     googleToken: string,
     @TransactionManager() manager?: EntityManager,
   ): Promise<any> {
-    const { user: socialAccountDto } = await this.getGoogleProfile(googleToken);
+    const socialAccountDto = await this.getGoogleProfile(googleToken);
 
     const {
       socialId,
