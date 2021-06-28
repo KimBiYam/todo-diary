@@ -14,5 +14,5 @@ export class GoogleUserDto {
   picture: string;
 
   @IsString()
-  accessToken: string;
+  googleToken: string;
 }
