@@ -2,12 +2,12 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import { Global } from '@emotion/react';
-import GlobalStyle from './GlobalStyle';
+import globalStyle from './globalStyle';
 
 const App = () => {
   return (
     <>
-      <Global styles={GlobalStyle} />
+      <Global styles={globalStyle} />
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage} />
