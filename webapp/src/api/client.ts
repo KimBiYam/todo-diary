@@ -7,7 +7,8 @@ const client = axios.create({ baseURL: SERVER_URL });
 client.interceptors.request.use((config) => {
   const accessToken = tokenStorage.getToken();
 
-  config.headers.Authorization = accessToken || '';
+  config.headers.Authorization =
+    `${process.env.REACT_APP_TOKEN_PREFIX} ${accessToken}` || '';
 
   return config;
 });

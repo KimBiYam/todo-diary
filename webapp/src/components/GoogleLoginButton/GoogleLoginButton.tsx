@@ -8,9 +8,9 @@ import {
 import useUser from '../../hooks/useUser';
 import tokenStorage from '../../storage/tokenStorage';
 
-export type GoogleLoginButtonProps = {};
+export type GoogleLogInButtonProps = {};
 
-const GoogleLoginButton = () => {
+const GoogleLogInButton = () => {
   const { userLogin, userLogout } = useUser();
 
   const handleOnSuccess = async (response: any) => {
@@ -54,4 +54,4 @@ const GoogleLoginButton = () => {
   );
 };
 
-export default GoogleLoginButton;
+export default GoogleLogInButton;

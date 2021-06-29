@@ -18,6 +18,10 @@ const tokenStorage = {
   clearToken() {
     localStorage.removeItem(ACCESS_TOKEN);
   },
+
+  isTokenExists() {
+    return !!this.getToken();
+  },
 };
 
 export default tokenStorage;
