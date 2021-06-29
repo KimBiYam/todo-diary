@@ -4,9 +4,9 @@ import {
   checkGoogleAccount,
   signInGoogleAccount,
   signUpGoogleAccount,
-} from '../../api/auth';
-import useUser from '../../hooks/useUser';
-import tokenStorage from '../../storage/tokenStorage';
+} from '../../../api/auth';
+import useUser from '../../../hooks/useUser';
+import tokenStorage from '../../../storage/tokenStorage';
 
 export type GoogleLogInButtonProps = {};
 

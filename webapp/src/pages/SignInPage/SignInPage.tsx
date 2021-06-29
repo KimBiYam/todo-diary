@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleLogInButton from '../../components/GoogleLogInButton';
+import GoogleLogInButton from '../../components/Auth/GoogleLogInButton';
 
 export type SignInPageProps = {};
 
