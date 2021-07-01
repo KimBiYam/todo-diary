@@ -4,13 +4,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
-import store from './reducers/store';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers/rootReducer';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const store = configureStore({ reducer: rootReducer });
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </Provider>
     </HelmetProvider>
   </React.StrictMode>,

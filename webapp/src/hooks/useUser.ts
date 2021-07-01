@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers/store';
-import { login, logout } from '../reducers/userReducer';
+import { login, logout } from '../reducers/user';
 import tokenStorage from '../storage/tokenStorage';
 import { User } from '../types/user.types';
 
