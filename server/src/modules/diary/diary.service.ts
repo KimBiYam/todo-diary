@@ -16,6 +16,7 @@ import { UpdateDiaryDto } from './dto/update-diary-dto';
 import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
+import { ResponseDiaryDto } from './dto/response-diary.dto';
 
 @Injectable()
 export class DiaryService {
@@ -25,17 +26,21 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
+  async findDiaries(
+    requestUserDto: RequestUserDto,
+  ): Promise<ResponseDiaryDto[]> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
 
-    return await this.diaryRepository
+    const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta'])
       .where('diary.user_id = :userId', { userId: user.id })
       .getMany();
+
+    return diaries.map((diary) => this.convertDiary(diary));
   }
 
   async findDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
@@ -43,12 +48,13 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    const diary = await this.diaryRepository.findOne(id, {
-      join: {
-        alias: 'diary',
-        leftJoinAndSelect: { diaryMeta: 'diary.diaryMeta' },
-      },
-    });
+    const diary = await this.diaryRepository
+      .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.user', 'user')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .select(['diary', 'diary_meta', 'user'])
+      .where('diary.id = :id', { id })
+      .getOne();
 
     if (!diary) {
       throw new NotFoundException('This diary is not exist');
@@ -85,6 +91,11 @@ export class DiaryService {
     return await manager.save(diary);
   }
 
+  async findConvertedDiary(requestUserDto: RequestUserDto, id: number) {
+    const diary = await this.findDiary(requestUserDto, id);
+    return this.convertDiary(diary);
+  }
+
   @Transaction({ isolation: 'SERIALIZABLE' })
   async updateDiary(
     requestUserDto: RequestUserDto,
@@ -116,5 +127,18 @@ export class DiaryService {
     const diary = await this.findDiary(requestUserDto, id);
 
     return await this.diaryRepository.delete(diary.id);
+  }
+
+  convertDiary(diary: Diary): ResponseDiaryDto {
+    const { id, createdAt, isFinished, title, diaryMeta } = diary;
+    const { content } = diaryMeta;
+
+    return {
+      id,
+      createdAt,
+      isFinished,
+      title,
+      content,
+    };
   }
 }

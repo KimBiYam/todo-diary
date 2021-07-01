@@ -16,6 +16,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto';
+import { ResponseDiaryDto } from './dto/response-diary.dto';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
 
 @Controller('api/diaries')
@@ -35,7 +36,7 @@ export class DiaryController {
   })
   async findDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
-  ): Promise<Diary[]> {
+  ): Promise<ResponseDiaryDto[]> {
     return await this.diaryService.findDiaries(requestUserDto);
   }
 
@@ -60,8 +61,8 @@ export class DiaryController {
   async findDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
-  ): Promise<Diary> {
-    return await this.diaryService.findDiary(requestUserDto, id);
+  ): Promise<ResponseDiaryDto> {
+    return await this.diaryService.findConvertedDiary(requestUserDto, id);
   }
 
   @Patch(':id')
