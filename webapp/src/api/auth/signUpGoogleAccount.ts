@@ -1,8 +1,8 @@
-import client from '../client';
+import apiClient from '../apiClient';
 
 export const signUpGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await client.post('/api/auth/google/sign-up', {
+    const response = await apiClient.post('/api/auth/google/sign-up', {
       googleToken,
     });
 

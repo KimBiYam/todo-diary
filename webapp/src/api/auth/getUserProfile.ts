@@ -1,9 +1,9 @@
 import { User } from '../../types/user.types';
-import client from '../client';
+import apiClient from '../apiClient';
 
 export const getUserProfile = async () => {
   try {
-    const response = await client.get('/api/auth/user/profile');
+    const response = await apiClient.get('/api/auth/user/profile');
     const { email, displayName, photoUrl } = response.data;
 
     const user: User = { email, displayName, photoUrl };

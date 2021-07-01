@@ -2,9 +2,9 @@ import axios from 'axios';
 import { SERVER_URL } from '../constants';
 import tokenStorage from '../storage/tokenStorage';
 
-const client = axios.create({ baseURL: SERVER_URL });
+const apiClient = axios.create({ baseURL: SERVER_URL });
 
-client.interceptors.request.use((config) => {
+apiClient.interceptors.request.use((config) => {
   const accessToken = tokenStorage.getToken();
 
   config.headers.Authorization =
@@ -13,4 +13,4 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
-export default client;
+export default apiClient;
