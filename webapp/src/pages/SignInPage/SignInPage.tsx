@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import GoogleLogInButton from '../../components/Auth/GoogleLogInButton';
+import GoogleSignInButton from '../../components/Auth/GoogleLogInButton';
 
 export type SignInPageProps = {};
 
@@ -8,7 +8,7 @@ const SignInPage = () => (
   <div css={block}>
     <div css={signInSection}>
       <h1>Todo Diary!!!</h1>
-      <GoogleLogInButton />
+      <GoogleSignInButton />
     </div>
   </div>
 );
@@ -24,9 +24,13 @@ const signInSection = css`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  align-items: center;
   flex-direction: column;
   font-size: 24px;
   font-weight: bold;
+  h1 {
+    margin-bottom: 86px;
+  }
 `;
 
 export default SignInPage;
