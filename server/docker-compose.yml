@@ -1,9 +1,9 @@
 version: '3.2'
 
 services:
-  nestjs:
-    image: nestjs-boilerplate-nestjs
-    container_name: nestjs-boilerplate-nestjs
+  backend:
+    image: todo-diary-backend
+    container_name: todo-diary-backend
     build:
       context: ./
       dockerfile: ./Dockerfile
