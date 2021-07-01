@@ -15,12 +15,14 @@ const AppLayout = ({ title, children }: AppLayoutProps) => (
       <title>{title}</title>
     </Helmet>
     <Header />
-    <div css={blockStyle}>{children}</div>
+    <div css={block}>{children}</div>
   </>
 );
 
-const blockStyle = css`
+const block = css`
   padding-top: ${HEADER_HEIGHT};
+  width: 100%;
+  height: 100%;
 `;
 
 export default AppLayout;

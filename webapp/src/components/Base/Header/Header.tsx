@@ -10,11 +10,11 @@ const Header = () => {
   const { userLogout } = useUser();
 
   return (
-    <header css={headerStyle}>
-      <div css={headerSectionStyle}>
+    <header css={block}>
+      <div css={headerSection}>
         <HeaderItem to="/" label="홈으로" />
       </div>
-      <div css={headerSectionStyle}>
+      <div css={headerSection}>
         <button type="button" onClick={userLogout}>
           로그아웃
         </button>
@@ -23,7 +23,7 @@ const Header = () => {
   );
 };
 
-const headerStyle = css`
+const block = css`
   width: 100%;
   height: ${HEADER_HEIGHT};
   position: fixed;
@@ -31,7 +31,7 @@ const headerStyle = css`
   justify-content: space-between;
 `;
 
-const headerSectionStyle = css`
+const headerSection = css`
   flex: 1;
 `;
 
