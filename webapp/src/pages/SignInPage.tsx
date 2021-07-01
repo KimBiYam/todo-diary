@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import GoogleSignInButton from '../../components/Auth/GoogleLogInButton';
+import GoogleSignInButton from '../components/Auth/GoogleSignInButton';
 
 export type SignInPageProps = {};
 
