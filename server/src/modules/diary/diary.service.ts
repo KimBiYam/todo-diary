@@ -16,13 +16,11 @@ import { UpdateDiaryDto } from './dto/update-diary-dto';
 import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
-import { DiaryMetaRepository } from './diary-meta.repository';
 
 @Injectable()
 export class DiaryService {
   constructor(
     private readonly diaryRepository: DiaryRepository,
-    private readonly diaryMetaRepository: DiaryMetaRepository,
     private readonly userService: UserService,
   ) {}
   private readonly logger = new Logger('DiaryService');
@@ -32,13 +30,12 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    return await this.diaryRepository.find({
-      join: {
-        alias: 'diary',
-        leftJoinAndSelect: { diaryMeta: 'diary.diaryMeta' },
-      },
-      where: { user },
-    });
+    return await this.diaryRepository
+      .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .select(['diary', 'diary_meta'])
+      .where('diary.user_id = :userId', { userId: user.id })
+      .getMany();
   }
 
   async findDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
