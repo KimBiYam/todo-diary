@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { getUserProfile } from '../api/auth';
+import authApi from '../api/authApi';
 import tokenStorage from '../storage/tokenStorage';
 import useUser from './useUser';
 
@@ -11,7 +11,8 @@ const useCheckUserEffect = () => {
       return;
     }
 
-    getUserProfile()
+    authApi
+      .getUserProfile()
       .then((user) => {
         userLogin(user);
       })
