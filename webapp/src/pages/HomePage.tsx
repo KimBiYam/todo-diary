@@ -6,7 +6,7 @@ export type HomePageProps = {};
 
 const HomePage = () => {
   return (
-    <AppLayout title="Home">
+    <AppLayout title="Todo Diary | Home">
       <DiaryList />
     </AppLayout>
   );

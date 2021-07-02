@@ -3,7 +3,7 @@ import tokenStorage from '../storage/tokenStorage';
 import useUser from './useUser';
 
 const useGoogleAuth = () => {
-  const { userLogin, userLogout } = useUser();
+  const { userLogIn, userLogOut } = useUser();
 
   const signIn = async (googleToken: string) => {
     const signInResponse = await authApi.signInGoogleAccount(googleToken);
@@ -11,7 +11,7 @@ const useGoogleAuth = () => {
     const { accessToken, user } = signInResponse;
 
     tokenStorage.setToken(accessToken);
-    userLogin(user);
+    userLogIn(user);
   };
 
   const handleOnSuccess = async (response: any) => {
@@ -29,7 +29,7 @@ const useGoogleAuth = () => {
         await signIn(googleToken);
       }
     } catch (e) {
-      userLogout();
+      userLogOut();
       console.log(e);
     }
   };

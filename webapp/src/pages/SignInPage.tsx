@@ -1,11 +1,15 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/Auth/GoogleSignInButton';
+import { Helmet } from 'react-helmet-async';
 
 export type SignInPageProps = {};
 
 const SignInPage = () => (
   <div css={block}>
+    <Helmet>
+      <title>Todo Diary | Sign In</title>
+    </Helmet>
     <div css={signInSection}>
       <h1>Todo Diary!!!</h1>
       <GoogleSignInButton />

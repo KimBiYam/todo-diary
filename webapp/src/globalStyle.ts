@@ -8,6 +8,7 @@ const globalStyle = css`
     width: 100%;
     height: 100%;
     box-sizing: border-box;
+    font-size: 16px;
 
     body,
     #root {
@@ -17,6 +18,7 @@ const globalStyle = css`
 
     * {
       box-sizing: inherit;
+      font-size: inherit;
     }
   }
 `;

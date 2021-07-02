@@ -1,24 +1,18 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { HEADER_HEIGHT } from '../../constants';
-import useUser from '../../hooks/useUser';
 import HeaderItem from './HeaderItem';
+import HeaderProfile from './HeaderProfile';
 
 export type HeaderProps = {};
 
 const Header = () => {
-  const { userLogout } = useUser();
-
   return (
     <header css={block}>
-      <div css={headerSection}>
+      <nav css={headerNavSection}>
         <HeaderItem to="/" label="홈으로" />
-      </div>
-      <div css={headerSection}>
-        <button type="button" onClick={userLogout}>
-          로그아웃
-        </button>
-      </div>
+      </nav>
+      <HeaderProfile />
     </header>
   );
 };
@@ -26,12 +20,14 @@ const Header = () => {
 const block = css`
   width: 100%;
   height: ${HEADER_HEIGHT};
+  padding: 0 32px;
   position: fixed;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
-const headerSection = css`
+const headerNavSection = css`
   flex: 1;
 `;
 

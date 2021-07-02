@@ -12,16 +12,16 @@ const useUser = () => {
       tokenStorage.isTokenExists() || state.user.user !== undefined,
   );
 
-  const userLogin = (user: User) => {
+  const userLogIn = (user: User) => {
     dispatch(login(user));
   };
 
-  const userLogout = () => {
+  const userLogOut = () => {
     tokenStorage.clearToken();
     dispatch(logout());
   };
 
-  return { user, isLoggedIn, userLogin, userLogout };
+  return { user, isLoggedIn, userLogIn, userLogOut };
 };
 
 export default useUser;

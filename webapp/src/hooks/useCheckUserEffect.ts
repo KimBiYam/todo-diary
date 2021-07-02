@@ -4,7 +4,7 @@ import tokenStorage from '../storage/tokenStorage';
 import useUser from './useUser';
 
 const useCheckUserEffect = () => {
-  const { userLogin, userLogout } = useUser();
+  const { userLogIn, userLogOut } = useUser();
 
   useEffect(() => {
     if (!tokenStorage.isTokenExists()) {
@@ -14,11 +14,11 @@ const useCheckUserEffect = () => {
     authApi
       .getUserProfile()
       .then((user) => {
-        userLogin(user);
+        userLogIn(user);
       })
       .catch((e) => {
         console.error(e);
-        userLogout();
+        userLogOut();
       });
   }, []);
 };

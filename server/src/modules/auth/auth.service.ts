@@ -29,39 +29,47 @@ export class AuthService {
   }
 
   async googleLogin(googleToken: string): Promise<any> {
-    const socialAcountDto = await this.getGoogleProfile(googleToken);
-    const { email } = socialAcountDto;
+    try {
+      const socialAcountDto = await this.getGoogleProfile(googleToken);
+      const { email } = socialAcountDto;
 
-    const user = await this.userService.findUserByEmail(email);
+      const user = await this.userService.findUserByEmail(email);
 
-    if (!user) {
-      throw new BadRequestException('This user is not exist!');
+      if (!user) {
+        throw new BadRequestException('This user is not exist!');
+      }
+
+      return await this.login(user);
+    } catch (e) {
+      throw new BadRequestException(e);
     }
-
-    return await this.login(user);
   }
 
   async getGoogleProfile(googleToken: string): Promise<SocialAcountDto> {
-    const { data } = await google.people('v1').people.get({
-      access_token: googleToken,
-      resourceName: 'people/me',
-      personFields: 'names,emailAddresses,photos',
-    });
+    try {
+      const { data } = await google.people('v1').people.get({
+        access_token: googleToken,
+        resourceName: 'people/me',
+        personFields: 'names,emailAddresses,photos',
+      });
 
-    const displayName = data.names[0].displayNameLastFirst;
-    const photoUrl = data.photos[0].url;
-    const email = data.emailAddresses[0].value;
-    const socialId = data.names[0].metadata.source.id;
+      const displayName = data.names[0].displayNameLastFirst;
+      const photoUrl = data.photos[0].url;
+      const email = data.emailAddresses[0].value;
+      const socialId = data.names[0].metadata.source.id;
 
-    const socialAccountDto: SocialAcountDto = {
-      displayName,
-      photoUrl,
-      email,
-      socialId,
-      provider: 'google',
-    };
+      const socialAccountDto: SocialAcountDto = {
+        displayName,
+        photoUrl,
+        email,
+        socialId,
+        provider: 'google',
+      };
 
-    return socialAccountDto;
+      return socialAccountDto;
+    } catch (e) {
+      throw new BadRequestException(e);
+    }
   }
 
   async isExistsGoogleAccount(googleToken: string) {
