@@ -21,7 +21,7 @@ const Header = () => {
 const block = css`
   width: 100%;
   height: ${HEADER_HEIGHT};
-  padding: 0 32px;
+  padding: 0 2rem;
   position: fixed;
   display: flex;
   justify-content: space-between;

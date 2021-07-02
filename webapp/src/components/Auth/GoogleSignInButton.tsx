@@ -32,12 +32,12 @@ const googleSignInButton = css`
 
   div {
     margin-right: 0 !important;
-    padding: 14px !important;
+    padding: 0.875rem !important;
   }
 
   span {
     color: ${COLORS.secondary};
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: bold;
   }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
-import Icon, { IconType } from '../common/Icon/Icon';
+import Icon, { IconType } from '../common/Icon';
 
 export type HeaderItemProps = {
   label: string;
@@ -20,9 +20,9 @@ const HeaderItem = ({ label, icon, to }: HeaderItemProps) => (
 );
 
 const block = css`
-  width: 48px;
-  height: 32px;
-  margin-right: 24px;
+  width: 3rem;
+  height: 2rem;
+  margin-right: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,8 +32,8 @@ const block = css`
 
 const iconBlock = css`
   svg {
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     fill: ${COLORS.tertiary};
   }
 `;

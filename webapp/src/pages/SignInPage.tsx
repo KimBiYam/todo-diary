@@ -31,11 +31,11 @@ const signInSection = css`
   transform: translate(-50%, -50%);
   align-items: center;
   flex-direction: column;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   h1 {
     color: ${COLORS.secondary};
-    margin-bottom: 86px;
+    margin-bottom: 5.5rem;
   }
 `;
 

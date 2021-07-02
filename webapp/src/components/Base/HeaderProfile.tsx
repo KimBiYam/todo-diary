@@ -29,14 +29,14 @@ const block = css`
 `;
 
 const profileImage = css`
-  margin-right: 16px;
-  width: 40px;
-  height: 40px;
-  border-radius: 32px;
+  margin-right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2rem;
 `;
 
 const signOutButton = css`
-  margin-left: 14px;
+  margin-left: 0.875rem;
   color: ${COLORS.secondary};
   border: none;
   background: none;
