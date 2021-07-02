@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header css={block}>
       <nav css={headerNavSection}>
-        <HeaderItem to="/" label="홈으로" />
+        <HeaderItem to="/" label="최근 다이어리" />
       </nav>
       <HeaderProfile />
     </header>

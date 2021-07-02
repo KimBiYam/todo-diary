@@ -1,3 +1,4 @@
+import { useQueryClient } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers/store';
 import { login, logout } from '../reducers/user';
@@ -5,6 +6,7 @@ import tokenStorage from '../storage/tokenStorage';
 import { User } from '../types/user.types';
 
 const useUser = () => {
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
   const isLoggedIn = useSelector(
@@ -19,6 +21,7 @@ const useUser = () => {
   const userLogOut = () => {
     tokenStorage.clearToken();
     dispatch(logout());
+    queryClient.clear();
   };
 
   return { user, isLoggedIn, userLogIn, userLogOut };
