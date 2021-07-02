@@ -8,6 +8,7 @@ import LoggedOutRoute from './routes/LoggedOutRoute';
 import LoggedInRoute from './routes/LoggedInRoute';
 import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
+import CalendarPage from './pages/CalendarPage';
 
 function App() {
   useCheckUserEffect();
@@ -22,6 +23,7 @@ function App() {
       <Router>
         <Switch>
           <LoggedInRoute exact path={['/', '/diary']} component={HomePage} />
+          <LoggedInRoute exact path="/calendar" component={CalendarPage} />
           <LoggedOutRoute exact path="/sign-in" component={SignInPage} />
           <Route component={NotFoundPage} />
         </Switch>

@@ -10,7 +10,7 @@ const Header = () => {
     <header css={block}>
       <nav css={headerNavSection}>
         <HeaderItem to="/" icon="recent" label="최근" />
-        <HeaderItem to="/" icon="calendar" label="일자별" />
+        <HeaderItem to="/calendar" icon="calendar" label="일자별" />
       </nav>
       <HeaderProfile />
     </header>
