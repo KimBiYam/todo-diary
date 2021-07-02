@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 import GoogleLogin from 'react-google-login';
 import useGoogleAuth from '../../hooks/useGoogleAuth';
+import { COLORS } from '../../constants';
 
 export type GoogleSignInButtonProps = {};
 
@@ -35,6 +36,7 @@ const googleSignInButton = css`
   }
 
   span {
+    color: ${COLORS.secondary};
     font-size: 20px;
     font-weight: bold;
   }

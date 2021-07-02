@@ -22,6 +22,7 @@ export class AuthService {
 
     const payload = { username: email, sub: displayName };
 
+    // TODO : Apply refresh token
     return {
       ...user,
       accessToken: this.jwtService.sign(payload),

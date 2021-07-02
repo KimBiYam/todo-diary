@@ -1,5 +1,6 @@
 import emotionReset from 'emotion-reset';
 import { css } from '@emotion/react';
+import { COLORS } from './constants';
 
 const globalStyle = css`
   ${emotionReset}
@@ -9,6 +10,10 @@ const globalStyle = css`
     height: 100%;
     box-sizing: border-box;
     font-size: 16px;
+
+    body {
+      background-color: ${COLORS.pageBase};
+    }
 
     body,
     #root {

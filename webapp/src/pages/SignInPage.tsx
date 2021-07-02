@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/Auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';
+import { COLORS } from '../constants';
 
 export type SignInPageProps = {};
 
@@ -33,6 +34,7 @@ const signInSection = css`
   font-size: 24px;
   font-weight: bold;
   h1 {
+    color: ${COLORS.secondary};
     margin-bottom: 86px;
   }
 `;
