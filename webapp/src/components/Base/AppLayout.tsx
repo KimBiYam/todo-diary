@@ -1,4 +1,3 @@
-import React from 'react';
 import { css } from '@emotion/react';
 import { Helmet } from 'react-helmet-async';
 import { HEADER_HEIGHT } from '../../constants';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';

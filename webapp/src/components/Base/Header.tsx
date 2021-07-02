@@ -1,4 +1,3 @@
-import React from 'react';
 import { css } from '@emotion/react';
 import { COLORS, HEADER_HEIGHT } from '../../constants';
 import HeaderItem from './HeaderItem';

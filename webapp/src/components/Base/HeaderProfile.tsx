@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import React from 'react';
 import { COLORS } from '../../constants';
 import useUser from '../../hooks/useUser';
 

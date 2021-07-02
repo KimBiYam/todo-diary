@@ -1,4 +1,3 @@
-import React from 'react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import DiaryItem from './DiaryItem';
 

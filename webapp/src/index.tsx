@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,7 +12,7 @@ const store = configureStore({ reducer: rootReducer });
 const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <HelmetProvider>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
@@ -20,7 +20,7 @@ ReactDOM.render(
         </QueryClientProvider>
       </Provider>
     </HelmetProvider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root'),
 );
 

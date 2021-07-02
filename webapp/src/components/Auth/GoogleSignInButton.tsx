@@ -1,4 +1,3 @@
-import React from 'react';
 import { css } from '@emotion/react';
 import GoogleLogin from 'react-google-login';
 import useGoogleAuth from '../../hooks/useGoogleAuth';
