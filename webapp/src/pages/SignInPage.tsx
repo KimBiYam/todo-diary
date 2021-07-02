@@ -6,17 +6,19 @@ import { COLORS } from '../constants';
 
 export type SignInPageProps = {};
 
-const SignInPage = () => (
-  <div css={block}>
-    <Helmet>
-      <title>Todo Diary | Sign In</title>
-    </Helmet>
-    <div css={signInSection}>
-      <h1>Todo Diary!!!</h1>
-      <GoogleSignInButton />
+function SignInPage() {
+  return (
+    <div css={block}>
+      <Helmet>
+        <title>Todo Diary | Sign In</title>
+      </Helmet>
+      <div css={signInSection}>
+        <h1>Todo Diary!!!</h1>
+        <GoogleSignInButton />
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 const block = css`
   width: 100%;

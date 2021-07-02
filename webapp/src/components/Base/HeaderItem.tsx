@@ -10,14 +10,16 @@ export type HeaderItemProps = {
   to: string;
 };
 
-const HeaderItem = ({ label, icon, to }: HeaderItemProps) => (
-  <Link css={block} to={to}>
-    <div css={iconBlock}>
-      <Icon icon={icon} />
-    </div>
-    {label}
-  </Link>
-);
+function HeaderItem({ label, icon, to }: HeaderItemProps) {
+  return (
+    <Link css={block} to={to}>
+      <div css={iconBlock}>
+        <Icon icon={icon} />
+      </div>
+      {label}
+    </Link>
+  );
+}
 
 const block = css`
   width: 3rem;

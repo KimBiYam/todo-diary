@@ -5,4 +5,3 @@ export const COLORS = {
   quaternary: 'rgb(231, 210, 204)',
   pageBase: 'rgb(245,245,245)',
 } as const;
-export type COLORS = typeof COLORS[keyof typeof COLORS];

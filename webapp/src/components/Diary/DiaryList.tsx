@@ -4,7 +4,7 @@ import DiaryItem from './DiaryItem';
 
 export type DiaryListProps = {};
 
-const DiaryList = () => {
+function DiaryList() {
   const { data: diaries } = useDiariesQuery({
     refetchOnWindowFocus: false,
   });
@@ -18,6 +18,6 @@ const DiaryList = () => {
   ) : (
     <></>
   );
-};
+}
 
 export default DiaryList;

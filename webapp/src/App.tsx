@@ -10,7 +10,7 @@ import LoggedInRoute from './routes/LoggedInRoute';
 import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
 
-const App = () => {
+function App() {
   useCheckUserEffect();
 
   return (
@@ -29,6 +29,6 @@ const App = () => {
       </Router>
     </>
   );
-};
+}
 
 export default App;

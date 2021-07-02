@@ -8,7 +8,8 @@ export type IconProps = {
   style?: React.CSSProperties;
 };
 
-const Icon = ({ icon, className, style }: IconProps) =>
-  React.createElement(svg[icon], { className, style });
+function Icon({ icon, className, style }: IconProps) {
+  return React.createElement(svg[icon], { className, style });
+}
 
 export default Icon;

@@ -5,7 +5,7 @@ export type DiaryItemProps = {
   diary: Diary;
 };
 
-const DiaryItem = ({ diary }: DiaryItemProps) => {
+function DiaryItem({ diary }: DiaryItemProps) {
   const { title } = diary;
 
   return (
@@ -13,6 +13,6 @@ const DiaryItem = ({ diary }: DiaryItemProps) => {
       <p>title : {title}</p>
     </div>
   );
-};
+}
 
 export default DiaryItem;

@@ -6,7 +6,7 @@ import { COLORS } from '../../constants';
 
 export type GoogleSignInButtonProps = {};
 
-const GoogleSignInButton = () => {
+function GoogleSignInButton() {
   const [handleOnSuccess, handleOnFailure, handleOnRequest] = useGoogleAuth();
 
   return (
@@ -19,7 +19,7 @@ const GoogleSignInButton = () => {
       onRequest={handleOnRequest}
     />
   );
-};
+}
 
 const googleSignInButton = css`
   width: 100%;
