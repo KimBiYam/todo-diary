@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
-import { HEADER_HEIGHT } from '../../constants';
+import { COLORS, HEADER_HEIGHT } from '../../constants';
 import HeaderItem from './HeaderItem';
 import HeaderProfile from './HeaderProfile';
 
@@ -10,7 +10,8 @@ const Header = () => {
   return (
     <header css={block}>
       <nav css={headerNavSection}>
-        <HeaderItem to="/" label="최근 다이어리" />
+        <HeaderItem to="/" icon="recent" label="최근" />
+        <HeaderItem to="/" icon="calendar" label="검색" />
       </nav>
       <HeaderProfile />
     </header>
@@ -25,10 +26,13 @@ const block = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: ${COLORS.primary};
 `;
 
 const headerNavSection = css`
   flex: 1;
+  display: flex;
+  flex-direction: row;
 `;
 
 export default Header;

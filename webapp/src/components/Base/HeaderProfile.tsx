@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import React from 'react';
+import { COLORS } from '../../constants';
 import useUser from '../../hooks/useUser';
 
 export type HeaderProfileProps = {};
@@ -36,7 +37,7 @@ const profileImage = css`
 
 const signOutButton = css`
   margin-left: 14px;
-  color: grey;
+  color: ${COLORS.secondary};
   border: none;
   background: none;
   text-decoration: underline;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { css } from '@emotion/react';
 import { Helmet } from 'react-helmet-async';
-import Header from './Header';
 import { HEADER_HEIGHT } from '../../constants';
+import Header from './Header';
 
 export type AppLayoutProps = {
   title: string;
