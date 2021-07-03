@@ -6,6 +6,7 @@ import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
+import { isDataExists } from '@src/util/common.util';
 
 @Injectable()
 export class AuthService {
@@ -36,8 +37,8 @@ export class AuthService {
 
       const user = await this.userService.findUserByEmail(email);
 
-      if (!user) {
-        throw new BadRequestException('This user is not exist!');
+      if (!isDataExists(user)) {
+        throw new BadRequestException('This user is not exists!');
       }
 
       return await this.login(user);
@@ -77,22 +78,18 @@ export class AuthService {
     const socialAccountDto = await this.getGoogleProfile(googleToken);
     const { provider, socialId } = socialAccountDto;
 
-    const socialAccount = this.socialAccountRepository.find({
+    const socialAccount = await this.socialAccountRepository.findOne({
       where: {
         provider,
         socialId,
       },
     });
 
-    if (!socialAccount) {
-      throw new BadRequestException('This user is not exist!');
-    }
-
     return !!socialAccount;
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
-  async registerGoogleAccount(
+  async createGoogleAccount(
     googleToken: string,
     @TransactionManager() manager?: EntityManager,
   ): Promise<any> {
@@ -106,10 +103,10 @@ export class AuthService {
       provider,
     } = socialAccountDto;
 
-    const findUser = await this.userService.findUserByEmail(email);
+    const foundUser = await this.userService.findUserByEmail(email);
 
-    if (findUser) {
-      throw new BadRequestException('This user is exist');
+    if (isDataExists(foundUser)) {
+      throw new BadRequestException('This user is exists!');
     }
 
     const user = new User();

@@ -17,6 +17,7 @@ import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { ResponseDiaryDto } from './dto/response-diary.dto';
+import { isDataExists } from '@src/util/common.util';
 
 @Injectable()
 export class DiaryService {
@@ -26,12 +27,16 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findDiaries(
+  async findMyDiaries(
     requestUserDto: RequestUserDto,
   ): Promise<ResponseDiaryDto[]> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
+
+    if (!isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
 
     const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
@@ -43,10 +48,17 @@ export class DiaryService {
     return diaries.map((diary) => this.convertDiary(diary));
   }
 
-  async findDiary(requestUserDto: RequestUserDto, id: number): Promise<Diary> {
+  async findMyDiary(
+    requestUserDto: RequestUserDto,
+    id: number,
+  ): Promise<Diary> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
+
+    if (!isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
 
     const diary = await this.diaryRepository
       .createQueryBuilder('diary')
@@ -56,7 +68,7 @@ export class DiaryService {
       .where('diary.id = :id', { id })
       .getOne();
 
-    if (!diary) {
+    if (!isDataExists(diary)) {
       throw new NotFoundException('This diary is not exist');
     }
 
@@ -79,6 +91,10 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
+    if (!isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
     const diaryMeta = new DiaryMeta();
     diaryMeta.content = content;
 
@@ -91,13 +107,13 @@ export class DiaryService {
     return await manager.save(diary);
   }
 
-  async findConvertedDiary(requestUserDto: RequestUserDto, id: number) {
-    const diary = await this.findDiary(requestUserDto, id);
+  async findConvertedMyDiary(requestUserDto: RequestUserDto, id: number) {
+    const diary = await this.findMyDiary(requestUserDto, id);
     return this.convertDiary(diary);
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
-  async updateDiary(
+  async updateMyDiary(
     requestUserDto: RequestUserDto,
     updateDiaryDto: UpdateDiaryDto,
     id: number,
@@ -105,7 +121,7 @@ export class DiaryService {
   ): Promise<Diary> {
     const { content, isFinished, title } = updateDiaryDto;
 
-    const diary = await this.findDiary(requestUserDto, id);
+    const diary = await this.findMyDiary(requestUserDto, id);
 
     const updateDiary = new Diary();
     updateDiary.title = title;
@@ -120,11 +136,11 @@ export class DiaryService {
     return await manager.save(updateDiary);
   }
 
-  async deleteDiary(
+  async deleteMyDiary(
     requestUserDto: RequestUserDto,
     id: number,
   ): Promise<DeleteResult> {
-    const diary = await this.findDiary(requestUserDto, id);
+    const diary = await this.findMyDiary(requestUserDto, id);
 
     return await this.diaryRepository.delete(diary.id);
   }

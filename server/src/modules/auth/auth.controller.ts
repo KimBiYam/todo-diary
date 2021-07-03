@@ -36,12 +36,11 @@ export class AuthController {
   }
 
   @Get('/google/check')
-  @ApiResponse({ status: 200, description: ' 성공' })
+  @ApiResponse({ status: 200, description: '유저 존재여부 조회 성공' })
   async checkGoogleAccount(
     @Query() { googleToken }: GoogleTokenDto,
-  ): Promise<{ exists: boolean }> {
-    const isExists = await this.authService.isExistsGoogleAccount(googleToken);
-    return { exists: isExists };
+  ): Promise<any> {
+    return await this.authService.isExistsGoogleAccount(googleToken);
   }
 
   @Post('/google/sign-in')
@@ -55,6 +54,6 @@ export class AuthController {
   async signupGoogleAccount(
     @Body() { googleToken }: GoogleTokenDto,
   ): Promise<any> {
-    return await this.authService.registerGoogleAccount(googleToken);
+    return await this.authService.createGoogleAccount(googleToken);
   }
 }

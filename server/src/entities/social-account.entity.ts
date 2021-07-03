@@ -21,7 +21,11 @@ export class SocialAccount {
   @Index()
   provider: string;
 
-  @OneToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => User, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }

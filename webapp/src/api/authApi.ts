@@ -20,7 +20,7 @@ const checkGoogleAccount = async (googleToken: string) => {
       params: { googleToken },
     });
 
-    return response.data.exists;
+    return response.data;
   } catch (e) {
     console.error(e);
     throw e;

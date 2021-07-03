@@ -34,10 +34,10 @@ export class DiaryController {
     status: 200,
     description: '자신의 다이어리 전체 글 가져오기 성공',
   })
-  async findDiaries(
+  async findMyDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
   ): Promise<ResponseDiaryDto[]> {
-    return await this.diaryService.findDiaries(requestUserDto);
+    return await this.diaryService.findMyDiaries(requestUserDto);
   }
 
   @Post()
@@ -58,11 +58,11 @@ export class DiaryController {
     status: 200,
     description: '자신의 특정 다이어리 글 가져오기 성공',
   })
-  async findDiary(
+  async findMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<ResponseDiaryDto> {
-    return await this.diaryService.findConvertedDiary(requestUserDto, id);
+    return await this.diaryService.findConvertedMyDiary(requestUserDto, id);
   }
 
   @Patch(':id')
@@ -72,12 +72,12 @@ export class DiaryController {
     status: 200,
     description: '자신의 특정 다이어리 글 수정 성공',
   })
-  async updateDiary(
+  async updateMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
   ): Promise<Diary> {
-    return await this.diaryService.updateDiary(
+    return await this.diaryService.updateMyDiary(
       requestUserDto,
       updateDiaryDto,
       id,
@@ -91,10 +91,10 @@ export class DiaryController {
     status: 200,
     description: '자신의 특정 다이어리 글 삭제 성공',
   })
-  async deleteDiary(
+  async deleteMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<any> {
-    return await this.diaryService.deleteDiary(requestUserDto, id);
+    return await this.diaryService.deleteMyDiary(requestUserDto, id);
   }
 }

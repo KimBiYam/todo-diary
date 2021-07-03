@@ -10,29 +10,17 @@ export type GoogleSignInButtonProps = {};
 const GoogleSignInButton = () => {
   const { userLogIn, userLogOut } = useUser();
 
-  const signIn = async (googleToken: string) => {
-    const signInResponse = await authApi.signInGoogleAccount(googleToken);
-
-    const { accessToken, user } = signInResponse;
-
-    tokenStorage.setToken(accessToken);
-    userLogIn(user);
-  };
-
   const handleOnSuccess = async (response: any) => {
+    const googleToken = response.tokenObj.access_token;
+
+    const isExistsGoogleAccount = await authApi.checkGoogleAccount(googleToken);
+
     try {
-      const googleToken = response.tokenObj.access_token;
-
-      const isExistsGoogleAccount = await authApi.checkGoogleAccount(
-        googleToken,
-      );
-
-      if (isExistsGoogleAccount) {
-        await signIn(googleToken);
-      } else {
+      if (!isExistsGoogleAccount) {
         await authApi.signUpGoogleAccount(googleToken);
-        await signIn(googleToken);
       }
+
+      await googleSignIn(googleToken);
     } catch (e) {
       userLogOut();
       console.log(e);
@@ -41,6 +29,15 @@ const GoogleSignInButton = () => {
 
   const handleOnFailure = (error: any) => {
     console.log(error);
+  };
+
+  const googleSignIn = async (googleToken: string) => {
+    const signInResponse = await authApi.signInGoogleAccount(googleToken);
+
+    const { accessToken, user } = signInResponse;
+
+    tokenStorage.setToken(accessToken);
+    userLogIn(user);
   };
 
   return (
