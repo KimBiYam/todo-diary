@@ -5,7 +5,7 @@ import { COLORS } from '../constants';
 
 export type SignInPageProps = {};
 
-function SignInPage() {
+const SignInPage = () => {
   return (
     <div css={block}>
       <Helmet>
@@ -17,7 +17,7 @@ function SignInPage() {
       </div>
     </div>
   );
-}
+};
 
 const block = css`
   width: 100%;

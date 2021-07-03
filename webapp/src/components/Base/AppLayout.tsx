@@ -8,7 +8,7 @@ export type AppLayoutProps = {
   children?: React.ReactNode;
 };
 
-function AppLayout({ title, children }: AppLayoutProps) {
+const AppLayout = ({ title, children }: AppLayoutProps) => {
   return (
     <>
       <Helmet>
@@ -18,7 +18,7 @@ function AppLayout({ title, children }: AppLayoutProps) {
       <div css={block}>{children}</div>
     </>
   );
-}
+};
 
 const block = css`
   padding-top: ${HEADER_HEIGHT};

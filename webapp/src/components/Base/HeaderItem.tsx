@@ -9,7 +9,7 @@ export type HeaderItemProps = {
   to: string;
 };
 
-function HeaderItem({ label, icon, to }: HeaderItemProps) {
+const HeaderItem = ({ label, icon, to }: HeaderItemProps) => {
   return (
     <Link css={block} to={to}>
       <div css={iconBlock}>
@@ -18,7 +18,7 @@ function HeaderItem({ label, icon, to }: HeaderItemProps) {
       {label}
     </Link>
   );
-}
+};
 
 const block = css`
   width: 3rem;

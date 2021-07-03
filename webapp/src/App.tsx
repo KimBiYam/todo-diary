@@ -10,7 +10,7 @@ import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
 import CalendarPage from './pages/CalendarPage';
 
-function App() {
+const App = () => {
   useCheckUserEffect();
 
   return (
@@ -30,6 +30,6 @@ function App() {
       </Router>
     </>
   );
-}
+};
 
 export default App;

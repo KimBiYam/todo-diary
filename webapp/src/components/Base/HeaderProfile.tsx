@@ -4,7 +4,7 @@ import useUser from '../../hooks/useUser';
 
 export type HeaderProfileProps = {};
 
-function HeaderProfile() {
+const HeaderProfile = () => {
   const { user, userLogOut } = useUser();
 
   return user ? (
@@ -18,7 +18,7 @@ function HeaderProfile() {
   ) : (
     <></>
   );
-}
+};
 
 const block = css`
   flex: 1;
