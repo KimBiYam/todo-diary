@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import authApi from '../api/authApi';
 import tokenStorage from '../storage/tokenStorage';
@@ -16,9 +17,13 @@ const useCheckUserEffect = () => {
       .then((user) => {
         userLogIn(user);
       })
-      .catch((e) => {
-        console.error(e);
-        userLogOut();
+      .catch((e: AxiosError) => {
+        const { response } = e;
+        const { status } = response!;
+
+        if (status === 401) {
+          userLogOut();
+        }
       });
   }, []);
 };
