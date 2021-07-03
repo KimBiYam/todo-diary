@@ -1,5 +1,8 @@
 import { css } from '@emotion/react';
-import GoogleLogin from 'react-google-login';
+import GoogleLogin, {
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from 'react-google-login';
 import authApi from '../../api/authApi';
 import { COLORS } from '../../constants';
 import useUser from '../../hooks/useUser';
@@ -10,8 +13,10 @@ export type GoogleSignInButtonProps = {};
 const GoogleSignInButton = () => {
   const { userLogIn, userLogOut } = useUser();
 
-  const handleOnSuccess = async (response: any) => {
-    const googleToken = response.tokenObj.access_token;
+  const handleOnSuccess = async (
+    response: GoogleLoginResponse | GoogleLoginResponseOffline,
+  ) => {
+    const { accessToken: googleToken } = response as GoogleLoginResponse;
 
     const isExistsGoogleAccount = await authApi.checkGoogleAccount(googleToken);
 
