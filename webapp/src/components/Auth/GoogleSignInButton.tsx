@@ -1,12 +1,47 @@
 import { css } from '@emotion/react';
 import GoogleLogin from 'react-google-login';
-import useGoogleAuth from '../../hooks/useGoogleAuth';
+import authApi from '../../api/authApi';
 import { COLORS } from '../../constants';
+import useUser from '../../hooks/useUser';
+import tokenStorage from '../../storage/tokenStorage';
 
 export type GoogleSignInButtonProps = {};
 
 const GoogleSignInButton = () => {
-  const [handleOnSuccess, handleOnFailure, handleOnRequest] = useGoogleAuth();
+  const { userLogIn, userLogOut } = useUser();
+
+  const signIn = async (googleToken: string) => {
+    const signInResponse = await authApi.signInGoogleAccount(googleToken);
+
+    const { accessToken, user } = signInResponse;
+
+    tokenStorage.setToken(accessToken);
+    userLogIn(user);
+  };
+
+  const handleOnSuccess = async (response: any) => {
+    try {
+      const googleToken = response.tokenObj.access_token;
+
+      const isExistsGoogleAccount = await authApi.checkGoogleAccount(
+        googleToken,
+      );
+
+      if (isExistsGoogleAccount) {
+        await signIn(googleToken);
+      } else {
+        await authApi.signUpGoogleAccount(googleToken);
+        await signIn(googleToken);
+      }
+    } catch (e) {
+      userLogOut();
+      console.log(e);
+    }
+  };
+
+  const handleOnFailure = (error: any) => {
+    console.log(error);
+  };
 
   return (
     <GoogleLogin
@@ -15,7 +50,6 @@ const GoogleSignInButton = () => {
       buttonText="Sign In with Google"
       onSuccess={handleOnSuccess}
       onFailure={handleOnFailure}
-      onRequest={handleOnRequest}
     />
   );
 };
