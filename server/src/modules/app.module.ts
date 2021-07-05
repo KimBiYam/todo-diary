@@ -3,10 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { configModuleOption, typeormConfig } from '../config';
-import { CustomExceptionFilter } from '../filters/custom-exception.filter';
 import { UserModule } from './user';
 import { AuthModule } from './auth';
 import { DiaryModule } from './diary';
+import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
+import { OrmExceptionFilter } from '@src/filters/orm-exception.filter';
 
 @Module({
   imports: [
@@ -16,6 +17,9 @@ import { DiaryModule } from './diary';
     AuthModule,
     DiaryModule,
   ],
-  providers: [{ provide: APP_FILTER, useClass: CustomExceptionFilter }],
+  providers: [
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_FILTER, useClass: OrmExceptionFilter },
+  ],
 })
 export class AppModule {}
