@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import { Global } from '@emotion/react';
-import globalStyle from './globalStyle';
+import globalStyle from './styles/globalStyle';
 import SignInPage from './pages/SignInPage';
 import LoggedOutRoute from './routes/LoggedOutRoute';
 import LoggedInRoute from './routes/LoggedInRoute';

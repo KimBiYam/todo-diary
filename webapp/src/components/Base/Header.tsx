@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { COLORS, HEADER_HEIGHT } from '../../constants';
+import { Z_INDEXES } from '../../styles/zIndexes';
 import HeaderItem from './HeaderItem';
 import HeaderProfile from './HeaderProfile';
 
@@ -26,6 +27,7 @@ const block = css`
   justify-content: space-between;
   align-items: center;
   background: ${COLORS.primary};
+  z-index: ${Z_INDEXES.header};
 `;
 
 const headerNavSection = css`
