@@ -1,12 +1,19 @@
-import { User } from '../types/user.types';
+import {
+  CheckGoogleAccountResponseData,
+  GetUserProfileResponseData,
+  SignInGoogleAccountResponseData,
+  User,
+} from '../types/auth.types';
 import apiClient from './apiClient';
 
 const getUserProfile = async () => {
   try {
-    const response = await apiClient.get('/api/auth/user/profile');
-    const { email, displayName, photoUrl } = response.data;
+    const response = await apiClient.get<GetUserProfileResponseData>(
+      '/api/auth/user/profile',
+    );
+    const { email, displayName, photoUrl, createdAt } = response.data.user;
 
-    const user: User = { email, displayName, photoUrl };
+    const user: User = { email, displayName, photoUrl, createdAt };
     return user;
   } catch (e) {
     console.error(e);
@@ -16,11 +23,15 @@ const getUserProfile = async () => {
 
 const checkGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await apiClient.get('/api/auth/google/check', {
-      params: { googleToken },
-    });
+    const response = await apiClient.get<CheckGoogleAccountResponseData>(
+      '/api/auth/google/check',
+      {
+        params: { googleToken },
+      },
+    );
+    const { isExists } = response.data;
 
-    return response.data;
+    return isExists;
   } catch (e) {
     console.error(e);
     throw e;
@@ -29,14 +40,17 @@ const checkGoogleAccount = async (googleToken: string) => {
 
 const signInGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await apiClient.post('/api/auth/google/sign-in', {
-      googleToken,
-    });
+    const response = await apiClient.post<SignInGoogleAccountResponseData>(
+      '/api/auth/google/sign-in',
+      {
+        googleToken,
+      },
+    );
 
-    const data = response.data;
-    const { accessToken, email, displayName, photoUrl } = data;
+    const { accessToken } = response.data;
+    const { createdAt, displayName, email, photoUrl } = response.data.user;
 
-    const user: User = { email, displayName, photoUrl };
+    const user: User = { email, displayName, photoUrl, createdAt };
     return { user, accessToken };
   } catch (e) {
     console.log(e);

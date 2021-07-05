@@ -5,3 +5,7 @@ export type Diary = {
   title: string;
   content: string;
 };
+
+export type GetDiariesResponseData = {
+  diaries: Diary[];
+};

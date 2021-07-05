@@ -32,7 +32,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async findUserProfile(@RequestUser() user: User) {
     const { email } = user;
-    return await this.userService.findUserByEmail(email);
+    const findUser = await this.userService.findUserByEmail(email);
+    return { user: findUser };
   }
 
   @Get('/google/check')
@@ -40,7 +41,8 @@ export class AuthController {
   async checkGoogleAccount(
     @Query() { googleToken }: GoogleTokenDto,
   ): Promise<any> {
-    return await this.authService.isExistsGoogleAccount(googleToken);
+    const isExists = await this.authService.isExistsGoogleAccount(googleToken);
+    return { isExists };
   }
 
   @Post('/google/sign-in')

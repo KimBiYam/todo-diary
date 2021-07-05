@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers/store';
 import { login, logout } from '../reducers/user';
 import tokenStorage from '../storage/tokenStorage';
-import { User } from '../types/user.types';
+import { User } from '../types/auth.types';
 
 const useUser = () => {
   const queryClient = useQueryClient();

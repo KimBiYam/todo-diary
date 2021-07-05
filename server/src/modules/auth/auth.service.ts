@@ -25,7 +25,7 @@ export class AuthService {
 
     // TODO : Apply refresh token
     return {
-      ...user,
+      user,
       accessToken: this.jwtService.sign(payload),
     };
   }

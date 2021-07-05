@@ -11,12 +11,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
-import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import { CreateDiaryDto } from './dto';
-import { ResponseDiaryDto } from './dto/response-diary.dto';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
 
 @Controller('api/diaries')
@@ -34,10 +32,9 @@ export class DiaryController {
     status: 200,
     description: '자신의 다이어리 전체 글 가져오기 성공',
   })
-  async findMyDiaries(
-    @RequestUser() requestUserDto: RequestUserDto,
-  ): Promise<ResponseDiaryDto[]> {
-    return await this.diaryService.findMyDiaries(requestUserDto);
+  async findMyDiaries(@RequestUser() requestUserDto: RequestUserDto) {
+    const diaries = await this.diaryService.findMyDiaries(requestUserDto);
+    return { diaries };
   }
 
   @Post()
@@ -61,8 +58,12 @@ export class DiaryController {
   async findMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
-  ): Promise<ResponseDiaryDto> {
-    return await this.diaryService.findConvertedMyDiary(requestUserDto, id);
+  ) {
+    const diary = await this.diaryService.findConvertedMyDiary(
+      requestUserDto,
+      id,
+    );
+    return { diary };
   }
 
   @Patch(':id')
@@ -76,12 +77,14 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
-  ): Promise<Diary> {
-    return await this.diaryService.updateMyDiary(
+  ) {
+    const diary = await this.diaryService.updateMyDiary(
       requestUserDto,
       updateDiaryDto,
       id,
     );
+
+    return { diary };
   }
 
   @Delete(':id')
@@ -95,6 +98,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<any> {
-    return await this.diaryService.deleteMyDiary(requestUserDto, id);
+    await this.diaryService.deleteMyDiary(requestUserDto, id);
+    return { msg: 'Successfully deleted your diary' };
   }
 }
