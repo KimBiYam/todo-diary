@@ -1,9 +1,16 @@
-import AppLayout from '../components/base/AppLayout';
+import { Helmet } from 'react-helmet-async';
 
 export type CalendarPageProps = {};
 
 const CalendarPage = () => {
-  return <AppLayout title="Todo Diary | Calendar"></AppLayout>;
+  return (
+    <>
+      <Helmet>
+        <title>Todo Diary | Calendar</title>
+      </Helmet>
+      <div></div>
+    </>
+  );
 };
 
 export default CalendarPage;

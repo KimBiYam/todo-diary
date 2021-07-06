@@ -4,11 +4,10 @@ import NotFoundPage from './pages/NotFoundPage';
 import { Global } from '@emotion/react';
 import globalStyle from './styles/globalStyle';
 import SignInPage from './pages/SignInPage';
-import LoggedOutRoute from './routes/LoggedOutRoute';
 import LoggedInRoute from './routes/LoggedInRoute';
 import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
-import CalendarPage from './pages/CalendarPage';
+import LoggedOutRoute from './routes/LoggedOutRoute';
 
 const App = () => {
   useCheckUserEffect();
@@ -22,8 +21,12 @@ const App = () => {
       <Global styles={globalStyle} />
       <Router>
         <Switch>
-          <LoggedInRoute exact path={['/', '/diary']} component={HomePage} />
-          <LoggedInRoute exact path="/calendar" component={CalendarPage} />
+          <LoggedInRoute exact path="/" component={HomePage} />
+          <LoggedInRoute
+            exact
+            path="/:path(calendar|write|recent)"
+            component={HomePage}
+          />
           <LoggedOutRoute exact path="/sign-in" component={SignInPage} />
           <Route component={NotFoundPage} />
         </Switch>

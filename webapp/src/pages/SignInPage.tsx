@@ -7,15 +7,17 @@ export type SignInPageProps = {};
 
 const SignInPage = () => {
   return (
-    <div css={block}>
+    <>
       <Helmet>
         <title>Todo Diary | Sign In</title>
       </Helmet>
-      <div css={signInSection}>
-        <h1>Todo Diary!!!</h1>
-        <GoogleSignInButton />
+      <div css={block}>
+        <div css={signInSection}>
+          <h1>Todo Diary!!!</h1>
+          <GoogleSignInButton />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

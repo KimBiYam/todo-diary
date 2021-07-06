@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { COLORS, HEADER_HEIGHT } from '../../constants';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import HeaderItem from './HeaderItem';
@@ -6,17 +7,18 @@ import HeaderProfile from './HeaderProfile';
 
 export type HeaderProps = {};
 
-const Header = () => {
+const Header = memo(() => {
   return (
     <header css={block}>
       <nav css={headerNavSection}>
         <HeaderItem to="/" icon="recent" label="최근" />
         <HeaderItem to="/calendar" icon="calendar" label="일자별" />
+        <HeaderItem to="/write" icon="write" label="쓰기" />
       </nav>
       <HeaderProfile />
     </header>
   );
-};
+});
 
 const block = css`
   width: 100%;
