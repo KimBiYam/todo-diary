@@ -10,7 +10,11 @@ import { Helmet } from 'react-helmet-async';
 import LoggedOutRoute from './routes/LoggedOutRoute';
 
 const App = () => {
-  useCheckUserEffect();
+  const { isLoading } = useCheckUserEffect();
+
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <>

@@ -11,7 +11,7 @@ const useUser = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const isLoggedIn = useSelector(
     (state: RootState) =>
-      tokenStorage.isTokenExists() || state.user.user !== undefined,
+      tokenStorage.isTokenExists() && state.user.user !== undefined,
   );
 
   const userLogIn = (user: User) => {
