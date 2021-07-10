@@ -6,22 +6,25 @@ export type DiaryItemProps = {
 };
 
 const DiaryItem = ({ diary }: DiaryItemProps) => {
-  const { title } = diary;
+  const { title, content, createdAt, isFinished } = diary;
 
   return (
     <div css={block}>
-      <p>title : {title}</p>
+      <h2 css={titleText}>제목 : {title}</h2>
+      <p>작성일 : {createdAt}</p>
+      <p>완료 여부 : {isFinished.toString()}</p>
+      <div css={contentSection}>
+        <p>{content}</p>
+      </div>
     </div>
   );
 };
 
 const block = css`
+  padding: 1rem;
   width: 24rem;
   height: 16rem;
   margin: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;
@@ -30,6 +33,15 @@ const block = css`
   :hover {
     transform: translateY(-8px);
   }
+`;
+
+const titleText = css`
+  font-size: 2rem;
+  font-weight: 500;
+`;
+
+const contentSection = css`
+  margin-top: 1rem;
 `;
 
 export default DiaryItem;
