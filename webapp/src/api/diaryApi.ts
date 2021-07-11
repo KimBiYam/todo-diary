@@ -7,6 +7,7 @@ const diaryApi = {
       const response = await apiClient.get<GetDiariesResponseData>(
         '/api/diaries',
       );
+
       const { diaries } = response.data;
       return diaries;
     } catch (e) {

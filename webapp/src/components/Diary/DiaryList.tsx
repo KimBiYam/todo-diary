@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import DiaryItem from './DiaryItem';
+import DiaryItemSkeleton from './DiaryItemSkeleton';
 
 export type DiaryListProps = {};
 
@@ -9,15 +10,17 @@ const DiaryList = () => {
     refetchOnWindowFocus: false,
   });
 
-  return diaries !== undefined ? (
+  return (
     <div css={block}>
       <div css={diariesSection}>
-        {diaries.map((diary) => (
-          <DiaryItem key={diary.id} diary={diary} />
-        ))}
+        {diaries !== undefined
+          ? diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />)
+          : Array.from({ length: 10 }).map((_, index) => (
+              <DiaryItemSkeleton key={index} />
+            ))}
       </div>
     </div>
-  ) : null;
+  );
 };
 
 const block = css`
