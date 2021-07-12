@@ -23,28 +23,30 @@ const block = css`
   box-shadow: rgba(0, 0, 0, 0.04) 0px 8px 16px 0px;
 `;
 
-const titleSection = css`
+const shiningSection = css`
   background: rgba(0, 0, 0, 0.1);
+  animation: ${shining} ease-in-out 2s infinite;
+`;
+
+const titleSection = css`
   height: 2rem;
   font-size: 2rem;
   font-weight: 500;
-  animation: ${shining} ease-in-out 2s infinite;
+  ${shiningSection}
 `;
 
 const informationSection = css`
   margin-top: 1rem;
-  background: rgba(0, 0, 0, 0.1);
   height: 2rem;
   width: 10rem;
-  animation: ${shining} ease-in-out 2s infinite;
+  ${shiningSection}
 `;
 
 const contentSection = css`
   margin-top: 1rem;
   flex: 1;
-  background: rgba(0, 0, 0, 0.1);
   height: 2rem;
-  animation: ${shining} ease-in-out 2s infinite;
+  ${shiningSection}
 `;
 
 export default DiaryItemSkeleton;
