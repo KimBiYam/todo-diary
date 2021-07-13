@@ -6,7 +6,6 @@ import { configModuleOption, typeormConfig } from '../config';
 import { UserModule } from './user';
 import { AuthModule } from './auth';
 import { DiaryModule } from './diary';
-import { HttpExceptionFilter } from '@src/filters/http-exception.filter';
 import { OrmExceptionFilter } from '@src/filters/orm-exception.filter';
 
 @Module({
@@ -17,9 +16,6 @@ import { OrmExceptionFilter } from '@src/filters/orm-exception.filter';
     AuthModule,
     DiaryModule,
   ],
-  providers: [
-    { provide: APP_FILTER, useClass: HttpExceptionFilter },
-    { provide: APP_FILTER, useClass: OrmExceptionFilter },
-  ],
+  providers: [{ provide: APP_FILTER, useClass: OrmExceptionFilter }],
 })
 export class AppModule {}
