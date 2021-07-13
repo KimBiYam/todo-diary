@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
 import { COLORS } from '../../constants';
+import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
 
 export type WriteFormProps = {};
 
 const WriteForm = () => {
+  const [title, onChangeTitle] = useInput();
+  const [content, onChangeContent] = useInput();
+
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
@@ -12,10 +16,18 @@ const WriteForm = () => {
   return (
     <div css={box}>
       <form css={form} onSubmit={handleOnSubmit}>
-        <input name="title" css={title} placeholder="제목을 입력하세요" />
+        <input
+          name="title"
+          value={title}
+          onChange={onChangeTitle}
+          css={titleInput}
+          placeholder="제목을 입력하세요"
+        />
         <textarea
           name="content"
-          css={content}
+          value={content}
+          onChange={onChangeContent}
+          css={contentSection}
           placeholder="내용을 입력하세요"
         />
         <MainButton type="submit" label="저장" />
@@ -36,7 +48,7 @@ const form = css`
   width: 80%;
 `;
 
-const title = css`
+const titleInput = css`
   background-color: ${COLORS.pageBase};
   width: 100%;
   height: 3rem;
@@ -44,7 +56,7 @@ const title = css`
   border: none;
 `;
 
-const content = css`
+const contentSection = css`
   background-color: ${COLORS.pageBase};
   width: 100%;
   height: 20rem;
