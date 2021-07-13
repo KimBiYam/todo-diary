@@ -6,10 +6,15 @@ import {
 } from '../types/auth.types';
 import apiClient from './apiClient';
 
+const API_AUTH_USER_PROFILE = '/api/auth/user/profile';
+const API_AUTH_GOOGLE_CHECK = '/api/auth/user/profile';
+const API_AUTH_GOOGLE_SIGN_IN = '/api/auth/google/sign-in';
+const API_AUTH_GOOGLE_SIGN_UP = '/api/auth/google/sign-up';
+
 const getUserProfile = async () => {
   try {
     const response = await apiClient.get<GetUserProfileResponseData>(
-      '/api/auth/user/profile',
+      API_AUTH_USER_PROFILE,
     );
     const { email, displayName, photoUrl, createdAt } = response.data.user;
 
@@ -24,7 +29,7 @@ const getUserProfile = async () => {
 const checkGoogleAccount = async (googleToken: string) => {
   try {
     const response = await apiClient.get<CheckGoogleAccountResponseData>(
-      '/api/auth/google/check',
+      API_AUTH_GOOGLE_CHECK,
       {
         params: { googleToken },
       },
@@ -41,7 +46,7 @@ const checkGoogleAccount = async (googleToken: string) => {
 const signInGoogleAccount = async (googleToken: string) => {
   try {
     const response = await apiClient.post<SignInGoogleAccountResponseData>(
-      '/api/auth/google/sign-in',
+      API_AUTH_GOOGLE_SIGN_IN,
       {
         googleToken,
       },
@@ -60,7 +65,7 @@ const signInGoogleAccount = async (googleToken: string) => {
 
 const signUpGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await apiClient.post('/api/auth/google/sign-up', {
+    const response = await apiClient.post(API_AUTH_GOOGLE_SIGN_UP, {
       googleToken,
     });
 

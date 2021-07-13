@@ -1,4 +1,6 @@
 import { css } from '@emotion/react';
+import { useHistory } from 'react-router-dom';
+import diaryApi from '../../api/diaryApi';
 import { COLORS } from '../../constants';
 import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
@@ -8,9 +10,16 @@ export type WriteFormProps = {};
 const WriteForm = () => {
   const [title, onChangeTitle] = useInput();
   const [content, onChangeContent] = useInput();
+  const history = useHistory();
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      await diaryApi.writeDiary(title, content);
+      history.push('/');
+    } catch (e) {
+      console.log('에러입니다');
+    }
   };
 
   return (

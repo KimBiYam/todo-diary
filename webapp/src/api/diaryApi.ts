@@ -1,20 +1,34 @@
 import { GetDiariesResponseData } from '../types/diary.types';
 import apiClient from './apiClient';
 
-const diaryApi = {
-  async getDiaries() {
-    try {
-      const response = await apiClient.get<GetDiariesResponseData>(
-        '/api/diaries',
-      );
+const API_DIARIES = '/api/diaries';
 
-      const { diaries } = response.data;
-      return diaries;
-    } catch (e) {
-      console.error(e);
-      throw e;
-    }
-  },
+const getDiaries = async () => {
+  try {
+    const response = await apiClient.get<GetDiariesResponseData>(API_DIARIES);
+
+    const { diaries } = response.data;
+    return diaries;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+const writeDiary = async (title: string, content: string) => {
+  try {
+    const response = await apiClient.post(API_DIARIES, { title, content });
+
+    return response;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
+const diaryApi = {
+  getDiaries,
+  writeDiary,
 };
 
 export default diaryApi;
