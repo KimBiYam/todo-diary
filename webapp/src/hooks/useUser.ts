@@ -10,7 +10,7 @@ const useUser = () => {
   const dispatch = useDispatch();
   const user = useTypedSelector((state) => state.user.user);
   const isLoggedIn = useTypedSelector(
-    (state) => tokenStorage.isTokenExists() && state.user.user !== undefined,
+    (state) => tokenStorage.isTokenExists() || state.user.user !== undefined,
   );
 
   const userLogIn = (user: User) => {
