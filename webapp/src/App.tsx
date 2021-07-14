@@ -8,6 +8,7 @@ import LoggedInRoute from './routes/LoggedInRoute';
 import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
 import LoggedOutRoute from './routes/LoggedOutRoute';
+import AppDialog from './components/base/AppDialog';
 
 const App = () => {
   const { isLoading } = useCheckUserEffect();
@@ -35,6 +36,7 @@ const App = () => {
           <Route component={NotFoundPage} />
         </Switch>
       </Router>
+      <AppDialog />
     </>
   );
 };

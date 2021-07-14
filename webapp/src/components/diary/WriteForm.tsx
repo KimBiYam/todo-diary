@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { useHistory } from 'react-router-dom';
 import diaryApi from '../../api/diaryApi';
 import { COLORS } from '../../constants';
+import useDialog from '../../hooks/useDialog';
 import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
 
@@ -10,16 +11,28 @@ export type WriteFormProps = {};
 const WriteForm = () => {
   const [title, onChangeTitle] = useInput();
   const [content, onChangeContent] = useInput();
+  const { openDialog } = useDialog();
   const history = useHistory();
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await diaryApi.writeDiary(title, content);
-      history.push('/');
+      if (validateForm()) {
+        await diaryApi.writeDiary(title, content);
+        history.push('/');
+      }
     } catch (e) {
       console.log('에러입니다');
     }
+  };
+
+  const validateForm = () => {
+    if (!title || !content) {
+      openDialog('값을 입력하세요');
+      return false;
+    }
+
+    return true;
   };
 
   return (
