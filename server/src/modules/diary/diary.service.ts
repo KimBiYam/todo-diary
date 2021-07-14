@@ -13,10 +13,9 @@ import {
   TransactionManager,
 } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
-import { CreateDiaryDto } from './dto';
+import { CreateDiaryDto, SerializeDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
-import { ResponseDiaryDto } from './dto/response-diary.dto';
 import { isDataExists } from '@src/util/common.util';
 
 @Injectable()
@@ -27,9 +26,7 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findMyDiaries(
-    requestUserDto: RequestUserDto,
-  ): Promise<ResponseDiaryDto[]> {
+  async findMyDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
@@ -45,7 +42,7 @@ export class DiaryService {
       .where('diary.user_id = :userId', { userId: user.id })
       .getMany();
 
-    return diaries.map((diary) => this.convertDiary(diary));
+    return diaries;
   }
 
   async findMyDiary(
@@ -107,11 +104,6 @@ export class DiaryService {
     return await manager.save(diary);
   }
 
-  async findConvertedMyDiary(requestUserDto: RequestUserDto, id: number) {
-    const diary = await this.findMyDiary(requestUserDto, id);
-    return this.convertDiary(diary);
-  }
-
   @Transaction({ isolation: 'SERIALIZABLE' })
   async updateMyDiary(
     requestUserDto: RequestUserDto,
@@ -145,7 +137,7 @@ export class DiaryService {
     return await this.diaryRepository.delete(diary.id);
   }
 
-  convertDiary(diary: Diary): ResponseDiaryDto {
+  serializeDiary(diary: Diary): SerializeDiaryDto {
     const { id, createdAt, isFinished, title, diaryMeta } = diary;
     const { content } = diaryMeta;
 

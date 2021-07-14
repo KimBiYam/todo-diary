@@ -14,8 +14,7 @@ import { RequestUser } from '@src/decorators/request-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import { CreateDiaryDto } from './dto';
-import { UpdateDiaryDto } from './dto/update-diary-dto';
+import { CreateDiaryDto, SerializeDiaryDto, UpdateDiaryDto } from './dto';
 
 @Controller('api/diaries')
 @ApiTags('Diaries')
@@ -32,9 +31,16 @@ export class DiaryController {
     status: 200,
     description: '자신의 다이어리 전체 글 가져오기 성공',
   })
-  async findMyDiaries(@RequestUser() requestUserDto: RequestUserDto) {
+  async findMyDiaries(
+    @RequestUser() requestUserDto: RequestUserDto,
+  ): Promise<{ diaries: SerializeDiaryDto[] }> {
     const diaries = await this.diaryService.findMyDiaries(requestUserDto);
-    return { diaries };
+
+    const serializedDiaries = diaries.map((diary) =>
+      this.diaryService.serializeDiary(diary),
+    );
+
+    return { diaries: serializedDiaries };
   }
 
   @Post()
@@ -58,12 +64,12 @@ export class DiaryController {
   async findMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
-  ) {
-    const diary = await this.diaryService.findConvertedMyDiary(
-      requestUserDto,
-      id,
-    );
-    return { diary };
+  ): Promise<{ diary: SerializeDiaryDto }> {
+    const diary = await this.diaryService.findMyDiary(requestUserDto, id);
+
+    const serializedDiary = this.diaryService.serializeDiary(diary);
+
+    return { diary: serializedDiary };
   }
 
   @Patch(':id')
@@ -77,7 +83,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
-  ) {
+  ): Promise<any> {
     const diary = await this.diaryService.updateMyDiary(
       requestUserDto,
       updateDiaryDto,

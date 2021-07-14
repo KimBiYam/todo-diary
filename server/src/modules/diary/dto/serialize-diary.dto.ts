@@ -1,4 +1,4 @@
-export class ResponseDiaryDto {
+export class SerializeDiaryDto {
   id: number;
 
   createdAt: Date;
