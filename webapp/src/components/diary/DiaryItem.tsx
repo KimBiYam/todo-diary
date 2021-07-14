@@ -10,11 +10,15 @@ const DiaryItem = ({ diary }: DiaryItemProps) => {
 
   return (
     <div css={block}>
-      <h2 css={titleText}>제목 : {title}</h2>
+      <h2 css={titleText}>
+        {title.length > 11 ? `${title.substring(0, 11)} ...` : title}
+      </h2>
       <p>작성일 : {createdAt}</p>
       <p>완료 여부 : {isFinished.toString()}</p>
       <div css={contentSection}>
-        <p>{content}</p>
+        <p>
+          {content.length > 100 ? `${content.substring(0, 100)} ...` : content}
+        </p>
       </div>
     </div>
   );
@@ -23,7 +27,7 @@ const DiaryItem = ({ diary }: DiaryItemProps) => {
 const block = css`
   padding: 1rem;
   width: 24rem;
-  height: 16rem;
+  height: 10rem;
   margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);
@@ -42,6 +46,8 @@ const titleText = css`
 
 const contentSection = css`
   margin-top: 1rem;
+  line-height: 1.5rem;
+  height: 5rem;
 `;
 
 export default DiaryItem;
