@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import authApi from '../api/authApi';
+import userApi from '../api/userApi';
 import tokenStorage from '../storage/tokenStorage';
 import useUser from './useUser';
 
@@ -14,8 +14,8 @@ const useCheckUserEffect = () => {
 
     setIsLoading(true);
 
-    authApi
-      .getUserProfile()
+    userApi
+      .getCurrentUser()
       .then((user) => {
         userLogIn(user);
       })

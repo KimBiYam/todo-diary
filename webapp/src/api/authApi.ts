@@ -1,30 +1,13 @@
 import {
   CheckGoogleAccountResponseData,
-  GetUserProfileResponseData,
   SignInGoogleAccountResponseData,
-  User,
 } from '../types/auth.types';
 import apiClient from './apiClient';
+import { serializeUser } from './userApi';
 
-const API_AUTH_USER_PROFILE = '/api/auth/user/profile';
-const API_AUTH_GOOGLE_CHECK = '/api/auth/user/profile';
+const API_AUTH_GOOGLE_CHECK = '/api/auth/google/check';
 const API_AUTH_GOOGLE_SIGN_IN = '/api/auth/google/sign-in';
 const API_AUTH_GOOGLE_SIGN_UP = '/api/auth/google/sign-up';
-
-const getUserProfile = async () => {
-  try {
-    const response = await apiClient.get<GetUserProfileResponseData>(
-      API_AUTH_USER_PROFILE,
-    );
-    const { email, displayName, photoUrl, createdAt } = response.data.user;
-
-    const user: User = { email, displayName, photoUrl, createdAt };
-    return user;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-};
 
 const checkGoogleAccount = async (googleToken: string) => {
   try {
@@ -52,11 +35,9 @@ const signInGoogleAccount = async (googleToken: string) => {
       },
     );
 
-    const { accessToken } = response.data;
-    const { createdAt, displayName, email, photoUrl } = response.data.user;
+    const { accessToken, user } = response.data;
 
-    const user: User = { email, displayName, photoUrl, createdAt };
-    return { user, accessToken };
+    return { user: serializeUser(user), accessToken };
   } catch (e) {
     console.log(e);
     throw e;
@@ -77,7 +58,6 @@ const signUpGoogleAccount = async (googleToken: string) => {
 };
 
 const authApi = {
-  getUserProfile,
   checkGoogleAccount,
   signInGoogleAccount,
   signUpGoogleAccount,

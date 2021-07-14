@@ -1,19 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RequestUser } from '@src/decorators';
-import { User } from '@src/entities';
+import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from '../user';
 import { AuthService } from './auth.service';
 import { GoogleTokenDto } from './dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('api/auth')
 @ApiTags('Auth')
@@ -25,16 +14,6 @@ export class AuthController {
     private readonly authService: AuthService,
   ) {}
   private readonly logger = new Logger('AuthController');
-
-  @Get('/user/profile')
-  @ApiResponse({ status: 200, description: '유저 프로필 조회 성공' })
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  async findUserProfile(@RequestUser() user: User) {
-    const { email } = user;
-    const findUser = await this.userService.findUserByEmail(email);
-    return { user: findUser };
-  }
 
   @Get('/google/check')
   @ApiResponse({ status: 200, description: '유저 존재여부 조회 성공' })

@@ -15,6 +15,7 @@ import { JwtStrategy } from './jwt-strategy';
     TypeOrmModule.forFeature([SocialAccount, User]),
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
+      // TODO : Change expires date
       signOptions: { expiresIn: '15day' },
     }),
   ],
