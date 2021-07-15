@@ -1,4 +1,6 @@
 import { css } from '@emotion/react';
+import { useMemo } from 'react';
+import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
 import { Diary } from '../../types/diary.types';
 
 export type DiaryItemProps = {
@@ -8,17 +10,19 @@ export type DiaryItemProps = {
 const DiaryItem = ({ diary }: DiaryItemProps) => {
   const { title, content, createdAt, isFinished } = diary;
 
+  const maxTitleBytes = useMemo(() => 22, []);
+  const maxContentBytes = useMemo(() => 98, []);
+
+  const slicedTitle = useTextSliceToBytes(title, maxTitleBytes);
+  const slicedContent = useTextSliceToBytes(content, maxContentBytes);
+
   return (
     <div css={block}>
-      <h2 css={titleText}>
-        {title.length > 11 ? `${title.substring(0, 11)} ...` : title}
-      </h2>
+      <h2 css={titleText}>{slicedTitle}</h2>
       <p>작성일 : {createdAt}</p>
       <p>완료 여부 : {isFinished.toString()}</p>
       <div css={contentSection}>
-        <p>
-          {content.length > 100 ? `${content.substring(0, 100)} ...` : content}
-        </p>
+        <p>{slicedContent}</p>
       </div>
     </div>
   );
