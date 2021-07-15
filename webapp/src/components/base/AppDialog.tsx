@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { useEffect } from 'react';
 import { setTimeout } from 'timers';
 import useDialog from '../../hooks/useDialog';
+import { Z_INDEXES } from '../../styles/zIndexes';
 import Dialog from '../common/Dialog';
 
 export type AppDialogProps = {};
@@ -43,6 +44,7 @@ const dialogWrapper = css`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: ${Z_INDEXES.dialog};
 `;
 
 export default AppDialog;

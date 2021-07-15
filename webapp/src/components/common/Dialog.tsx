@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { COLORS } from '../../constants';
-import { Z_INDEXES } from '../../styles/zIndexes';
 
 export type DialogProps = {
   text: string;
@@ -21,7 +20,6 @@ const box = (color: string | undefined) => css`
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  z-index: ${Z_INDEXES.dialog};
 `;
 
 export default Dialog;
