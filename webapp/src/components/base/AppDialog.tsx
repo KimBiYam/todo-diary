@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
 import useDialog from '../../hooks/useDialog';
 import { fadeIn, fadeOut } from '../../styles/transitions';
@@ -8,7 +8,7 @@ import Dialog from '../common/Dialog';
 
 export type AppDialogProps = {};
 
-const AppDialog = () => {
+const AppDialog = memo(() => {
   const [visible, setVisible] = useState(false);
   const {
     closeDialog,
@@ -55,7 +55,7 @@ const AppDialog = () => {
       <Dialog text={text} />
     </div>
   );
-};
+});
 
 const dialogWrapper = (visible: boolean) => css`
   visibility: ${visible ? 'visible' : 'hidden'};

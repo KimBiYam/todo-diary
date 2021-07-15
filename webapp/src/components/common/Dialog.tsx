@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { COLORS } from '../../constants';
 
 export type DialogProps = {
@@ -6,9 +7,9 @@ export type DialogProps = {
   color?: string;
 };
 
-const Dialog = ({ text, color }: DialogProps) => {
+const Dialog = memo(({ text, color }: DialogProps) => {
   return <div css={box(color)}>{text}</div>;
-};
+});
 
 const box = (color: string | undefined) => css`
   background-color: ${color ?? COLORS.quaternary};

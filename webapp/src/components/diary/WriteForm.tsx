@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import diaryApi from '../../api/diaryApi';
 import { COLORS } from '../../constants';
@@ -8,7 +9,7 @@ import MainButton from '../common/MainButton';
 
 export type WriteFormProps = {};
 
-const WriteForm = () => {
+const WriteForm = memo(() => {
   const [title, onChangeTitle] = useInput();
   const [content, onChangeContent] = useInput();
   const { openDialog } = useDialog();
@@ -56,7 +57,7 @@ const WriteForm = () => {
       </form>
     </div>
   );
-};
+});
 
 const box = css`
   width: 100%;
