@@ -29,7 +29,7 @@ const WriteForm = memo(() => {
 
   const validateForm = () => {
     if (!title || !content) {
-      openDialog('값을 입력하세요');
+      openDialog('값을 입력하세요', 2000);
       return false;
     }
 

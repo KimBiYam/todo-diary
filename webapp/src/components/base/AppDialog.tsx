@@ -11,7 +11,6 @@ export type AppDialogProps = {};
 const AppDialog = memo(() => {
   const [visible, setVisible] = useState(false);
   const {
-    closeDialog,
     dialog: { isOpen, text },
   } = useDialog();
 
@@ -30,21 +29,6 @@ const AppDialog = memo(() => {
       }
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    const openTime = 1 * 1000;
-    let visibleTimeoutId: NodeJS.Timeout;
-
-    if (isOpen && !visible) {
-      visibleTimeoutId = setTimeout(() => closeDialog(), openTime);
-    }
-
-    return () => {
-      if (visibleTimeoutId !== undefined) {
-        clearTimeout(visibleTimeoutId);
-      }
-    };
-  }, [visible]);
 
   if (!isOpen || text === undefined) {
     return null;
