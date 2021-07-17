@@ -37,4 +37,14 @@ export class Diary {
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  serialize() {
+    return {
+      id: this.id,
+      createdAt: this.createdAt,
+      isFinished: this.isFinished,
+      title: this.title,
+      content: this.diaryMeta.content,
+    };
+  }
 }

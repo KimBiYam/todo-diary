@@ -13,7 +13,7 @@ import {
   TransactionManager,
 } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
-import { CreateDiaryDto, SerializeDiaryDto } from './dto';
+import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { isDataExists } from '@src/util/common.util';
@@ -135,18 +135,5 @@ export class DiaryService {
     const diary = await this.findMyDiary(requestUserDto, id);
 
     return await this.diaryRepository.delete(diary.id);
-  }
-
-  serializeDiary(diary: Diary): SerializeDiaryDto {
-    const { id, createdAt, isFinished, title, diaryMeta } = diary;
-    const { content } = diaryMeta;
-
-    return {
-      id,
-      createdAt,
-      isFinished,
-      title,
-      content,
-    };
   }
 }

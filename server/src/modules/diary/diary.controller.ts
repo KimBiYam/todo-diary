@@ -36,9 +36,7 @@ export class DiaryController {
   ): Promise<{ diaries: SerializeDiaryDto[] }> {
     const diaries = await this.diaryService.findMyDiaries(requestUserDto);
 
-    const serializedDiaries = diaries.map((diary) =>
-      this.diaryService.serializeDiary(diary),
-    );
+    const serializedDiaries = diaries.map((diary) => diary.serialize());
 
     return { diaries: serializedDiaries };
   }
@@ -67,9 +65,7 @@ export class DiaryController {
   ): Promise<{ diary: SerializeDiaryDto }> {
     const diary = await this.diaryService.findMyDiary(requestUserDto, id);
 
-    const serializedDiary = this.diaryService.serializeDiary(diary);
-
-    return { diary: serializedDiary };
+    return { diary: diary.serialize() };
   }
 
   @Patch(':id')
