@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import { useMemo } from 'react';
 import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
 import { Diary } from '../../types/diary.types';
 
@@ -7,14 +6,14 @@ export type DiaryItemProps = {
   diary: Diary;
 };
 
+const MAX_TITLE_BYTES = 22;
+const MAX_CONTENT_BYTES = 196;
+
 const DiaryItem = ({ diary }: DiaryItemProps) => {
   const { title, content, createdAt, isFinished } = diary;
 
-  const maxTitleBytes = useMemo(() => 22, []);
-  const maxContentBytes = useMemo(() => 98, []);
-
-  const slicedTitle = useTextSliceToBytes(title, maxTitleBytes);
-  const slicedContent = useTextSliceToBytes(content, maxContentBytes);
+  const slicedTitle = useTextSliceToBytes(title, MAX_TITLE_BYTES);
+  const slicedContent = useTextSliceToBytes(content, MAX_CONTENT_BYTES);
 
   return (
     <div css={block}>
