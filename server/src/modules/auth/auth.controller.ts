@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserService } from '../user';
 import { AuthService } from './auth.service';
 import { GoogleTokenDto } from './dto';
 
@@ -9,10 +8,7 @@ import { GoogleTokenDto } from './dto';
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
 export class AuthController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
   private readonly logger = new Logger('AuthController');
 
   @Get('/google/check')

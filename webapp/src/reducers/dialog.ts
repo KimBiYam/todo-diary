@@ -26,7 +26,12 @@ export const openDialog = createAsyncThunk(
 const dialogSlice = createSlice({
   name: 'dialog',
   initialState,
-  reducers: {},
+  reducers: {
+    closeDialog: (state) => {
+      state.isOpen = false;
+      state.text = undefined;
+    },
+  },
   extraReducers: {
     [openDialog.pending.type]: (state, { meta }) => {
       state.isOpen = true;
@@ -39,6 +44,8 @@ const dialogSlice = createSlice({
   },
 });
 
-const { reducer } = dialogSlice;
+const { reducer, actions } = dialogSlice;
+
+export const { closeDialog } = actions;
 
 export default reducer;

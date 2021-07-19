@@ -1,5 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { openDialog as openDialogAction } from '../reducers/dialog';
+import {
+  openDialog as openDialogAction,
+  closeDialog as closeDialogAction,
+} from '../reducers/dialog';
 import { useTypedSelector } from '../reducers/rootReducer';
 
 const useDialog = () => {
@@ -14,7 +17,9 @@ const useDialog = () => {
     dispatch(openDialogAction({ text, openTime }));
   };
 
-  return { dialog, openDialog, openDialogAction };
+  const closeDialog = () => dispatch(closeDialogAction());
+
+  return { dialog, openDialog, closeDialog };
 };
 
 export default useDialog;

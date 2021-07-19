@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import diaryApi from '../../api/diaryApi';
 import { COLORS } from '../../constants';
+import useWriteDiaryMutation from '../../hooks/query/useWriteDiaryMutation';
 import useDialog from '../../hooks/useDialog';
 import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
@@ -15,11 +15,14 @@ const WriteForm = memo(() => {
   const { openDialog } = useDialog();
   const history = useHistory();
 
+  const { mutate } = useWriteDiaryMutation(title, content, {
+    onSuccess: () => history.push('/'),
+  });
+
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      await diaryApi.writeDiary(title, content);
-      history.push('/');
+      mutate();
     }
   };
 
