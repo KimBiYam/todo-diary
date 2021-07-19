@@ -31,7 +31,7 @@ const DiaryItem = ({ diary }: DiaryItemProps) => {
 const block = css`
   padding: 1rem;
   width: 24rem;
-  height: 10rem;
+  height: 13rem;
   margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);

@@ -16,7 +16,7 @@ const block = css`
   flex-direction: column;
   padding: 1rem;
   width: 24rem;
-  height: 16rem;
+  height: 13rem;
   margin: 1rem;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;
