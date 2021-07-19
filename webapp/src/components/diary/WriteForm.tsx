@@ -23,7 +23,7 @@ const WriteForm = memo(() => {
         history.push('/');
       }
     } catch (e) {
-      console.log('에러입니다');
+      openDialog('서버 에러입니다');
     }
   };
 

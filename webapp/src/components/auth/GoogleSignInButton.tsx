@@ -5,6 +5,7 @@ import GoogleLogin, {
 } from 'react-google-login';
 import authApi from '../../api/authApi';
 import { COLORS } from '../../constants';
+import useDialog from '../../hooks/useDialog';
 import useUser from '../../hooks/useUser';
 import tokenStorage from '../../storage/tokenStorage';
 
@@ -12,15 +13,18 @@ export type GoogleSignInButtonProps = {};
 
 const GoogleSignInButton = () => {
   const { userLogIn, userLogOut } = useUser();
+  const { openDialog } = useDialog();
 
   const handleOnSuccess = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => {
-    const { accessToken: googleToken } = response as GoogleLoginResponse;
-
-    const isExistsGoogleAccount = await authApi.checkGoogleAccount(googleToken);
-
     try {
+      const { accessToken: googleToken } = response as GoogleLoginResponse;
+
+      const isExistsGoogleAccount = await authApi.checkGoogleAccount(
+        googleToken,
+      );
+
       if (!isExistsGoogleAccount) {
         await authApi.signUpGoogleAccount(googleToken);
       }
@@ -28,12 +32,8 @@ const GoogleSignInButton = () => {
       await googleSignIn(googleToken);
     } catch (e) {
       userLogOut();
-      console.log(e);
+      openDialog('서버 에러입니다');
     }
-  };
-
-  const handleOnFailure = (error: any) => {
-    console.log(error);
   };
 
   const googleSignIn = async (googleToken: string) => {
@@ -44,6 +44,8 @@ const GoogleSignInButton = () => {
     tokenStorage.setToken(accessToken);
     userLogIn(user);
   };
+
+  const handleOnFailure = () => openDialog('서버 에러입니다');
 
   return (
     <GoogleLogin

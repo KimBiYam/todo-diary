@@ -7,6 +7,10 @@ const useDialog = () => {
   const dialog = useTypedSelector((state) => state.dialog);
 
   const openDialog = (text: string, openTime: number = 2 * 1000) => {
+    if (dialog.isOpen) {
+      return;
+    }
+
     dispatch(openDialogAction({ text, openTime }));
   };
 

@@ -29,10 +29,6 @@ const dialogSlice = createSlice({
   reducers: {},
   extraReducers: {
     [openDialog.pending.type]: (state, { meta }) => {
-      if (state.isOpen) {
-        return;
-      }
-
       state.isOpen = true;
       state.text = meta.arg.text;
     },

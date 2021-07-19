@@ -10,7 +10,6 @@ const getDiaries = async () => {
     const { diaries } = response.data;
     return diaries;
   } catch (e) {
-    console.error(e);
     throw e;
   }
 };
@@ -21,7 +20,6 @@ const writeDiary = async (title: string, content: string) => {
 
     return response;
   } catch (e) {
-    console.error(e);
     throw e;
   }
 };

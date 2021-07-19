@@ -21,7 +21,6 @@ const checkGoogleAccount = async (googleToken: string) => {
 
     return isExists;
   } catch (e) {
-    console.error(e);
     throw e;
   }
 };
@@ -39,7 +38,6 @@ const signInGoogleAccount = async (googleToken: string) => {
 
     return { user: serializeUser(user), accessToken };
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };
@@ -52,7 +50,6 @@ const signUpGoogleAccount = async (googleToken: string) => {
 
     return response.data;
   } catch (e) {
-    console.log(e);
     throw e;
   }
 };
