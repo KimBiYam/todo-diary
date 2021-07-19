@@ -17,13 +17,9 @@ const WriteForm = memo(() => {
 
   const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      if (validateForm()) {
-        await diaryApi.writeDiary(title, content);
-        history.push('/');
-      }
-    } catch (e) {
-      openDialog('서버 에러입니다');
+    if (validateForm()) {
+      await diaryApi.writeDiary(title, content);
+      history.push('/');
     }
   };
 

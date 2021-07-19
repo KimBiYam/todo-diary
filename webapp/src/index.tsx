@@ -8,7 +8,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers/rootReducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
-const store = configureStore({ reducer: rootReducer });
+export const store = configureStore({ reducer: rootReducer });
 const queryClient = new QueryClient();
 
 ReactDOM.render(

@@ -32,7 +32,6 @@ const GoogleSignInButton = () => {
       await googleSignIn(googleToken);
     } catch (e) {
       userLogOut();
-      openDialog('서버 에러입니다');
     }
   };
 

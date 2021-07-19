@@ -24,6 +24,7 @@ const mainButton = css`
   height: 2rem;
   background-color: ${COLORS.quaternary};
   border-radius: 8px;
+  cursor: pointer;
 `;
 
 export default MainButtonButton;
