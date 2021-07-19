@@ -70,7 +70,6 @@ export class DiaryService {
     }
 
     if (diary.user.id !== user.id) {
-      this.logger.error('This diary is not your diary post');
       throw new BadRequestException('This diary is not your diary post');
     }
 

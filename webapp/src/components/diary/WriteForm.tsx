@@ -28,10 +28,8 @@ const WriteForm = memo(() => {
   };
 
   const validateForm = () => {
-    const openDialogTime = 2 * 1000;
-
     if (!title || !content) {
-      openDialog('값을 입력하세요', openDialogTime);
+      openDialog('값을 입력하세요');
       return false;
     }
 

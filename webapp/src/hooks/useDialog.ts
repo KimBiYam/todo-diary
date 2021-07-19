@@ -6,7 +6,7 @@ const useDialog = () => {
   const dispatch = useDispatch();
   const dialog = useTypedSelector((state) => state.dialog);
 
-  const openDialog = (text: string, openTime: number) => {
+  const openDialog = (text: string, openTime: number = 2 * 1000) => {
     dispatch(openDialogAction({ text, openTime }));
   };
 
