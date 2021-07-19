@@ -1,11 +1,11 @@
-import { GetDiariesResponseData } from '../types/diary.types';
+import { DiariesResponse, DiaryResponse } from '../types/diary.types';
 import apiClient from './apiClient';
 
 const API_DIARIES = '/api/diaries';
 
 const getDiaries = async () => {
   try {
-    const response = await apiClient.get<GetDiariesResponseData>(API_DIARIES);
+    const response = await apiClient.get<DiariesResponse>(API_DIARIES);
 
     const { diaries } = response.data;
     return diaries;
@@ -16,9 +16,14 @@ const getDiaries = async () => {
 
 const writeDiary = async (title: string, content: string) => {
   try {
-    const response = await apiClient.post(API_DIARIES, { title, content });
+    const response = await apiClient.post<DiaryResponse>(API_DIARIES, {
+      title,
+      content,
+    });
 
-    return response;
+    const { diary } = response.data;
+
+    return diary;
   } catch (e) {
     throw e;
   }

@@ -6,6 +6,10 @@ export type Diary = {
   content: string;
 };
 
-export type GetDiariesResponseData = {
+export type DiariesResponse = {
   diaries: Diary[];
+};
+
+export type DiaryResponse = {
+  diary: Diary;
 };

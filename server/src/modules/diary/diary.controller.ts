@@ -49,7 +49,12 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() createDiaryDto: CreateDiaryDto,
   ): Promise<any> {
-    return await this.diaryService.createDiary(requestUserDto, createDiaryDto);
+    const diary = await this.diaryService.createDiary(
+      requestUserDto,
+      createDiaryDto,
+    );
+
+    return { diary: diary.serialize() };
   }
 
   @Get(':id')
