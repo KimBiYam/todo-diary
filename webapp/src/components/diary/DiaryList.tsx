@@ -1,12 +1,16 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 
 export type DiaryListProps = {};
 
+const PAGE_LIMIT = 12;
+
 const DiaryList = () => {
-  const { data: diaries } = useDiariesQuery({
+  const [page, setPage] = useState(1);
+  const { data: diaries } = useDiariesQuery(page, PAGE_LIMIT, {
     refetchOnWindowFocus: false,
   });
 
@@ -15,7 +19,7 @@ const DiaryList = () => {
       <div css={diariesSection}>
         {diaries !== undefined
           ? diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />)
-          : Array.from({ length: 10 }).map((_, index) => (
+          : Array.from({ length: PAGE_LIMIT }).map((_, index) => (
               <DiaryItemSkeleton key={index} />
             ))}
       </div>

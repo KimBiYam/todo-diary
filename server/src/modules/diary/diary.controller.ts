@@ -7,9 +7,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
@@ -24,17 +25,25 @@ export class DiaryController {
   constructor(private readonly diaryService: DiaryService) {}
   private readonly logger = new Logger('DiaryController');
 
-  @Get()
+  @Get('')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @ApiResponse({
     status: 200,
-    description: '자신의 다이어리 전체 글 가져오기 성공',
+    description: '자신의 다이어리 글 리스트 가져오기 성공',
   })
+  @ApiQuery({ name: 'page', type: Number, required: true, example: 1 })
+  @ApiQuery({ name: 'limit', type: Number, required: true, example: 10 })
   async findMyDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
   ): Promise<{ diaries: SerializeDiaryDto[] }> {
-    const diaries = await this.diaryService.findMyDiaries(requestUserDto);
+    const diaries = await this.diaryService.findMyDiaries(
+      requestUserDto,
+      page,
+      limit,
+    );
 
     const serializedDiaries = diaries.map((diary) => diary.serialize());
 

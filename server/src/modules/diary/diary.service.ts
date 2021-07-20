@@ -26,7 +26,11 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findMyDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
+  async findMyDiaries(
+    requestUserDto: RequestUserDto,
+    page: number,
+    limit: number,
+  ): Promise<Diary[]> {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
@@ -40,6 +44,9 @@ export class DiaryService {
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta'])
       .where('diary.user_id = :userId', { userId: user.id })
+      .orderBy('diary.createdAt', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit)
       .getMany();
 
     return diaries;

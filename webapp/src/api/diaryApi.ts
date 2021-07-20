@@ -3,9 +3,11 @@ import apiClient from './apiClient';
 
 const API_DIARIES = '/api/diaries';
 
-const getDiaries = async () => {
+const getDiaries = async (page: number, limit: number) => {
   try {
-    const response = await apiClient.get<DiariesResponse>(API_DIARIES);
+    const response = await apiClient.get<DiariesResponse>(API_DIARIES, {
+      params: { page, limit },
+    });
 
     const { diaries } = response.data;
     return diaries;
