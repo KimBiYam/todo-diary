@@ -32,15 +32,15 @@ const dialogSlice = createSlice({
       state.text = undefined;
     },
   },
-  extraReducers: {
-    [openDialog.pending.type]: (state, { meta }) => {
+  extraReducers: (builder) => {
+    builder.addCase(openDialog.pending, (state, { meta }) => {
       state.isOpen = true;
       state.text = meta.arg.text;
-    },
-    [openDialog.fulfilled.type]: (state) => {
+    });
+    builder.addCase(openDialog.fulfilled, (state) => {
       state.isOpen = false;
       state.text = undefined;
-    },
+    });
   },
 });
 
