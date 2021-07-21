@@ -19,8 +19,10 @@ const DiaryItem = memo(({ diary }: DiaryItemProps) => {
   return (
     <div css={block}>
       <h2 css={titleText}>{slicedTitle}</h2>
-      <p>작성일 : {createdAt}</p>
-      <p>완료 여부 : {isFinished.toString()}</p>
+      <div css={descriptionSection}>
+        <p>작성일 : {createdAt}</p>
+        <p>완료 여부 : {isFinished.toString()}</p>
+      </div>
       <div css={contentSection}>
         <p>{slicedContent}</p>
       </div>
@@ -46,6 +48,10 @@ const block = css`
 const titleText = css`
   font-size: 2rem;
   font-weight: 500;
+`;
+
+const descriptionSection = css`
+  margin-top: 1rem;
 `;
 
 const contentSection = css`

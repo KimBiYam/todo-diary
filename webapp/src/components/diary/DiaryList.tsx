@@ -43,7 +43,7 @@ const DiaryList = () => {
             ))}
         </div>
       </div>
-      <div ref={fetchMoreElementRef} />
+      {hasNextPage && <div ref={fetchMoreElementRef} />}
     </>
   );
 };
