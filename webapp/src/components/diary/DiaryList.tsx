@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
+import useScrollObserver from '../../hooks/useScrollObserver';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 
@@ -20,27 +21,11 @@ const DiaryList = () => {
     [hasNextPage, isFetching, isLoading],
   );
 
-  useEffect(() => {
-    if (!hasNextPage) {
-      return;
-    }
-    const observer = new IntersectionObserver((entries) =>
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          fetchNextPage();
-        }
-      }),
-    );
-
-    const element = fetchMoreElementRef && fetchMoreElementRef.current;
-    if (!element) {
-      return;
-    }
-
-    observer.observe(element);
-
-    return () => observer && observer.disconnect();
-  }, [hasNextPage]);
+  useScrollObserver({
+    targetRef: fetchMoreElementRef,
+    enabled: hasNextPage,
+    onIntersect: fetchNextPage,
+  });
 
   return (
     <>
@@ -48,7 +33,7 @@ const DiaryList = () => {
         <div css={diariesSection}>
           {data &&
             data.pages.map((diaries) =>
-              diaries.map((diary, index) => (
+              diaries.map((diary) => (
                 <DiaryItem key={diary.id} diary={diary} />
               )),
             )}
