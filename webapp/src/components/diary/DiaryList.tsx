@@ -9,36 +9,57 @@ export type DiaryListProps = {};
 const PAGE_LIMIT = 12;
 
 const DiaryList = () => {
-  const lastItemRef = useRef<HTMLDivElement>(null);
+  const fetchMoreElementRef = useRef<HTMLDivElement>(null);
   const { data, hasNextPage, fetchNextPage, isFetching, isLoading } =
     useDiariesQuery(PAGE_LIMIT, {
       refetchOnWindowFocus: false,
     });
-
-  useEffect(() => {}, []);
 
   const isShowSkeleton = useMemo(
     () => (hasNextPage && isFetching) || isLoading,
     [hasNextPage, isFetching, isLoading],
   );
 
+  useEffect(() => {
+    if (!hasNextPage) {
+      return;
+    }
+    const observer = new IntersectionObserver((entries) =>
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          fetchNextPage();
+        }
+      }),
+    );
+
+    const element = fetchMoreElementRef && fetchMoreElementRef.current;
+    if (!element) {
+      return;
+    }
+
+    observer.observe(element);
+
+    return () => observer && observer.disconnect();
+  }, [hasNextPage]);
+
   return (
-    <div css={block}>
-      <div css={diariesSection}>
-        {data &&
-          data.pages.map((diaries) =>
-            diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />),
-          )}
-        <div ref={lastItemRef}></div>
-        {isShowSkeleton &&
-          Array.from({ length: PAGE_LIMIT }).map((_, index) => (
-            <DiaryItemSkeleton key={index} />
-          ))}
-        <button type="button" onClick={() => fetchNextPage()}>
-          next
-        </button>
+    <>
+      <div css={block}>
+        <div css={diariesSection}>
+          {data &&
+            data.pages.map((diaries) =>
+              diaries.map((diary, index) => (
+                <DiaryItem key={diary.id} diary={diary} />
+              )),
+            )}
+          {isShowSkeleton &&
+            Array.from({ length: PAGE_LIMIT }).map((_, index) => (
+              <DiaryItemSkeleton key={index} />
+            ))}
+        </div>
       </div>
-    </div>
+      <div ref={fetchMoreElementRef} />
+    </>
   );
 };
 
