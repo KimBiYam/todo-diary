@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
 const convertErrorText = (status: number | undefined) => {
   switch (status) {
     case StatusCodes.BAD_REQUEST:
-      return '요청이 잘못 되었습니다';
+      return '잘못된 요청입니다.';
     case StatusCodes.UNAUTHORIZED:
       return '인증 정보가 잘못 되었습니다';
     case StatusCodes.NOT_FOUND:

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
@@ -9,19 +9,34 @@ export type DiaryListProps = {};
 const PAGE_LIMIT = 12;
 
 const DiaryList = () => {
-  const [page, setPage] = useState(1);
-  const { data: diaries } = useDiariesQuery(page, PAGE_LIMIT, {
-    refetchOnWindowFocus: false,
-  });
+  const lastItemRef = useRef<HTMLDivElement>(null);
+  const { data, hasNextPage, fetchNextPage, isFetching, isLoading } =
+    useDiariesQuery(PAGE_LIMIT, {
+      refetchOnWindowFocus: false,
+    });
+
+  useEffect(() => {}, []);
+
+  const isShowSkeleton = useMemo(
+    () => (hasNextPage && isFetching) || isLoading,
+    [hasNextPage, isFetching, isLoading],
+  );
 
   return (
     <div css={block}>
       <div css={diariesSection}>
-        {diaries !== undefined
-          ? diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />)
-          : Array.from({ length: PAGE_LIMIT }).map((_, index) => (
-              <DiaryItemSkeleton key={index} />
-            ))}
+        {data &&
+          data.pages.map((diaries) =>
+            diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />),
+          )}
+        <div ref={lastItemRef}></div>
+        {isShowSkeleton &&
+          Array.from({ length: PAGE_LIMIT }).map((_, index) => (
+            <DiaryItemSkeleton key={index} />
+          ))}
+        <button type="button" onClick={() => fetchNextPage()}>
+          next
+        </button>
       </div>
     </div>
   );

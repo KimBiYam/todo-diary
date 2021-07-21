@@ -9,6 +9,8 @@ const getDiaries = async (page: number, limit: number) => {
       params: { page, limit },
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const { diaries } = response.data;
     return diaries;
   } catch (e) {

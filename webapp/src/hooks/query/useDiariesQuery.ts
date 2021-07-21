@@ -1,16 +1,21 @@
 import { AxiosError } from 'axios';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { Diary } from '../../types/diary.types';
 
 const useDiariesQuery = (
-  page: number,
   limit: number,
-  options: UseQueryOptions<Diary[], AxiosError> = {},
-) => {
-  return useQuery('diaries', () => diaryApi.getDiaries(page, limit), {
-    ...options,
-  });
-};
+  options: UseInfiniteQueryOptions<Diary[], AxiosError> = {},
+) =>
+  useInfiniteQuery(
+    'diaries',
+    ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit),
+    {
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length === limit ? allPages.length + 1 : undefined;
+      },
+      ...options,
+    },
+  );
 
 export default useDiariesQuery;
