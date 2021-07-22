@@ -1,6 +1,6 @@
 export type Diary = {
   id: number;
-  createdAt: Date;
+  createdAt: string;
   isFinished: boolean;
   title: string;
   content: string;

@@ -7,7 +7,7 @@ import DiaryItemSkeleton from './DiaryItemSkeleton';
 
 export type DiaryListProps = {};
 
-const PAGE_LIMIT = 12;
+const PAGE_LIMIT = 10;
 
 const DiaryList = () => {
   const fetchMoreElementRef = useRef<HTMLDivElement>(null);
@@ -29,39 +29,26 @@ const DiaryList = () => {
 
   return (
     <>
-      <div css={block}>
-        <div css={diariesSection}>
-          {data &&
-            data.pages.map((diaries) =>
-              diaries.map((diary) => (
-                <DiaryItem key={diary.id} diary={diary} />
-              )),
-            )}
-          {isShowSkeleton &&
-            Array.from({ length: PAGE_LIMIT }).map((_, index) => (
-              <DiaryItemSkeleton key={index} />
-            ))}
-        </div>
+      <div css={diariesSection}>
+        {data &&
+          data.pages.map((diaries) =>
+            diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />),
+          )}
+        {isShowSkeleton &&
+          Array.from({ length: PAGE_LIMIT }).map((_, index) => (
+            <DiaryItemSkeleton key={index} />
+          ))}
       </div>
       {hasNextPage && <div ref={fetchMoreElementRef} />}
     </>
   );
 };
 
-const block = css`
-  width: 1300px;
-  margin: 0 auto;
-
-  @media only screen and (max-width: 768px) {
-    width: 600px;
-  }
-`;
-
 const diariesSection = css`
-  width: 100%;
+  margin: 0 auto;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  flex-basis: 10px;
   flex: 1 1 0%;
 `;
 

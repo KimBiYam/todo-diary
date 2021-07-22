@@ -20,6 +20,7 @@
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "css-loader": "4.3.0",
+    "date-fns": "^2.22.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
     "emotion-reset": "^3.0.1",
