@@ -10,7 +10,7 @@ export type DiaryListProps = {};
 const PAGE_LIMIT = 10;
 
 const DiaryList = () => {
-  const fetchMoreElementRef = useRef<HTMLDivElement>(null);
+  const scrollableTrigerRef = useRef<HTMLDivElement>(null);
   const { data, hasNextPage, fetchNextPage, isFetching, isLoading } =
     useDiariesQuery(PAGE_LIMIT, {
       refetchOnWindowFocus: false,
@@ -22,7 +22,7 @@ const DiaryList = () => {
   );
 
   useScrollObserver({
-    targetRef: fetchMoreElementRef,
+    targetRef: scrollableTrigerRef,
     enabled: hasNextPage,
     onIntersect: fetchNextPage,
   });
@@ -39,7 +39,7 @@ const DiaryList = () => {
             <DiaryItemSkeleton key={index} />
           ))}
       </div>
-      {hasNextPage && <div ref={fetchMoreElementRef} />}
+      {hasNextPage && <div ref={scrollableTrigerRef} />}
     </>
   );
 };
