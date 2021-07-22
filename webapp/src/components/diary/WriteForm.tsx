@@ -19,7 +19,7 @@ const WriteForm = memo(() => {
     onSuccess: () => history.push('/'),
   });
 
-  const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       mutate();
@@ -28,7 +28,7 @@ const WriteForm = memo(() => {
 
   const validateForm = () => {
     if (!title || !content) {
-      openDialog('값을 입력하세요');
+      openDialog('글을 입력하세요');
       return false;
     }
 
@@ -37,7 +37,7 @@ const WriteForm = memo(() => {
 
   return (
     <div css={box}>
-      <form css={form} onSubmit={handleOnSubmit}>
+      <form css={form} onSubmit={handleSubmit}>
         <input
           name="title"
           value={title}

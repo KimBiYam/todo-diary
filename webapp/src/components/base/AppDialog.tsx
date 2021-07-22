@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { memo, useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
+import { COLORS } from '../../constants';
 import useDialog from '../../hooks/useDialog';
 import { fadeIn, fadeOut } from '../../styles/transitions';
 import { Z_INDEXES } from '../../styles/zIndexes';
-import Dialog from '../common/Dialog';
 
 export type AppDialogProps = {};
 
@@ -15,17 +15,17 @@ const AppDialog = memo(() => {
   } = useDialog();
 
   useEffect(() => {
-    const transitionTime = 1 * 1000;
-    let openTimeoutId: NodeJS.Timeout;
+    const transitionDuration = 1 * 1000;
+    let timeoutId: NodeJS.Timeout;
 
     if (isOpen) {
       setVisible(true);
-      openTimeoutId = setTimeout(() => setVisible(false), transitionTime);
+      timeoutId = setTimeout(() => setVisible(false), transitionDuration);
     }
 
     return () => {
-      if (openTimeoutId !== undefined) {
-        clearTimeout(openTimeoutId);
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
       }
     };
   }, [isOpen]);
@@ -35,13 +35,13 @@ const AppDialog = memo(() => {
   }
 
   return (
-    <div css={dialogWrapper(visible)}>
-      <Dialog text={text} />
+    <div css={wrapper(visible)}>
+      <div css={box()}>{text}</div>
     </div>
   );
 });
 
-const dialogWrapper = (visible: boolean) => css`
+const wrapper = (visible: boolean) => css`
   visibility: ${visible ? 'visible' : 'hidden'};
   position: fixed;
   top: 50%;
@@ -50,6 +50,18 @@ const dialogWrapper = (visible: boolean) => css`
   z-index: ${Z_INDEXES.dialog};
   transition: visibility 1s ease-in-out;
   animation: ${visible ? fadeIn : fadeOut} 1s ease-in-out;
+`;
+
+const box = (color?: string | undefined) => css`
+  background-color: ${color ?? COLORS.quaternary};
+  opacity: 0.7;
+  font-weight: 600;
+  width: 12rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 `;
 
 export default AppDialog;

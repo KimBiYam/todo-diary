@@ -15,7 +15,7 @@ const GoogleSignInButton = () => {
   const { userLogIn, userLogOut } = useUser();
   const { openDialog } = useDialog();
 
-  const handleOnSuccess = async (
+  const handleSuccess = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => {
     try {
@@ -44,15 +44,15 @@ const GoogleSignInButton = () => {
     userLogIn(user);
   };
 
-  const handleOnFailure = () => openDialog('서버 에러입니다');
+  const handleFailure = () => openDialog('서버 에러입니다');
 
   return (
     <GoogleLogin
       css={googleSignInButton}
       clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
       buttonText="Sign In with Google"
-      onSuccess={handleOnSuccess}
-      onFailure={handleOnFailure}
+      onSuccess={handleSuccess}
+      onFailure={handleFailure}
     />
   );
 };
