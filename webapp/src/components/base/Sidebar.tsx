@@ -21,9 +21,20 @@ const Sidebar = memo(() => {
       <nav css={headerNavSection}>
         <SidebarCategory category="Diary" />
         <ul>
-          <SidebarItem to="/" icon="recent" label="최근" />
-          <SidebarItem to="/calendar" icon="calendar" label="일자별" />
-          <SidebarItem to="/write" icon="write" label="쓰기" />
+          <SidebarItem
+            to="/"
+            icon="recent"
+            label="Recent"
+            isActive={(match, location) => {
+              if (!match) {
+                return false;
+              }
+
+              return ['/', 'recent'].includes(location.pathname);
+            }}
+          />
+          <SidebarItem to="/calendar" icon="calendar" label="Calendar" />
+          <SidebarItem to="/write" icon="write" label="Write" />
         </ul>
       </nav>
       <SidebarProfile />

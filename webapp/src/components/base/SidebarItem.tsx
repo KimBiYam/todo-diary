@@ -1,30 +1,24 @@
 import { css } from '@emotion/react';
-import { NavLink } from 'react-router-dom';
+import { match, NavLink } from 'react-router-dom';
 import { COLORS } from '../../constants';
 import Icon, { IconType } from '../common/Icon';
+import History from 'history';
 
 export type SidebarItemProps = {
   label: string;
   icon: IconType;
   to: string;
+  isActive?<Params extends { [K in keyof Params]?: string }>(
+    match: match<Params>,
+    location: History.Location,
+  ): boolean;
 };
 
-const SidebarItem = ({ label, icon, to }: SidebarItemProps) => {
+const SidebarItem = ({ label, icon, to, isActive }: SidebarItemProps) => {
   return (
     <li>
-      <NavLink
-        css={block}
-        to={to}
-        isActive={(match, location) => {
-          if (match === null) {
-            return false;
-          }
-          return location.pathname === to;
-        }}
-      >
-        <div css={iconBlock}>
-          <Icon icon={icon} />
-        </div>
+      <NavLink css={block} to={to} isActive={isActive}>
+        <Icon css={iconStyle} icon={icon} />
         {label}
       </NavLink>
     </li>
@@ -48,16 +42,17 @@ const block = css`
   &.active {
     color: black;
     background: ${COLORS.pageBase};
+    svg {
+      fill: ${COLORS.black};
+    }
   }
 `;
 
-const iconBlock = css`
-  svg {
-    width: 1rem;
-    height: 1rem;
-    margin-right: 1rem;
-    fill: ${COLORS.tertiary};
-  }
+const iconStyle = () => css`
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1rem;
+  fill: ${COLORS.tertiary};
 `;
 
 export default SidebarItem;
