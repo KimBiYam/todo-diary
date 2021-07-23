@@ -3,11 +3,13 @@ import { ChangeEvent, useState } from 'react';
 const useInput = () => {
   const [value, setValue] = useState('');
 
-  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setValue(e.target.value);
   };
 
-  return [value, onChange] as const;
+  return [value, handleChange] as const;
 };
 
 export default useInput;

@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { COLORS } from '../../constants';
 import useWriteDiaryMutation from '../../hooks/query/useWriteDiaryMutation';
 import useDialog from '../../hooks/useDialog';
 import useInput from '../../hooks/useInput';
@@ -10,8 +9,8 @@ import MainButton from '../common/MainButton';
 export type WriteFormProps = {};
 
 const WriteForm = memo(() => {
-  const [title, onChangeTitle] = useInput();
-  const [content, onChangeContent] = useInput();
+  const [title, handleChangeTitle] = useInput();
+  const [content, handleChangeContent] = useInput();
   const { openDialog } = useDialog();
   const history = useHistory();
 
@@ -41,18 +40,18 @@ const WriteForm = memo(() => {
         <input
           name="title"
           value={title}
-          onChange={onChangeTitle}
+          onChange={handleChangeTitle}
           css={titleInput}
-          placeholder="제목을 입력하세요"
+          placeholder="Title"
         />
         <textarea
           name="content"
           value={content}
-          onChange={onChangeContent}
+          onChange={handleChangeContent}
           css={contentSection}
-          placeholder="내용을 입력하세요"
+          placeholder="Content"
         />
-        <MainButton type="submit" label="저장" />
+        <MainButton type="submit" label="Save" />
       </form>
     </div>
   );
@@ -62,16 +61,23 @@ const box = css`
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 
 const form = css`
-  width: 80%;
+  width: 45%;
+  height: 75%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 4px 4px;
 `;
 
 const titleInput = css`
-  background-color: ${COLORS.pageBase};
+  background-color: transparent;
   width: 100%;
   height: 3rem;
   font-size: 2rem;
@@ -79,9 +85,8 @@ const titleInput = css`
 `;
 
 const contentSection = css`
-  background-color: ${COLORS.pageBase};
+  flex: 1;
   width: 100%;
-  height: 20rem;
   resize: none;
   border: none;
   font-size: 1.5rem;

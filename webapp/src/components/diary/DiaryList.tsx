@@ -45,6 +45,7 @@ const DiaryList = () => {
 };
 
 const diariesSection = css`
+  padding-top: 2rem;
   margin: 0 auto;
   display: flex;
   justify-content: center;
