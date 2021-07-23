@@ -48,7 +48,7 @@ const block = css`
   position: fixed;
   display: flex;
   flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 0px 8px 1px;
   background: ${COLORS.white};
   z-index: ${Z_INDEXES.sidebar};
 `;
@@ -57,7 +57,6 @@ const logoSection = css`
   height: 6rem;
   padding: 0 2rem;
   display: flex;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   align-items: center;
 `;
 
@@ -70,7 +69,7 @@ const logo = css`
 
 const headerNavSection = css`
   flex: 1;
-  margin-top: 4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
