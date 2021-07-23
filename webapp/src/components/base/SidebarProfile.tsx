@@ -7,26 +7,26 @@ export type SidebarProfileProps = {};
 const SidebarProfile = () => {
   const { user, userLogOut } = useUser();
 
-  return user ? (
-    <div css={block}>
-      <img css={profileImage} alt="profile" src={user?.photoUrl} />
-      <div css={aaa}>
-        <span>{user?.displayName}</span>
-        <button css={signOutButton} onClick={userLogOut}>
-          Sign Out
-        </button>
-      </div>
-    </div>
-  ) : (
-    <></>
+  return (
+    <>
+      {user && (
+        <div css={block}>
+          <img css={profileImage} alt="profile" src={user?.photoUrl} />
+          <div css={aaa}>
+            <span>{user?.displayName}</span>
+            <button css={signOutButton} onClick={userLogOut}>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
 const block = css`
-  margin-top: 2rem;
   padding: 1rem;
   display: flex;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const profileImage = css`
