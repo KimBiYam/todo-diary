@@ -2,18 +2,20 @@ import { css } from '@emotion/react';
 import { COLORS } from '../../constants';
 import useUser from '../../hooks/useUser';
 
-export type HeaderProfileProps = {};
+export type SidebarProfileProps = {};
 
-const HeaderProfile = () => {
+const SidebarProfile = () => {
   const { user, userLogOut } = useUser();
 
   return user ? (
     <div css={block}>
       <img css={profileImage} alt="profile" src={user?.photoUrl} />
-      <span>{user?.displayName}</span>
-      <span css={signOutButton} onClick={userLogOut}>
-        Sign Out
-      </span>
+      <div css={aaa}>
+        <span>{user?.displayName}</span>
+        <button css={signOutButton} onClick={userLogOut}>
+          Sign Out
+        </button>
+      </div>
     </div>
   ) : (
     <></>
@@ -21,10 +23,10 @@ const HeaderProfile = () => {
 };
 
 const block = css`
-  flex: 1;
+  margin-top: 2rem;
+  padding: 1rem;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const profileImage = css`
@@ -34,8 +36,17 @@ const profileImage = css`
   border-radius: 2rem;
 `;
 
+const aaa = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  font-size: 0.8rem;
+`;
+
 const signOutButton = css`
-  margin-left: 0.875rem;
+  padding: 0;
+  margin: 0;
   color: ${COLORS.secondary};
   border: none;
   background: none;
@@ -43,4 +54,4 @@ const signOutButton = css`
   cursor: pointer;
 `;
 
-export default HeaderProfile;
+export default SidebarProfile;

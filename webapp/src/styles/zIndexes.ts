@@ -1,4 +1,4 @@
 export const Z_INDEXES = {
-  header: 10,
+  sidebar: 10,
   dialog: 15,
 } as const;

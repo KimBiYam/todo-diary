@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { HEADER_HEIGHT } from '../../constants';
+import { SIZES } from '../../styles/sizes';
 
 export type HomeLayoutProps = {
   children?: React.ReactNode;
@@ -10,8 +10,7 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
 };
 
 const block = css`
-  padding-top: ${HEADER_HEIGHT};
-  padding: calc(${HEADER_HEIGHT} + 2rem) 2rem 0;
+  padding-left: ${SIZES.sidebarWidth};
   width: 100%;
   height: 100%;
 `;
