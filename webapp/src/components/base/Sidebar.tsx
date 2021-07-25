@@ -10,21 +10,23 @@ import SidebarProfile from './SidebarProfile';
 
 export type SidebarProps = {};
 
+// TODO : 로고 아이콘 적용
 const Sidebar = memo(() => {
   return (
     <aside css={block}>
       <div css={logoSection}>
         <Link to="/" css={logo}>
-          TODO DIARY
+          할일 다이어리
         </Link>
       </div>
+
       <nav css={headerNavSection}>
-        <SidebarCategory category="Diary" />
+        <SidebarCategory category="할일 다이어리" />
         <ul>
           <SidebarItem
             to="/"
             icon="recent"
-            label="Recent"
+            label="최근 추가한 할 일들"
             isActive={(match, location) => {
               if (!match) {
                 return false;
@@ -33,8 +35,8 @@ const Sidebar = memo(() => {
               return ['/', 'recent'].includes(location.pathname);
             }}
           />
-          <SidebarItem to="/calendar" icon="calendar" label="Calendar" />
-          <SidebarItem to="/write" icon="write" label="Write" />
+          <SidebarItem to="/calendar" icon="calendar" label="날짜별 할 일들" />
+          <SidebarItem to="/write" icon="write" label="할 일 추가하기" />
         </ul>
       </nav>
       <SidebarProfile />

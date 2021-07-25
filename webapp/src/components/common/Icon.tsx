@@ -3,6 +3,8 @@ import * as svg from '../../assets/icons';
 
 export type IconType = keyof typeof svg;
 
+export type Test = typeof svg;
+
 export type IconProps = {
   icon: IconType;
   className?: string;

@@ -5,6 +5,7 @@ import { COLORS } from '../constants';
 
 export type SignInPageProps = {};
 
+// TODO : 로고 아이콘 적용
 const SignInPage = () => {
   return (
     <>
@@ -13,7 +14,7 @@ const SignInPage = () => {
       </Helmet>
       <div css={block}>
         <div css={signInSection}>
-          <h1>Todo Diary!!!</h1>
+          <h1>할일 다이어리</h1>
           <GoogleSignInButton />
         </div>
       </div>

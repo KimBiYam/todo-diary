@@ -20,12 +20,12 @@ const WriteForm = memo(() => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (validateForm()) {
+    if (isValidForm()) {
       mutate();
     }
   };
 
-  const validateForm = () => {
+  const isValidForm = () => {
     if (!title || !content) {
       openDialog('글을 입력하세요');
       return false;
@@ -42,14 +42,14 @@ const WriteForm = memo(() => {
           value={title}
           onChange={handleChangeTitle}
           css={titleInput}
-          placeholder="Title"
+          placeholder="제목"
         />
         <textarea
           name="content"
           value={content}
           onChange={handleChangeContent}
           css={contentSection}
-          placeholder="Content"
+          placeholder="내용을 입력하세요"
         />
         <MainButton type="submit" label="Save" />
       </form>

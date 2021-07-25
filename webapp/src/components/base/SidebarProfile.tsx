@@ -15,7 +15,7 @@ const SidebarProfile = () => {
           <div css={aaa}>
             <span>{user?.displayName}</span>
             <button css={signOutButton} onClick={userLogOut}>
-              Sign Out
+              로그아웃
             </button>
           </div>
         </div>
