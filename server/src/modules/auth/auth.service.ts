@@ -33,12 +33,16 @@ export class AuthService {
   async googleLogin(googleToken: string): Promise<any> {
     try {
       const socialAcountDto = await this.getGoogleProfile(googleToken);
-      const { email } = socialAcountDto;
+      const { email, photoUrl, displayName } = socialAcountDto;
 
       const user = await this.userService.findUserByEmail(email);
 
       if (!isDataExists(user)) {
         throw new BadRequestException('This user is not exists!');
+      }
+
+      if (photoUrl !== user.photoUrl || displayName !== user.displayName) {
+        await this.userService.updateUser({ ...user, photoUrl, displayName });
       }
 
       return await this.login(user);
