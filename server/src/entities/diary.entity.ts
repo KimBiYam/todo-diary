@@ -28,7 +28,6 @@ export class Diary {
   isFinished: boolean;
 
   @OneToOne(() => DiaryMeta, (diaryMeta) => diaryMeta.diary)
-  @JoinColumn({ name: 'diary_meta_id' })
   diaryMeta: DiaryMeta;
 
   @ManyToOne(() => User, (user) => user.diaries, {

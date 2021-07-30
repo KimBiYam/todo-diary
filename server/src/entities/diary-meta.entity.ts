@@ -1,4 +1,10 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Diary } from './diary.entity';
 
 @Entity({ name: 'diary_meta' })
@@ -9,6 +15,7 @@ export class DiaryMeta {
   @Column({ type: 'varchar', length: 5000 })
   content: string;
 
-  @OneToOne(() => Diary, (diary) => diary.diaryMeta, { cascade: true })
+  @OneToOne(() => Diary, (diary) => diary.diaryMeta, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'diary_id' })
   diary: Diary;
 }
