@@ -31,6 +31,7 @@ const GoogleSignInButton = () => {
 
       await googleSignIn(googleToken);
     } catch (e) {
+      openDialog(e);
       userLogOut();
     }
   };

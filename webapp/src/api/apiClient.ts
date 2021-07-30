@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { SERVER_URL } from '../constants';
 import tokenStorage from '../storage/tokenStorage';
-import { store } from '../index';
-import { openDialog } from '../reducers/dialog';
 import { StatusCodes } from 'http-status-codes';
 
 const apiClient = axios.create({ baseURL: SERVER_URL });
@@ -19,18 +17,9 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (config) => config,
   (error: AxiosError) => {
-    const { dispatch, getState } = store;
-    const {
-      dialog: { isOpen },
-    } = getState();
+    const errorText = convertErrorText(error.response?.status);
 
-    if (!isOpen) {
-      const text = convertErrorText(error.response?.status);
-      const openTime = 2 * 1000;
-      dispatch(openDialog({ text, openTime }));
-    }
-
-    return error;
+    throw errorText;
   },
 );
 
