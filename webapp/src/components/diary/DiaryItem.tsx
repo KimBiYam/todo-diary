@@ -36,7 +36,7 @@ const DiaryItem = memo(({ diary }: DiaryItemProps) => {
 
 const block = css`
   padding: 1rem;
-  width: 40%;
+  width: 30rem;
   height: 10rem;
   margin: 1rem;
   cursor: pointer;

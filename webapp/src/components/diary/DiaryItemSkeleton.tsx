@@ -14,7 +14,7 @@ const block = css`
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 40%;
+  width: 30rem;
   height: 10rem;
   margin: 1rem;
   background: rgba(255, 255, 255, 1);

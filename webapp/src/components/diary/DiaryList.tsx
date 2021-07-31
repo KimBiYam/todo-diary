@@ -28,7 +28,7 @@ const DiaryList = () => {
   });
 
   return (
-    <>
+    <div css={box}>
       <div css={diariesSection}>
         {data &&
           data.pages.map((diaries) =>
@@ -40,17 +40,19 @@ const DiaryList = () => {
           ))}
       </div>
       {hasNextPage && <div ref={scrollableTrigerRef} />}
-    </>
+    </div>
   );
 };
 
-const diariesSection = css`
+const box = css`
   padding-top: 2rem;
-  margin: 0 auto;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
-  flex: 1 1 0%;
+`;
+
+const diariesSection = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 `;
 
 export default DiaryList;
