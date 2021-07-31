@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/query/useWriteDiaryMutation';
-import useDialog from '../../hooks/useDialog';
+import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
 
@@ -11,7 +11,7 @@ export type WriteFormProps = {};
 const WriteForm = memo(() => {
   const [title, handleChangeTitle] = useInput();
   const [content, handleChangeContent] = useInput();
-  const { openDialog } = useDialog();
+  const { openDialog } = useDialogAction();
   const history = useHistory();
 
   const { mutate } = useWriteDiaryMutation(title, content, {
@@ -20,12 +20,12 @@ const WriteForm = memo(() => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isValidForm()) {
+    if (validateForm()) {
       mutate();
     }
   };
 
-  const isValidForm = () => {
+  const validateForm = () => {
     if (!title || !content) {
       openDialog('글을 입력하세요');
       return false;

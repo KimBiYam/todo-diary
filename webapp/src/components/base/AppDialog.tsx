@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { memo, useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
 import { COLORS } from '../../constants';
-import useDialog from '../../hooks/useDialog';
+import useDialogSelector from '../../hooks/useDialogSelector';
 import { fadeIn, fadeOut } from '../../styles/transitions';
 import { Z_INDEXES } from '../../styles/zIndexes';
 
@@ -12,7 +12,7 @@ const AppDialog = memo(() => {
   const [visible, setVisible] = useState(false);
   const {
     dialog: { isOpen, text },
-  } = useDialog();
+  } = useDialogSelector();
 
   useEffect(() => {
     const transitionDuration = 1 * 1000;

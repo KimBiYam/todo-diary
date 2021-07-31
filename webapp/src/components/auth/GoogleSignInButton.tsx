@@ -5,7 +5,7 @@ import GoogleLogin, {
 } from 'react-google-login';
 import authApi from '../../api/authApi';
 import { COLORS } from '../../constants';
-import useDialog from '../../hooks/useDialog';
+import useDialogAction from '../../hooks/useDialogAction';
 import useUser from '../../hooks/useUser';
 import tokenStorage from '../../storage/tokenStorage';
 
@@ -13,7 +13,7 @@ export type GoogleSignInButtonProps = {};
 
 const GoogleSignInButton = () => {
   const { userLogIn, userLogOut } = useUser();
-  const { openDialog } = useDialog();
+  const { openDialog } = useDialogAction();
 
   const handleSuccess = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,

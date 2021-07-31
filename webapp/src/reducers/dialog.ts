@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './rootReducer';
 
 export type DialogState = {
   isOpen: boolean;
@@ -15,11 +16,23 @@ const delayDialog = (openTime: number) =>
     setTimeout(() => resolve(true), openTime);
   });
 
-export const openDialog = createAsyncThunk(
-  'dialog/openDialog',
-  async (arg: { text: string; openTime: number }) => {
-    const { openTime } = arg;
+export const openDialogWithDelay = createAsyncThunk(
+  'dialog/openDialogWithDelay',
+  async (arg: { text: string; openTime: number }, { getState, dispatch }) => {
+    const { text, openTime } = arg;
+    const {
+      dialog: { isOpen },
+    } = getState() as RootState;
+
+    if (isOpen) {
+      return;
+    }
+
+    dispatch(openDialog(text));
+
     await delayDialog(openTime);
+
+    dispatch(closeDialog());
   },
 );
 
@@ -27,25 +40,19 @@ const dialogSlice = createSlice({
   name: 'dialog',
   initialState,
   reducers: {
+    openDialog: (state, action: PayloadAction<string>) => {
+      state.isOpen = true;
+      state.text = action.payload;
+    },
     closeDialog: (state) => {
       state.isOpen = false;
       state.text = undefined;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(openDialog.pending, (state, { meta }) => {
-      state.isOpen = true;
-      state.text = meta.arg.text;
-    });
-    builder.addCase(openDialog.fulfilled, (state) => {
-      state.isOpen = false;
-      state.text = undefined;
-    });
-  },
 });
 
 const { reducer, actions } = dialogSlice;
 
-export const { closeDialog } = actions;
+export const { openDialog, closeDialog } = actions;
 
 export default reducer;
