@@ -17,8 +17,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import {
+  AnnualStatisticalDto,
   CreateDiaryDto,
-  MonthlyStatisticsDto,
   SerializeDiaryDto,
   UpdateDiaryDto,
 } from './dto';
@@ -54,6 +54,13 @@ export class DiaryController {
     const serializedDiaries = diaries.map((diary) => diary.serialize());
 
     return { diaries: serializedDiaries };
+  }
+
+  @Get('/statistics')
+  async getDiariesStatistics(@Query() { year }: AnnualStatisticalDto) {
+    const diaries = await this.diaryService.findAnnualDiaries(year);
+
+    return diaries;
   }
 
   @Post()
@@ -114,14 +121,5 @@ export class DiaryController {
   ): Promise<{ msg: string }> {
     await this.diaryService.deleteMyDiary(requestUserDto, id);
     return { msg: 'Successfully deleted your diary' };
-  }
-
-  @Get('/statistics/:month')
-  async getMonthlyStatistics(
-    @Param() monthlyStatisticsDto: MonthlyStatisticsDto,
-  ) {
-    const { month } = monthlyStatisticsDto;
-
-    return month;
   }
 }

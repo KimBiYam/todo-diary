@@ -9,6 +9,7 @@ import { DiaryRepository } from './diary.repository';
 import {
   DeleteResult,
   EntityManager,
+  MoreThan,
   Transaction,
   TransactionManager,
 } from 'typeorm';
@@ -141,5 +142,16 @@ export class DiaryService {
     const diary = await this.findMyDiary(requestUserDto, id);
 
     return await this.diaryRepository.delete(diary.id);
+  }
+
+  async findAnnualDiaries(year: number) {
+    // TODO : 연도의 첫 날 date와 마지막 날의 date를 구하여 필터링 적용
+    const targetDate = new Date().setFullYear(year);
+
+    const diaries = await this.diaryRepository.find({
+      where: { createdAt: MoreThan(targetDate) },
+    });
+
+    return diaries;
   }
 }
