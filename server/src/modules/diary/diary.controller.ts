@@ -18,6 +18,8 @@ import { DiaryService } from './diary.service';
 import { CreateDiaryDto, SerializeDiaryDto, UpdateDiaryDto } from './dto';
 
 @Controller('api/diaries')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @ApiTags('Diaries')
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
@@ -26,8 +28,6 @@ export class DiaryController {
   private readonly logger = new Logger('DiaryController');
 
   @Get('')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: '자신의 다이어리 글 리스트 가져오기 성공',
@@ -51,8 +51,6 @@ export class DiaryController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({ status: 201, description: '다이어리 글 등록 성공' })
   async createDiary(
     @RequestUser() requestUserDto: RequestUserDto,
@@ -67,8 +65,6 @@ export class DiaryController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 가져오기 성공',
@@ -83,8 +79,6 @@ export class DiaryController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 수정 성공',
@@ -104,8 +98,6 @@ export class DiaryController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 삭제 성공',
