@@ -12,10 +12,16 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
+import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import { CreateDiaryDto, SerializeDiaryDto, UpdateDiaryDto } from './dto';
+import {
+  CreateDiaryDto,
+  MonthlyStatisticsDto,
+  SerializeDiaryDto,
+  UpdateDiaryDto,
+} from './dto';
 
 @Controller('api/diaries')
 @UseGuards(JwtAuthGuard)
@@ -55,7 +61,7 @@ export class DiaryController {
   async createDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() createDiaryDto: CreateDiaryDto,
-  ): Promise<any> {
+  ): Promise<{ diary: SerializeDiaryDto }> {
     const diary = await this.diaryService.createDiary(
       requestUserDto,
       createDiaryDto,
@@ -87,7 +93,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
-  ): Promise<any> {
+  ): Promise<{ diary: Diary }> {
     const diary = await this.diaryService.updateMyDiary(
       requestUserDto,
       updateDiaryDto,
@@ -105,8 +111,17 @@ export class DiaryController {
   async deleteMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
-  ): Promise<any> {
+  ): Promise<{ msg: string }> {
     await this.diaryService.deleteMyDiary(requestUserDto, id);
     return { msg: 'Successfully deleted your diary' };
+  }
+
+  @Get('/statistics/:month')
+  async getMonthlyStatistics(
+    @Param() monthlyStatisticsDto: MonthlyStatisticsDto,
+  ) {
+    const { month } = monthlyStatisticsDto;
+
+    return month;
   }
 }
