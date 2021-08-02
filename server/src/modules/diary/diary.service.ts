@@ -164,6 +164,24 @@ export class DiaryService {
     return await this.diaryRepository.delete(diary.id);
   }
 
+  async getDiariesAchievementRate(requestUserDto: RequestUserDto) {
+    const { email } = requestUserDto;
+
+    const user = await this.userService.findUserByEmail(email);
+
+    if (!isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
+    const diaries = await this.diaryRepository.find({ where: { user } });
+
+    const { finishedDiariesCount, totalCount } = this.getDiariesStatistics(
+      diaries,
+    );
+
+    return `${((finishedDiariesCount / totalCount) * 100).toFixed(1)}%`;
+  }
+
   getDiariesStatistics(diaries: Diary[]) {
     const finishedDiariesCount = diaries.filter((diary) => diary.isFinished)
       .length;

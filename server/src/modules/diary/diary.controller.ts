@@ -56,6 +56,17 @@ export class DiaryController {
     return { diaries: serializedDiaries };
   }
 
+  @Get('/achievement-rate')
+  async getDiariesAchievementRate(
+    @RequestUser() requestUserDto: RequestUserDto,
+  ) {
+    const achievementRate = await this.diaryService.getDiariesAchievementRate(
+      requestUserDto,
+    );
+
+    return { achievementRate };
+  }
+
   @Get('/statistics')
   @ApiResponse({
     status: 200,
