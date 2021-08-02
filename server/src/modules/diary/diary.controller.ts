@@ -17,7 +17,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import {
-  AnnualStatisticalDto,
+  DiariesStatisticalDto,
   CreateDiaryDto,
   SerializeDiaryDto,
   UpdateDiaryDto,
@@ -57,10 +57,23 @@ export class DiaryController {
   }
 
   @Get('/statistics')
-  async getDiariesStatistics(@Query() { year }: AnnualStatisticalDto) {
-    const diaries = await this.diaryService.findAnnualDiaries(year);
+  @ApiResponse({
+    status: 200,
+    description: '해당 기간에 해당하는 다이어리 글의 통계 가져오기 성공',
+  })
+  async getDiariesStatistics(
+    @RequestUser() requestUserDto: RequestUserDto,
+    @Query() { startDate, endDate }: DiariesStatisticalDto,
+  ) {
+    const diaries = await this.diaryService.findDiariesByDates(
+      requestUserDto,
+      startDate,
+      endDate,
+    );
 
-    return diaries;
+    const diariesStatistics = this.diaryService.getDiariesStatistics(diaries);
+
+    return { diariesStatistics };
   }
 
   @Post()

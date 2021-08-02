@@ -7,9 +7,9 @@ import {
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import {
+  Between,
   DeleteResult,
   EntityManager,
-  MoreThan,
   Transaction,
   TransactionManager,
 } from 'typeorm';
@@ -84,6 +84,26 @@ export class DiaryService {
     return diary;
   }
 
+  async findDiariesByDates(
+    requestUserDto: RequestUserDto,
+    startDate: Date,
+    endDate: Date,
+  ) {
+    const { email } = requestUserDto;
+
+    const user = await this.userService.findUserByEmail(email);
+
+    if (!isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
+    const diaries = await this.diaryRepository.find({
+      where: { createdAt: Between(startDate, endDate) },
+    });
+
+    return diaries;
+  }
+
   @Transaction({ isolation: 'SERIALIZABLE' })
   async createDiary(
     requestUserDto: RequestUserDto,
@@ -144,14 +164,10 @@ export class DiaryService {
     return await this.diaryRepository.delete(diary.id);
   }
 
-  async findAnnualDiaries(year: number) {
-    // TODO : 연도의 첫 날 date와 마지막 날의 date를 구하여 필터링 적용
-    const targetDate = new Date().setFullYear(year);
+  getDiariesStatistics(diaries: Diary[]) {
+    const finishedDiariesCount = diaries.filter((diary) => diary.isFinished)
+      .length;
 
-    const diaries = await this.diaryRepository.find({
-      where: { createdAt: MoreThan(targetDate) },
-    });
-
-    return diaries;
+    return { totalCount: diaries.length, finishedDiariesCount };
   }
 }
