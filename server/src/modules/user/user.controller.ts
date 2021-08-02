@@ -5,7 +5,7 @@ import { User } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserService } from './user.service';
 
-@Controller('api/users')
+@Controller('api/v1/users')
 @ApiTags('Users')
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })

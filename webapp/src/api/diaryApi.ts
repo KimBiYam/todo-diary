@@ -1,7 +1,7 @@
 import { DiariesResponse, DiaryResponse } from '../types/diary.types';
 import apiClient from './apiClient';
 
-const API_DIARIES = '/api/diaries';
+const API_DIARIES = '/api/v1/diaries';
 
 const getDiaries = async (page: number, limit: number) => {
   try {

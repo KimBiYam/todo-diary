@@ -23,7 +23,7 @@ import {
   UpdateDiaryDto,
 } from './dto';
 
-@Controller('api/diaries')
+@Controller('api/v1/diaries')
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @ApiTags('Diaries')

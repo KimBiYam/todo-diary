@@ -1,7 +1,7 @@
 import { GetUserProfileResponseData, User } from '../types/auth.types';
 import apiClient from './apiClient';
 
-const API_AUTH_USERS_ME = '/api/users/me';
+const API_AUTH_USERS_ME = '/api/v1/users/me';
 
 const getCurrentUser = async () => {
   try {
