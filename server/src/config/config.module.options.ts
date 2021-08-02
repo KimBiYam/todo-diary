@@ -20,5 +20,6 @@ export const configModuleOption: ConfigModuleOptions = {
     DB_DEFAULT_DATABASE: Joi.string(),
     DB_CHARSET: Joi.string(),
     JWT_SECRET_KEY: Joi.string(),
+    TZ: Joi.string(),
   }),
 };

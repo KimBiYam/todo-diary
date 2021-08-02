@@ -10,6 +10,7 @@ export const typeormConfig: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DEFAULT_DATABASE,
+  timezone: process.env.TZ,
   synchronize: true,
   charset: process.env.DB_CHARSET,
   keepConnectionAlive: true,
