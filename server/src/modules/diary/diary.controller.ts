@@ -57,6 +57,10 @@ export class DiaryController {
   }
 
   @Get('/achievement-rate')
+  @ApiResponse({
+    status: 200,
+    description: '자신의 todo 달성률 가져오기 성공',
+  })
   async getDiariesAchievementRate(
     @RequestUser() requestUserDto: RequestUserDto,
   ) {

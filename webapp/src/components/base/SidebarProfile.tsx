@@ -1,22 +1,33 @@
 import { css } from '@emotion/react';
+import React from 'react';
 import { COLORS } from '../../constants';
-import useUser from '../../hooks/useUser';
+import { User } from '../../types/auth.types';
 
-export type SidebarProfileProps = {};
+export type SidebarProfileProps = {
+  user: User;
+  onClickLogout: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  achievementRate: string;
+};
 
-const SidebarProfile = () => {
-  const { user, userLogOut } = useUser();
-
+const SidebarProfile = ({
+  user,
+  onClickLogout,
+  achievementRate,
+}: SidebarProfileProps) => {
   return (
     <>
       {user && (
         <div css={block}>
           <img css={profileImage} alt="profile" src={user?.photoUrl} />
-          <div css={aaa}>
+          <div css={profileTextSection}>
             <span>{user?.displayName}</span>
-            <button css={signOutButton} onClick={userLogOut}>
+            <button css={signOutButton} onClick={onClickLogout}>
               로그아웃
             </button>
+          </div>
+          <div css={achievementRateSection}>
+            <p>달성률</p>
+            <p>{achievementRate}</p>
           </div>
         </div>
       )}
@@ -27,6 +38,7 @@ const SidebarProfile = () => {
 const block = css`
   padding: 1rem;
   display: flex;
+  align-items: center;
 `;
 
 const profileImage = css`
@@ -36,12 +48,12 @@ const profileImage = css`
   border-radius: 2rem;
 `;
 
-const aaa = css`
+const profileTextSection = css`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
   font-size: 0.8rem;
+  align-items: flex-start;
 `;
 
 const signOutButton = css`
@@ -52,6 +64,10 @@ const signOutButton = css`
   background: none;
   text-decoration: underline;
   cursor: pointer;
+`;
+
+const achievementRateSection = css`
+  font-size: 0.9rem;
 `;
 
 export default SidebarProfile;

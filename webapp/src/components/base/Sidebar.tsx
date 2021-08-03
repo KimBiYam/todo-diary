@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
+import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
+import useUser from '../../hooks/useUser';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import SidebarCategory from './SidebarCategory';
@@ -12,6 +14,9 @@ export type SidebarProps = {};
 
 // TODO : 로고 아이콘 적용
 const Sidebar = memo(() => {
+  const { user, userLogOut } = useUser();
+  const { data: achievementRate } = useDiariesAchievementRateQuery(user);
+
   return (
     <aside css={block}>
       <div css={logoSection}>
@@ -39,7 +44,13 @@ const Sidebar = memo(() => {
           <SidebarItem to="/write" icon="write" label="할 일 추가하기" />
         </ul>
       </nav>
-      <SidebarProfile />
+      {user && achievementRate && (
+        <SidebarProfile
+          user={user}
+          onClickLogout={userLogOut}
+          achievementRate={achievementRate}
+        />
+      )}
     </aside>
   );
 });

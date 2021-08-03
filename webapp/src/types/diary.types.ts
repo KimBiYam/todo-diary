@@ -13,3 +13,7 @@ export type DiariesResponse = {
 export type DiaryResponse = {
   diary: Diary;
 };
+
+export type DiariesAchievementRateResponse = {
+  achievementRate: string;
+};
