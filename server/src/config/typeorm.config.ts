@@ -1,10 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SocialAccount, User, Diary, DiaryMeta } from '@src/entities';
 
-const type: any = String(process.env.DB_TYPE);
-
 export const typeormConfig: TypeOrmModuleOptions = {
-  type: type,
+  type: 'mariadb',
   host: process.env.DB_HOST,
   port: Number(process.env.MARIADB_PORT),
   username: process.env.DB_USERNAME,
