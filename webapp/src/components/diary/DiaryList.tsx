@@ -12,9 +12,7 @@ const PAGE_LIMIT = 10;
 const DiaryList = () => {
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
   const { data, hasNextPage, fetchNextPage, isFetching, isLoading } =
-    useDiariesQuery(PAGE_LIMIT, {
-      refetchOnWindowFocus: false,
-    });
+    useDiariesQuery(PAGE_LIMIT);
 
   const isShowSkeleton = useMemo(
     () => (hasNextPage && isFetching) || isLoading,

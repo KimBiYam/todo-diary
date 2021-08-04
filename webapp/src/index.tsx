@@ -9,7 +9,9 @@ import rootReducer from './reducers/rootReducer';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 export const store = configureStore({ reducer: rootReducer });
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 ReactDOM.render(
   <StrictMode>

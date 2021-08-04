@@ -29,6 +29,8 @@ const convertErrorText = (status: number | undefined) => {
       return '잘못된 요청입니다.';
     case StatusCodes.UNAUTHORIZED:
       return '인증 정보가 잘못 되었습니다';
+    case StatusCodes.FORBIDDEN:
+      return '권한이 없습니다';
     case StatusCodes.NOT_FOUND:
       return '데이터를 찾을 수 없습니다';
     default:
