@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import React from 'react';
 import { COLORS } from '../../constants';
 import { User } from '../../types/auth.types';
 
@@ -43,8 +42,8 @@ const block = css`
 
 const profileImage = css`
   margin-right: 1rem;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 2rem;
 `;
 
@@ -52,7 +51,7 @@ const profileTextSection = css`
   flex: 1;
   display: flex;
   flex-direction: column;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   align-items: flex-start;
 `;
 
@@ -67,7 +66,7 @@ const signOutButton = css`
 `;
 
 const achievementRateSection = css`
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 `;
 
 export default SidebarProfile;

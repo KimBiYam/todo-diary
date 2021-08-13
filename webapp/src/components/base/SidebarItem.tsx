@@ -32,7 +32,7 @@ const block = css`
   display: flex;
   align-items: center;
   color: ${COLORS.tertiary};
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   text-decoration: none;
 
@@ -50,9 +50,9 @@ const block = css`
 `;
 
 const iconStyle = () => css`
-  width: 1rem;
-  height: 1rem;
-  margin-right: 1rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 1.6rem;
   fill: ${COLORS.tertiary};
 `;
 

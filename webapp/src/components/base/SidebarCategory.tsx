@@ -14,9 +14,10 @@ const block = css`
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: ${COLORS.tertiary};
+  user-select: none;
 `;
 
 export default SidebarCategory;

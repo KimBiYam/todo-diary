@@ -36,8 +36,8 @@ const DiaryItem = memo(({ diary }: DiaryItemProps) => {
 
 const block = css`
   padding: 1rem;
-  width: 30rem;
-  height: 10rem;
+  width: 48rem;
+  height: 16rem;
   margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);
@@ -56,16 +56,18 @@ const titleSection = css`
 `;
 
 const titleText = css`
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
 `;
 const descriptionSection = css`
+  font-size: 1.6rem;
   color: ${COLORS.tertiary};
 `;
 
 const contentSection = css`
-  margin-top: 1rem;
+  margin-top: 1.6rem;
   line-height: 1.5rem;
+  font-size: 1.6rem;
   height: 5rem;
   color: ${COLORS.tertiary};
 `;

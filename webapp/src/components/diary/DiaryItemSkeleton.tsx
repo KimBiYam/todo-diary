@@ -14,8 +14,8 @@ const block = css`
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 30rem;
-  height: 10rem;
+  width: 48rem;
+  height: 16rem;
   margin: 1rem;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;
@@ -28,9 +28,7 @@ const shiningSection = css`
 `;
 
 const titleSection = css`
-  height: 2rem;
-  font-size: 2rem;
-  font-weight: 500;
+  height: 3rem;
   ${shiningSection}
 `;
 
