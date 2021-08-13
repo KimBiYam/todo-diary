@@ -14,7 +14,7 @@ const block = css`
   padding: 0 1rem;
   display: flex;
   align-items: center;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 800;
   color: ${COLORS.tertiary};
 `;

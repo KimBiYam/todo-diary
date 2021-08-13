@@ -13,7 +13,7 @@ import SidebarProfile from './SidebarProfile';
 export type SidebarProps = {};
 
 // TODO : 로고 아이콘 적용
-const Sidebar = memo(() => {
+const Sidebar = () => {
   const { user, userLogOut } = useUser();
   const { data: achievementRate } = useDiariesAchievementRateQuery(user);
 
@@ -53,7 +53,7 @@ const Sidebar = memo(() => {
       )}
     </aside>
   );
-});
+};
 
 const block = css`
   width: ${SIZES.sidebarWidth};
@@ -67,14 +67,14 @@ const block = css`
 `;
 
 const logoSection = css`
-  height: 6rem;
+  height: 12rem;
   padding: 0 2rem;
   display: flex;
   align-items: center;
 `;
 
 const logo = css`
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   text-decoration: none;
   color: ${COLORS.secondary};
@@ -86,4 +86,4 @@ const headerNavSection = css`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
-export default Sidebar;
+export default memo(Sidebar);

@@ -9,7 +9,7 @@ const globalStyle = css`
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 62.5%;
 
     body {
       background-color: ${COLORS.pageBase};

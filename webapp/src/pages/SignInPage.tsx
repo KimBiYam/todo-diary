@@ -25,17 +25,16 @@ const SignInPage = () => {
 const block = css`
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const signInSection = css`
   display: flex;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   align-items: center;
   flex-direction: column;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   h1 {
     color: ${COLORS.secondary};

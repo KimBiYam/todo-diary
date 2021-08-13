@@ -32,6 +32,7 @@ const block = css`
   display: flex;
   align-items: center;
   color: ${COLORS.tertiary};
+  font-size: 1.2rem;
   font-weight: 600;
   text-decoration: none;
 
