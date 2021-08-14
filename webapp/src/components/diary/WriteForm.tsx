@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import useWriteDiaryMutation from '../../hooks/query/useWriteDiaryMutation';
+import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
 import MainButton from '../common/MainButton';
@@ -14,14 +14,14 @@ const WriteForm = memo(() => {
   const { openDialog } = useDialogAction();
   const history = useHistory();
 
-  const { mutate } = useWriteDiaryMutation(title, content, {
+  const { mutate } = useWriteDiaryMutation({
     onSuccess: () => history.push('/'),
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      mutate();
+      mutate({ title, content });
     }
   };
 
