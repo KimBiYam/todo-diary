@@ -3,7 +3,8 @@ import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
 import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
-import useUser from '../../hooks/useUser';
+import useUserAction from '../../hooks/useUserAction';
+import useUserSelector from '../../hooks/useUserSelector';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import SidebarCategory from './SidebarCategory';
@@ -14,7 +15,8 @@ export type SidebarProps = {};
 
 // TODO : 로고 아이콘 적용
 const Sidebar = () => {
-  const { user, userLogOut } = useUser();
+  const { user } = useUserSelector();
+  const { userLogOut } = useUserAction();
   const { data: achievementRate } = useDiariesAchievementRateQuery(user);
 
   return (

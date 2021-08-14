@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { memo } from 'react';
 import { COLORS } from '../../constants';
 import { User } from '../../types/auth.types';
 
@@ -69,4 +70,4 @@ const achievementRateSection = css`
   font-size: 1.2rem;
 `;
 
-export default SidebarProfile;
+export default memo(SidebarProfile);

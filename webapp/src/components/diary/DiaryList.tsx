@@ -4,7 +4,7 @@ import useUpdateDiaryMutation from '../../hooks/mutation/useUpdateDiaryMutation'
 import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
-import useUser from '../../hooks/useUser';
+import useUserSelector from '../../hooks/useUserSelector';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import DiaryItem from './DiaryItem';
@@ -25,7 +25,7 @@ const DiaryList = () => {
     refetch: refetchDiaries,
   } = useDiariesQuery(PAGE_LIMIT);
 
-  const { user } = useUser();
+  const { user } = useUserSelector();
   const { refetch: refetchAchievementRate } = useDiariesAchievementRateQuery(
     user,
     { enabled: false },

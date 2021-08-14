@@ -6,13 +6,13 @@ import GoogleLogin, {
 import authApi from '../../api/authApi';
 import { COLORS } from '../../constants';
 import useDialogAction from '../../hooks/useDialogAction';
-import useUser from '../../hooks/useUser';
+import useUserAction from '../../hooks/useUserAction';
 import tokenStorage from '../../storage/tokenStorage';
 
 export type GoogleSignInButtonProps = {};
 
 const GoogleSignInButton = () => {
-  const { userLogIn, userLogOut } = useUser();
+  const { userLogIn, userLogOut } = useUserAction();
   const { openDialog } = useDialogAction();
 
   const handleSuccess = async (

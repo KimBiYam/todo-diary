@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import userApi from '../api/userApi';
 import tokenStorage from '../storage/tokenStorage';
-import useUser from './useUser';
+import useUserAction from './useUserAction';
 
 const useCheckUserEffect = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { userLogIn, userLogOut } = useUser();
+  const { userLogIn, userLogOut } = useUserAction();
 
   useEffect(() => {
     if (!tokenStorage.isTokenExists()) {

@@ -5,7 +5,7 @@ import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
 import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
-import useUser from '../../hooks/useUser';
+import useUserSelector from '../../hooks/useUserSelector';
 import MainButton from '../common/MainButton';
 
 export type WriteFormProps = {};
@@ -16,7 +16,7 @@ const WriteForm = memo(() => {
   const { openDialog } = useDialogAction();
   const history = useHistory();
 
-  const { user } = useUser();
+  const { user } = useUserSelector();
   const { refetch } = useDiariesAchievementRateQuery(user, { enabled: false });
 
   const handleSuccessWriteDiray = () => {
