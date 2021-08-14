@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { useMemo, useRef } from 'react';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 
@@ -50,7 +51,10 @@ const box = css`
 
 const diariesSection = css`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+
+  ${BREAK_POINTS.large} {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export default DiaryList;

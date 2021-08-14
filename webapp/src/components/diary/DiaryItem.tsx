@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { COLORS } from '../../constants';
 import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
 
@@ -36,8 +37,8 @@ const DiaryItem = memo(({ diary }: DiaryItemProps) => {
 
 const block = css`
   padding: 1rem;
-  width: 48rem;
-  height: 16rem;
+  width: 24rem;
+  height: 12rem;
   margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);
@@ -46,6 +47,16 @@ const block = css`
   transition: transform 0.2s ease-in-out;
   :hover {
     transform: translateY(-8px);
+  }
+
+  ${BREAK_POINTS.medium} {
+    width: 32rem;
+    height: 16rem;
+  }
+
+  ${BREAK_POINTS.large} {
+    width: 48rem;
+    height: 16rem;
   }
 `;
 
