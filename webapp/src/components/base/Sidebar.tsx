@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
 import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
@@ -19,6 +19,14 @@ const Sidebar = () => {
   const { userLogOut } = useUserAction();
   const { data: achievementRate } = useDiariesAchievementRateQuery(user);
 
+  const isActiveRootItem = useCallback((match, location) => {
+    if (!match) {
+      return false;
+    }
+
+    return ['/', 'recent'].includes(location.pathname);
+  }, []);
+
   return (
     <aside css={block}>
       <div css={logoSection}>
@@ -34,13 +42,7 @@ const Sidebar = () => {
             to="/"
             icon="recent"
             label="최근 추가한 할 일들"
-            isActive={(match, location) => {
-              if (!match) {
-                return false;
-              }
-
-              return ['/', 'recent'].includes(location.pathname);
-            }}
+            isActive={isActiveRootItem}
           />
           <SidebarItem to="/calendar" icon="calendar" label="날짜별 할 일들" />
           <SidebarItem to="/write" icon="write" label="할 일 추가하기" />

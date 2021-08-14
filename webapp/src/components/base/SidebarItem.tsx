@@ -3,6 +3,7 @@ import { match, NavLink } from 'react-router-dom';
 import { COLORS } from '../../constants';
 import Icon, { IconType } from '../common/Icon';
 import History from 'history';
+import { memo } from 'react';
 
 export type SidebarItemProps = {
   label: string;
@@ -56,4 +57,4 @@ const iconStyle = () => css`
   fill: ${COLORS.tertiary};
 `;
 
-export default SidebarItem;
+export default memo(SidebarItem);
