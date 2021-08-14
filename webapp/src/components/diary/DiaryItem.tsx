@@ -8,19 +8,20 @@ import dateUtil from '../../utils/dateUtil';
 
 export type DiaryItemProps = {
   diary: Diary;
+  onClick: (diary: Diary) => void;
 };
 
 const MAX_TITLE_BYTES = 16;
 const MAX_CONTENT_BYTES = 196;
 
-const DiaryItem = memo(({ diary }: DiaryItemProps) => {
+const DiaryItem = memo(({ diary, onClick }: DiaryItemProps) => {
   const { title, content, createdAt, isFinished } = diary;
 
   const slicedTitle = useTextSliceToBytes(title, MAX_TITLE_BYTES);
   const slicedContent = useTextSliceToBytes(content, MAX_CONTENT_BYTES);
 
   return (
-    <div css={block}>
+    <div css={block} onClick={() => onClick(diary)}>
       <div css={titleSection}>
         <h2 css={titleText}>{slicedTitle}</h2>
         <div css={descriptionSection}>

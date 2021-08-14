@@ -2,6 +2,7 @@ import {
   DiariesAchievementRateResponse,
   DiariesResponse,
   DiaryResponse,
+  UpdateDiaryParams,
 } from '../types/diary.types';
 import apiClient from './apiClient';
 
@@ -49,10 +50,23 @@ const writeDiary = async (title: string, content: string) => {
   }
 };
 
+const updateDiary = async ({ id, ...body }: UpdateDiaryParams) => {
+  try {
+    const response = await apiClient.patch(`${API_DIARIES}/${id}`, body);
+
+    const { diary } = response.data;
+
+    return diary;
+  } catch (e) {
+    throw e;
+  }
+};
+
 const diaryApi = {
   getDiaries,
   getDiariesAchievementRate,
   writeDiary,
+  updateDiary,
 };
 
 export default diaryApi;

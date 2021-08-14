@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 import { useMemo, useRef } from 'react';
+import useUpdateDiaryMutation from '../../hooks/mutation/useUpdateDiaryMutation';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import { BREAK_POINTS } from '../../styles/breakPoints';
+import { Diary } from '../../types/diary.types';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 
@@ -12,8 +14,10 @@ const PAGE_LIMIT = 10;
 
 const DiaryList = () => {
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
-  const { data, hasNextPage, fetchNextPage, isFetching, isLoading } =
+  const { data, hasNextPage, fetchNextPage, isFetching, isLoading, refetch } =
     useDiariesQuery(PAGE_LIMIT);
+
+  const { mutate } = useUpdateDiaryMutation({ onSuccess: () => refetch() });
 
   const isShowSkeleton = useMemo(
     () => (hasNextPage && isFetching) || isLoading,
@@ -26,12 +30,24 @@ const DiaryList = () => {
     onIntersect: fetchNextPage,
   });
 
+  const handleClickDiaryItem = (diary: Diary) => {
+    const { id, isFinished } = diary;
+
+    mutate({ id, isFinished: !isFinished });
+  };
+
   return (
     <div css={box}>
       <div css={diariesSection}>
         {data &&
           data.pages.map((diaries) =>
-            diaries.map((diary) => <DiaryItem key={diary.id} diary={diary} />),
+            diaries.map((diary) => (
+              <DiaryItem
+                key={diary.id}
+                diary={diary}
+                onClick={handleClickDiaryItem}
+              />
+            )),
           )}
         {isShowSkeleton &&
           Array.from({ length: PAGE_LIMIT }).map((_, index) => (

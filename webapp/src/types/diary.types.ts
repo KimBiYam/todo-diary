@@ -1,5 +1,5 @@
 export type Diary = {
-  id: number;
+  id: string;
   createdAt: string;
   isFinished: boolean;
   title: string;
@@ -16,4 +16,11 @@ export type DiaryResponse = {
 
 export type DiariesAchievementRateResponse = {
   achievementRate: string;
+};
+
+export type UpdateDiaryParams = {
+  id: string;
+  title?: string;
+  content?: string;
+  isFinished?: boolean;
 };
