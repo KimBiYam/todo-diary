@@ -14,7 +14,7 @@ export type DiaryItemProps = {
 const MAX_TITLE_BYTES = 16;
 const MAX_CONTENT_BYTES = 196;
 
-const DiaryItem = memo(({ diary, onClick }: DiaryItemProps) => {
+const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   const { title, content, createdAt, isFinished } = diary;
 
   const slicedTitle = useTextSliceToBytes(title, MAX_TITLE_BYTES);
@@ -34,7 +34,7 @@ const DiaryItem = memo(({ diary, onClick }: DiaryItemProps) => {
       </div>
     </div>
   );
-});
+};
 
 const block = css`
   padding: 1rem;
@@ -84,4 +84,4 @@ const contentSection = css`
   color: ${COLORS.tertiary};
 `;
 
-export default DiaryItem;
+export default memo(DiaryItem);

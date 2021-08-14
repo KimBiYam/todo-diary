@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import useUpdateDiaryMutation from '../../hooks/mutation/useUpdateDiaryMutation';
 import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
@@ -51,11 +51,14 @@ const DiaryList = () => {
     onIntersect: fetchNextPage,
   });
 
-  const handleClickDiaryItem = (diary: Diary) => {
-    const { id, isFinished } = diary;
+  const handleClickDiaryItem = useCallback(
+    (diary: Diary) => {
+      const { id, isFinished } = diary;
 
-    mutate({ id, isFinished: !isFinished });
-  };
+      mutate({ id, isFinished: !isFinished });
+    },
+    [mutate],
+  );
 
   return (
     <div css={box}>
