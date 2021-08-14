@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 import { useMemo, useRef } from 'react';
 import useUpdateDiaryMutation from '../../hooks/mutation/useUpdateDiaryMutation';
+import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
+import useUser from '../../hooks/useUser';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import DiaryItem from './DiaryItem';
@@ -14,10 +16,29 @@ const PAGE_LIMIT = 10;
 
 const DiaryList = () => {
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
-  const { data, hasNextPage, fetchNextPage, isFetching, isLoading, refetch } =
-    useDiariesQuery(PAGE_LIMIT);
+  const {
+    data: diaries,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+    isLoading,
+    refetch: refetchDiaries,
+  } = useDiariesQuery(PAGE_LIMIT);
 
-  const { mutate } = useUpdateDiaryMutation({ onSuccess: () => refetch() });
+  const { user } = useUser();
+  const { refetch: refetchAchievementRate } = useDiariesAchievementRateQuery(
+    user,
+    { enabled: false },
+  );
+
+  const handleSuccessUpdateDiary = () => {
+    refetchDiaries();
+    refetchAchievementRate();
+  };
+
+  const { mutate } = useUpdateDiaryMutation({
+    onSuccess: handleSuccessUpdateDiary,
+  });
 
   const isShowSkeleton = useMemo(
     () => (hasNextPage && isFetching) || isLoading,
@@ -39,8 +60,8 @@ const DiaryList = () => {
   return (
     <div css={box}>
       <div css={diariesSection}>
-        {data &&
-          data.pages.map((diaries) =>
+        {diaries &&
+          diaries.pages.map((diaries) =>
             diaries.map((diary) => (
               <DiaryItem
                 key={diary.id}
