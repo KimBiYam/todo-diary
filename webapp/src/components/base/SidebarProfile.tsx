@@ -6,14 +6,9 @@ import { User } from '../../types/auth.types';
 export type SidebarProfileProps = {
   user: User;
   onClickLogout: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  achievementRate: string;
 };
 
-const SidebarProfile = ({
-  user,
-  onClickLogout,
-  achievementRate,
-}: SidebarProfileProps) => {
+const SidebarProfile = ({ user, onClickLogout }: SidebarProfileProps) => {
   return (
     <>
       {user && (
@@ -24,10 +19,6 @@ const SidebarProfile = ({
             <button css={signOutButton} onClick={onClickLogout}>
               로그아웃
             </button>
-          </div>
-          <div css={achievementRateSection}>
-            <p>달성률</p>
-            <p>{achievementRate}</p>
           </div>
         </div>
       )}
@@ -64,10 +55,6 @@ const signOutButton = css`
   background: none;
   text-decoration: underline;
   cursor: pointer;
-`;
-
-const achievementRateSection = css`
-  font-size: 1.2rem;
 `;
 
 export default memo(SidebarProfile);

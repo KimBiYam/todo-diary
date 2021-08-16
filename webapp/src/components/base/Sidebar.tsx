@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
-import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useUserAction from '../../hooks/useUserAction';
 import useUserSelector from '../../hooks/useUserSelector';
 import { SIZES } from '../../styles/sizes';
@@ -17,7 +16,6 @@ export type SidebarProps = {};
 const Sidebar = () => {
   const { user } = useUserSelector();
   const { userLogOut } = useUserAction();
-  const { data: achievementRate } = useDiariesAchievementRateQuery(user);
 
   const isActiveRootItem = useCallback((match, location) => {
     if (!match) {
@@ -49,13 +47,7 @@ const Sidebar = () => {
           <SidebarItem to="/chart" icon="chart" label="통계" />
         </ul>
       </nav>
-      {user && achievementRate && (
-        <SidebarProfile
-          user={user}
-          onClickLogout={userLogOut}
-          achievementRate={achievementRate}
-        />
-      )}
+      {user && <SidebarProfile user={user} onClickLogout={userLogOut} />}
     </aside>
   );
 };
