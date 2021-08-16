@@ -29,7 +29,7 @@ const App = () => {
           <LoggedInRoute exact path="/" component={HomePage} />
           <LoggedInRoute
             exact
-            path="/:path(calendar|write|recent)"
+            path="/:path(calendar|write|recent|chart)"
             component={HomePage}
           />
           <LoggedOutRoute exact path="/sign-in" component={SignInPage} />

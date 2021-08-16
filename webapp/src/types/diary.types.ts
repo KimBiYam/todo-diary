@@ -18,6 +18,11 @@ export type DiariesAchievementRateResponse = {
   achievementRate: string;
 };
 
+export type DiariesStatisticsResponse = {
+  totalCount: number;
+  finishedDiariesCount: number;
+};
+
 export type UpdateDiaryParams = {
   id: string;
   title?: string;

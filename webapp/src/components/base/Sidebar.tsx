@@ -46,6 +46,7 @@ const Sidebar = () => {
           />
           <SidebarItem to="/calendar" icon="calendar" label="날짜별 할 일들" />
           <SidebarItem to="/write" icon="write" label="할 일 추가하기" />
+          <SidebarItem to="/chart" icon="chart" label="통계" />
         </ul>
       </nav>
       {user && achievementRate && (

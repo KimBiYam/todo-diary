@@ -12,6 +12,7 @@ const getCurrentUser = async () => {
 
     return serializeUser(user);
   } catch (e) {
+    console.error(e);
     throw e;
   }
 };
