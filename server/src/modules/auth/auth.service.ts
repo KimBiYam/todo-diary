@@ -6,7 +6,7 @@ import { UserService } from '@src/modules/user';
 import { SocialAcountDto } from './dto';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
-import { isDataExists } from '@src/util/common.util';
+import { CommonUtil } from '@src/util/common.util';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +37,7 @@ export class AuthService {
 
       const user = await this.userService.findUserByEmail(email);
 
-      if (!isDataExists(user)) {
+      if (!CommonUtil.isDataExists(user)) {
         throw new BadRequestException('This user is not exists!');
       }
 
@@ -109,7 +109,7 @@ export class AuthService {
 
     const foundUser = await this.userService.findUserByEmail(email);
 
-    if (isDataExists(foundUser)) {
+    if (CommonUtil.isDataExists(foundUser)) {
       throw new BadRequestException('This user is exists!');
     }
 

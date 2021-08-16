@@ -1,12 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate } from 'class-validator';
+import { IsNumber, Max, Min } from 'class-validator';
 
 export class DiariesStatisticalDto {
   @ApiProperty()
-  @IsDate()
-  startDate: Date;
-
-  @ApiProperty()
-  @IsDate()
-  endDate: Date;
+  @IsNumber()
+  @Min(1000)
+  @Max(9999)
+  year: number;
 }

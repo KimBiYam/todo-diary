@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import {
-  Between,
   DeleteResult,
   EntityManager,
   Transaction,
@@ -17,7 +16,7 @@ import { UpdateDiaryDto } from './dto/update-diary-dto';
 import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
-import { isDataExists } from '@src/util/common.util';
+import { CommonUtil } from '@src/util/common.util';
 
 @Injectable()
 export class DiaryService {
@@ -36,7 +35,7 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!isDataExists(user)) {
+    if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 
@@ -61,7 +60,7 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!isDataExists(user)) {
+    if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 
@@ -73,7 +72,7 @@ export class DiaryService {
       .where('diary.id = :id', { id })
       .getOne();
 
-    if (!isDataExists(diary)) {
+    if (!CommonUtil.isDataExists(diary)) {
       throw new NotFoundException('This diary is not exist');
     }
 
@@ -84,24 +83,20 @@ export class DiaryService {
     return diary;
   }
 
-  async findDiariesByDates(
-    requestUserDto: RequestUserDto,
-    startDate: Date,
-    endDate: Date,
-  ) {
+  async findDiariesByYear(requestUserDto: RequestUserDto, year: number) {
     const { email } = requestUserDto;
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!isDataExists(user)) {
+    if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 
-    const diaries = await this.diaryRepository.find({
-      where: { createdAt: Between(startDate, endDate) },
-    });
+    // const diaries = await this.diaryRepository.find({
+    //   where: { createdAt: Between(startDate, endDate) },
+    // });
 
-    return diaries;
+    return [];
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
@@ -115,7 +110,7 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!isDataExists(user)) {
+    if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 
@@ -169,7 +164,7 @@ export class DiaryService {
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!isDataExists(user)) {
+    if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 

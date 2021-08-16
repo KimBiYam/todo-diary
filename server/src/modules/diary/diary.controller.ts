@@ -74,16 +74,15 @@ export class DiaryController {
   @Get('/statistics')
   @ApiResponse({
     status: 200,
-    description: '해당 기간에 해당하는 다이어리 글의 통계 가져오기 성공',
+    description: '해당 연도에 해당하는 다이어리 달성률 통계 가져오기 성공',
   })
   async getDiariesStatistics(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Query() { startDate, endDate }: DiariesStatisticalDto,
+    @Query() { year }: DiariesStatisticalDto,
   ) {
-    const diaries = await this.diaryService.findDiariesByDates(
+    const diaries = await this.diaryService.findDiariesByYear(
       requestUserDto,
-      startDate,
-      endDate,
+      year,
     );
 
     const diariesStatistics = this.diaryService.getDiariesStatistics(diaries);
