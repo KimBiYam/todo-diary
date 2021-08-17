@@ -182,7 +182,7 @@ export class DiaryService {
     return `${((finishedDiariesCount / totalCount) * 100).toFixed(1)}%`;
   }
 
-  groupDriariesByMonth = (diaries: Diary[]) => {
+  groupDiariesByMonth = (diaries: Diary[]) => {
     const months = DateUtil.getAllMonths();
     const groupedDairesByMonth: { [key: number]: Diary[] } = {};
 

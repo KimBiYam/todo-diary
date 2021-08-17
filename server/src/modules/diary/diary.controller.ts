@@ -85,9 +85,7 @@ export class DiaryController {
       year,
     );
 
-    const groupedDairesByMonth = this.diaryService.groupDriariesByMonth(
-      diaries,
-    );
+    const groupedDairesByMonth = this.diaryService.groupDiariesByMonth(diaries);
 
     // this.diaryService.getDiariesStatistics(diaries);
 
