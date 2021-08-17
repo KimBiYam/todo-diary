@@ -101,12 +101,7 @@ export class DiaryService {
       where: { createdAt: Between(firstDayOfYear, lastDayOfYear) },
     });
 
-    console.log(diaries);
-
-    // const months = Array.from({ length: 12 }, (_, index) => index + 1);
-    // console.log(months);
-
-    return [];
+    return diaries;
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
@@ -186,6 +181,25 @@ export class DiaryService {
 
     return `${((finishedDiariesCount / totalCount) * 100).toFixed(1)}%`;
   }
+
+  groupDriariesByMonth = (diaries: Diary[]) => {
+    const months = DateUtil.getAllMonths();
+    const groupedDairesByMonth: { [key: number]: Diary[] } = {};
+
+    months.forEach((month) => {
+      diaries.forEach((diary) => {
+        if (diary.createdAt.getMonth() + 1 === month) {
+          if (groupedDairesByMonth[month] === undefined) {
+            groupedDairesByMonth[month] = [diary];
+            return;
+          }
+          groupedDairesByMonth[month].push(diary);
+        }
+      });
+    });
+
+    return groupedDairesByMonth;
+  };
 
   getDiariesStatistics(diaries: Diary[]) {
     const finishedDiariesCount = diaries.filter((diary) => diary.isFinished)
