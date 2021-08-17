@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import {
+  Between,
   DeleteResult,
   EntityManager,
   Transaction,
@@ -17,6 +18,7 @@ import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
+import { DateUtil } from '@src/util/date.util';
 
 @Injectable()
 export class DiaryService {
@@ -92,9 +94,17 @@ export class DiaryService {
       throw new NotFoundException('This user is not exists!');
     }
 
-    // const diaries = await this.diaryRepository.find({
-    //   where: { createdAt: Between(startDate, endDate) },
-    // });
+    const firstDayOfYear = DateUtil.getFirstDayOfYear(year);
+    const lastDayOfYear = DateUtil.getLastDayOfYear(year);
+
+    const diaries = await this.diaryRepository.find({
+      where: { createdAt: Between(firstDayOfYear, lastDayOfYear) },
+    });
+
+    console.log(diaries);
+
+    // const months = Array.from({ length: 12 }, (_, index) => index + 1);
+    // console.log(months);
 
     return [];
   }
