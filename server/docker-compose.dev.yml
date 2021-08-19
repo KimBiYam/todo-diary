@@ -37,6 +37,7 @@ services:
       - ./.env.dev
     ports:
       - 5000:5000
+      - 9229:9229
 
 networks:
   app-network:
