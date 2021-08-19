@@ -19,6 +19,11 @@ export type DiariesAchievementRateResponse = {
 };
 
 export type DiariesStatisticsResponse = {
+  diariesStatisticsByYear: DiariesStatistics[];
+};
+
+export type DiariesStatistics = {
+  month: number;
   totalCount: number;
   finishedDiariesCount: number;
 };

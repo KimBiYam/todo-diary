@@ -80,12 +80,12 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() { year }: DiariesStatisticalDto,
   ) {
-    const diariesStatistics = await this.diaryService.getDiariesStatisticsByYear(
+    const diariesStatisticsByYear = await this.diaryService.getDiariesStatisticsByYear(
       requestUserDto,
       year,
     );
 
-    return { diariesStatistics };
+    return { diariesStatisticsByYear };
   }
 
   @Post()

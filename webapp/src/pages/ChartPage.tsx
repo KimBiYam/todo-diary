@@ -9,7 +9,7 @@ const ChartPage = () => {
       <Helmet>
         <title>Todo Diary | Chart</title>
       </Helmet>
-      <DiaryChart></DiaryChart>
+      <DiaryChart />
     </>
   );
 };

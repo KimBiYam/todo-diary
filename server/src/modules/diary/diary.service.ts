@@ -189,15 +189,15 @@ export class DiaryService {
     const diariesByYear = await this.findDiariesByYear(requestUserDto, year);
     const groupedDairesByMonth = this.groupDiariesByMonth(diariesByYear);
 
-    const diariesStatisticsByYear = {};
+    const diariesStatisticsByYear = Object.keys(groupedDairesByMonth).map(
+      (month) => {
+        const diariesStatistics = this.getDiariesStatistics(
+          groupedDairesByMonth[month],
+        );
 
-    Object.keys(groupedDairesByMonth).forEach((month) => {
-      const diariesStatistics = this.getDiariesStatistics(
-        groupedDairesByMonth[month],
-      );
-
-      diariesStatisticsByYear[month] = diariesStatistics;
-    });
+        return { month: parseInt(month), ...diariesStatistics };
+      },
+    );
 
     return diariesStatisticsByYear;
   }

@@ -1,23 +1,18 @@
 import { AxiosError } from 'axios';
 import { useQuery, UseQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
-import { DiariesStatisticsResponse } from '../../types/diary.types';
+import { DiariesStatistics } from '../../types/diary.types';
 
 const useDiariesStatisticsQuery = (
-  startDate: string,
-  endDate: string,
-  options?: UseQueryOptions<DiariesStatisticsResponse, AxiosError>,
+  year: number,
+  options?: UseQueryOptions<DiariesStatistics[], AxiosError>,
 ) =>
   useQuery(
-    createKey(startDate, endDate),
-    () => diaryApi.getDiariesStatistics(startDate, endDate),
+    createKey(year),
+    () => diaryApi.getDiariesStatisticsByYear(year),
     options,
   );
 
-const createKey = (startDate: string, endDate: string) => [
-  'diariesStatistics',
-  startDate,
-  endDate,
-];
+const createKey = (year: number) => ['diariesStatistics', year];
 
 export default useDiariesStatisticsQuery;

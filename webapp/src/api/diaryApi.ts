@@ -68,16 +68,18 @@ const updateDiary = async ({ id, ...body }: UpdateDiaryParams) => {
   }
 };
 
-const getDiariesStatistics = async (startDate: string, endDate: string) => {
+const getDiariesStatisticsByYear = async (year: number) => {
   try {
     const response = await apiClient.get<DiariesStatisticsResponse>(
       `${API_DIARIES_STATISTICS}`,
       {
-        params: { startDate, endDate },
+        params: { year },
       },
     );
 
-    return response.data;
+    const { diariesStatisticsByYear } = response.data;
+
+    return diariesStatisticsByYear;
   } catch (e) {
     console.error(e);
     throw e;
@@ -89,7 +91,7 @@ const diaryApi = {
   getDiariesAchievementRate,
   writeDiary,
   updateDiary,
-  getDiariesStatistics,
+  getDiariesStatisticsByYear,
 };
 
 export default diaryApi;
