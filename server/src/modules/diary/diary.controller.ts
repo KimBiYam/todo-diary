@@ -80,16 +80,12 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() { year }: DiariesStatisticalDto,
   ) {
-    const diaries = await this.diaryService.findDiariesByYear(
+    const diariesStatistics = await this.diaryService.getDiariesStatisticsByYear(
       requestUserDto,
       year,
     );
 
-    const groupedDairesByMonth = this.diaryService.groupDiariesByMonth(diaries);
-
-    // this.diaryService.getDiariesStatistics(diaries);
-
-    // return { diariesStatistics };
+    return { diariesStatistics };
   }
 
   @Post()

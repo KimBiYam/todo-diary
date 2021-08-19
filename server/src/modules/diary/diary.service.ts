@@ -182,9 +182,29 @@ export class DiaryService {
     return `${((finishedDiariesCount / totalCount) * 100).toFixed(1)}%`;
   }
 
+  async getDiariesStatisticsByYear(
+    requestUserDto: RequestUserDto,
+    year: number,
+  ) {
+    const diariesByYear = await this.findDiariesByYear(requestUserDto, year);
+    const groupedDairesByMonth = this.groupDiariesByMonth(diariesByYear);
+
+    const diariesStatisticsByYear = {};
+
+    Object.keys(groupedDairesByMonth).forEach((month) => {
+      const diariesStatistics = this.getDiariesStatistics(
+        groupedDairesByMonth[month],
+      );
+
+      diariesStatisticsByYear[month] = diariesStatistics;
+    });
+
+    return diariesStatisticsByYear;
+  }
+
   groupDiariesByMonth = (diaries: Diary[]) => {
     const months = DateUtil.getAllMonths();
-    const groupedDairesByMonth: { [key: number]: Diary[] } = {};
+    const groupedDairesByMonth: { [key: string]: Diary[] } = {};
 
     months.forEach((month) => {
       diaries.forEach((diary) => {
@@ -196,6 +216,10 @@ export class DiaryService {
           groupedDairesByMonth[month].push(diary);
         }
       });
+
+      if (groupedDairesByMonth[month] === undefined) {
+        groupedDairesByMonth[month] = [];
+      }
     });
 
     return groupedDairesByMonth;
