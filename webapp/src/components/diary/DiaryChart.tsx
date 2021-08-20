@@ -16,12 +16,7 @@ export type DiaryChartProps = {
 
 const DiaryChart = ({ diariesStatistics }: DiaryChartProps) => {
   return (
-    <LineChart
-      width={500}
-      height={300}
-      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      data={diariesStatistics}
-    >
+    <LineChart width={500} height={300} data={diariesStatistics}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
       <YAxis />
