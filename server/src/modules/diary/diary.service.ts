@@ -208,18 +208,14 @@ export class DiaryService {
 
     months.forEach((month) => {
       diaries.forEach((diary) => {
+        if (groupedDairesByMonth[month] === undefined) {
+          groupedDairesByMonth[month] = [];
+        }
+
         if (diary.createdAt.getMonth() + 1 === month) {
-          if (groupedDairesByMonth[month] === undefined) {
-            groupedDairesByMonth[month] = [diary];
-            return;
-          }
           groupedDairesByMonth[month].push(diary);
         }
       });
-
-      if (groupedDairesByMonth[month] === undefined) {
-        groupedDairesByMonth[month] = [];
-      }
     });
 
     return groupedDairesByMonth;
