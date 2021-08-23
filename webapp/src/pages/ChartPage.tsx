@@ -9,7 +9,7 @@ import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery'
 export type ChartPageProps = {};
 
 const ChartPage = () => {
-  const MIN_YEAR = useMemo(() => 2010, []);
+  const minYear = useMemo(() => 2010, []);
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const [year, setYear] = useState(currentYear);
 
@@ -33,7 +33,7 @@ const ChartPage = () => {
           <div>
             <YearPicker
               onChange={handleChangeYear}
-              minYear={MIN_YEAR}
+              minYear={minYear}
               maxYear={currentYear}
             />
             <span>년의 통계에요!</span>
