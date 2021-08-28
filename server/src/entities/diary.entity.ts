@@ -14,7 +14,7 @@ import { User } from './user.entity';
 @Entity({ name: 'diary' })
 export class Diary {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  id: string;
 
   @Column({ type: 'varchar', length: 100 })
   @Index()

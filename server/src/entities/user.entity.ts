@@ -13,7 +13,7 @@ import { Diary } from './diary.entity';
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  id: string;
 
   @ApiProperty({
     example: 'userId@gmail.com',

@@ -10,7 +10,7 @@ import { Diary } from './diary.entity';
 @Entity({ name: 'diary_meta' })
 export class DiaryMeta {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: number;
+  id: string;
 
   @Column({ type: 'varchar', length: 5000 })
   content: string;
