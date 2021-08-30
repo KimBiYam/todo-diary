@@ -12,11 +12,13 @@ import { DiariesStatistics } from '../../types/diary.types';
 
 export type DiaryChartProps = {
   diariesStatistics: DiariesStatistics[];
+  width: number;
+  height: number;
 };
 
-const DiaryChart = ({ diariesStatistics }: DiaryChartProps) => {
+const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
   return (
-    <LineChart width={500} height={300} data={diariesStatistics}>
+    <LineChart width={width} height={height} data={diariesStatistics}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
       <YAxis />

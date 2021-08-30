@@ -11,11 +11,10 @@ const DiaryItemSkeleton = () => (
 );
 
 const block = css`
+  height: 12rem;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  width: 48rem;
-  height: 16rem;
   margin: 1rem;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;

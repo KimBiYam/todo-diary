@@ -37,8 +37,8 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
 };
 
 const block = css`
-  padding: 1rem;
   height: 12rem;
+  padding: 1rem;
   margin: 1rem;
   cursor: pointer;
   background: rgba(255, 255, 255, 1);
