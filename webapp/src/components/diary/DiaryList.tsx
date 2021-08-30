@@ -5,7 +5,6 @@ import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievem
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import useUserSelector from '../../hooks/useUserSelector';
-import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
@@ -62,39 +61,29 @@ const DiaryList = () => {
 
   return (
     <div css={box}>
-      <div css={diariesSection}>
-        {diaries &&
-          diaries.pages.map((diaries) =>
-            diaries.map((diary) => (
-              <DiaryItem
-                key={diary.id}
-                diary={diary}
-                onClick={handleClickDiaryItem}
-              />
-            )),
-          )}
-        {isShowSkeleton &&
-          Array.from({ length: PAGE_LIMIT }).map((_, index) => (
-            <DiaryItemSkeleton key={index} />
-          ))}
-      </div>
+      {diaries &&
+        diaries.pages.map((diaries) =>
+          diaries.map((diary) => (
+            <DiaryItem
+              key={diary.id}
+              diary={diary}
+              onClick={handleClickDiaryItem}
+            />
+          )),
+        )}
+      {isShowSkeleton &&
+        Array.from({ length: PAGE_LIMIT }).map((_, index) => (
+          <DiaryItemSkeleton key={index} />
+        ))}
       {hasNextPage && <div ref={scrollableTrigerRef} />}
     </div>
   );
 };
 
 const box = css`
-  padding-top: 2rem;
-  display: flex;
-  justify-content: center;
-`;
-
-const diariesSection = css`
+  padding: 2rem;
   display: grid;
-
-  ${BREAK_POINTS.large} {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(48rem, 1fr));
 `;
 
 export default DiaryList;

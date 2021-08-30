@@ -76,7 +76,7 @@ const box = css`
 `;
 
 const form = css`
-  width: 45%;
+  width: 75%;
   height: 75%;
   padding: 1rem;
   display: flex;
@@ -87,7 +87,7 @@ const form = css`
 `;
 
 const titleInput = css`
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
   width: 100%;
   height: 3rem;
   font-size: 2rem;
