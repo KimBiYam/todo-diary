@@ -27,3 +27,4 @@
 - Redux Toolkit
 - React Query
 - Emotion
+- react-responsive
