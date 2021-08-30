@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants';
 import useUserAction from '../../hooks/useUserAction';
@@ -15,6 +16,14 @@ const MobileHeader = () => {
   const { user } = useUserSelector();
   const { userLogOut } = useUserAction();
 
+  const isActiveRootItem = useCallback((match, location) => {
+    if (!match) {
+      return false;
+    }
+
+    return ['/', 'recent'].includes(location.pathname);
+  }, []);
+
   return (
     <header css={box}>
       <div css={logoSection}>
@@ -25,7 +34,7 @@ const MobileHeader = () => {
       <div css={buttonSection}>
         <nav>
           <ul css={navList}>
-            <HeaderItem to="/" icon="recent" />
+            <HeaderItem to="/" icon="recent" isActive={isActiveRootItem} />
             <HeaderItem to="/write" icon="write" />
             <HeaderItem to="/chart" icon="chart" />
           </ul>

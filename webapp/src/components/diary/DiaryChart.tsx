@@ -21,7 +21,7 @@ const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
     <LineChart width={width} height={height} data={diariesStatistics}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="month" />
-      <YAxis />
+      <YAxis width={15} />
       <Tooltip />
       <Legend />
       <Line

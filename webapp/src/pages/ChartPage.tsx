@@ -5,6 +5,7 @@ import DiaryChart from '../components/diary/DiaryChart';
 import YearPicker from '../components/diary/YearPicker';
 import { COLORS } from '../constants';
 import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
+import useWindowSize from '../hooks/useWindowDimensions';
 
 export type ChartPageProps = {};
 
@@ -12,6 +13,9 @@ const ChartPage = () => {
   const minYear = useMemo(() => 2010, []);
   const currentYear = useMemo(() => new Date().getFullYear(), []);
   const [year, setYear] = useState(currentYear);
+  const windowSize = useWindowSize();
+
+  const { width, height } = windowSize;
 
   const handleChangeYear = useCallback(
     (year: number) => {
@@ -41,7 +45,11 @@ const ChartPage = () => {
         </div>
         <div css={chartSection}>
           {diariesStatistics && (
-            <DiaryChart diariesStatistics={diariesStatistics} />
+            <DiaryChart
+              diariesStatistics={diariesStatistics}
+              width={width * 0.8}
+              height={height * 0.5}
+            />
           )}
         </div>
       </div>
@@ -73,8 +81,9 @@ const yearPickerSection = css`
 `;
 
 const chartSection = css`
-  width: 50rem;
-  height: 30rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ChartPage;
