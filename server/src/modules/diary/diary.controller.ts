@@ -16,12 +16,7 @@ import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import {
-  DiariesStatisticalDto,
-  CreateDiaryDto,
-  SerializeDiaryDto,
-  UpdateDiaryDto,
-} from './dto';
+import { DiariesStatisticalDto, CreateDiaryDto, UpdateDiaryDto } from './dto';
 
 @Controller('api/v1/diaries')
 @UseGuards(JwtAuthGuard)
@@ -44,7 +39,7 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query('page') page: number,
     @Query('limit') limit: number,
-  ): Promise<{ diaries: SerializeDiaryDto[] }> {
+  ) {
     const diaries = await this.diaryService.findMyDiaries(
       requestUserDto,
       page,
@@ -93,7 +88,7 @@ export class DiaryController {
   async createDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() createDiaryDto: CreateDiaryDto,
-  ): Promise<{ diary: SerializeDiaryDto }> {
+  ) {
     const diary = await this.diaryService.createDiary(
       requestUserDto,
       createDiaryDto,
@@ -110,7 +105,7 @@ export class DiaryController {
   async findMyDiary(
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
-  ): Promise<{ diary: SerializeDiaryDto }> {
+  ) {
     const diary = await this.diaryService.findMyDiary(requestUserDto, id);
 
     return { diary: diary.serialize() };
