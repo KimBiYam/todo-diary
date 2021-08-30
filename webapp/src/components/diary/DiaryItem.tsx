@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { COLORS } from '../../constants';
 import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
 
@@ -56,12 +57,28 @@ const titleSection = css`
 `;
 
 const titleText = css`
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 500;
+
+  ${BREAK_POINTS.medium} {
+    font-size: 2.5rem;
+  }
+
+  ${BREAK_POINTS.large} {
+    font-size: 3rem;
+  }
 `;
+
 const descriptionSection = css`
-  font-size: 1.6rem;
   color: ${COLORS.tertiary};
+
+  ${BREAK_POINTS.medium} {
+    font-size: 1.6rem;
+  }
+
+  ${BREAK_POINTS.large} {
+    font-size: 1.6rem;
+  }
 `;
 
 const contentSection = css`

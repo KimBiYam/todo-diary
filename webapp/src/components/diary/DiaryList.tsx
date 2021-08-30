@@ -87,6 +87,10 @@ const box = css`
   grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
 
   ${BREAK_POINTS.medium} {
+    grid-template-columns: repeat(auto-fill, minmax(36rem, 1fr));
+  }
+
+  ${BREAK_POINTS.large} {
     grid-template-columns: repeat(auto-fill, minmax(48rem, 1fr));
   }
 `;
