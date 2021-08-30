@@ -8,7 +8,7 @@ import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import SidebarCategory from './SidebarCategory';
 import SidebarItem from './SidebarItem';
-import SidebarProfile from './SidebarProfile';
+import UserProfile from './UserProfile';
 
 export type SidebarProps = {};
 
@@ -32,8 +32,7 @@ const Sidebar = () => {
           할일 다이어리
         </Link>
       </div>
-
-      <nav css={headerNavSection}>
+      <nav css={navSection}>
         <SidebarCategory category="할일 다이어리" />
         <ul>
           <SidebarItem
@@ -42,12 +41,11 @@ const Sidebar = () => {
             label="최근 추가한 할 일들"
             isActive={isActiveRootItem}
           />
-          <SidebarItem to="/calendar" icon="calendar" label="날짜별 할 일들" />
           <SidebarItem to="/write" icon="write" label="할 일 추가하기" />
           <SidebarItem to="/chart" icon="chart" label="통계" />
         </ul>
       </nav>
-      {user && <SidebarProfile user={user} onClickLogout={userLogOut} />}
+      {user && <UserProfile user={user} onClickLogout={userLogOut} />}
     </aside>
   );
 };
@@ -77,7 +75,7 @@ const logo = css`
   color: ${COLORS.secondary};
 `;
 
-const headerNavSection = css`
+const navSection = css`
   flex: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);

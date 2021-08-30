@@ -5,6 +5,7 @@ import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievem
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import useUserSelector from '../../hooks/useUserSelector';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
@@ -83,7 +84,11 @@ const DiaryList = () => {
 const box = css`
   padding: 2rem;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(48rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+
+  ${BREAK_POINTS.medium} {
+    grid-template-columns: repeat(auto-fill, minmax(48rem, 1fr));
+  }
 `;
 
 export default DiaryList;

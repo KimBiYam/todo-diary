@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import { SIZES } from '../../styles/sizes';
 
 export type HomeLayoutProps = {
@@ -10,7 +11,12 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
 };
 
 const block = css`
-  padding-left: ${SIZES.sidebarWidth};
+  padding-top: ${SIZES.mobileHeaderHeight};
+
+  ${BREAK_POINTS.large} {
+    padding-top: 0;
+    padding-left: ${SIZES.sidebarWidth};
+  }
   width: 100%;
   height: 100%;
 `;

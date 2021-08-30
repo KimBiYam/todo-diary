@@ -1,28 +1,25 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
 import { COLORS } from '../../constants';
+import { BREAK_POINTS } from '../../styles/breakPoints';
 import { User } from '../../types/auth.types';
 
-export type SidebarProfileProps = {
+export type UserProfileProps = {
   user: User;
   onClickLogout: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-const SidebarProfile = ({ user, onClickLogout }: SidebarProfileProps) => {
+const UserProfile = ({ user, onClickLogout }: UserProfileProps) => {
   return (
-    <>
-      {user && (
-        <div css={block}>
-          <img css={profileImage} alt="profile" src={user?.photoUrl} />
-          <div css={profileTextSection}>
-            <span>{user?.displayName}</span>
-            <button css={signOutButton} onClick={onClickLogout}>
-              로그아웃
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <div css={block}>
+      <img css={profileImage} alt="profile" src={user?.photoUrl} />
+      <div css={profileTextSection}>
+        <span>{user?.displayName}</span>
+        <button css={signOutButton} onClick={onClickLogout}>
+          로그아웃
+        </button>
+      </div>
+    </div>
   );
 };
 
@@ -43,8 +40,15 @@ const profileTextSection = css`
   flex: 1;
   display: flex;
   flex-direction: column;
-  font-size: 1.2rem;
   align-items: flex-start;
+
+  ${BREAK_POINTS.medium} {
+    font-size: 1.2rem;
+  }
+
+  ${BREAK_POINTS.large} {
+    font-size: 1.4rem;
+  }
 `;
 
 const signOutButton = css`
@@ -57,4 +61,4 @@ const signOutButton = css`
   cursor: pointer;
 `;
 
-export default memo(SidebarProfile);
+export default memo(UserProfile);

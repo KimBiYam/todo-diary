@@ -5,8 +5,7 @@ import Icon, { IconType } from '../common/Icon';
 import History from 'history';
 import { memo } from 'react';
 
-export type SidebarItemProps = {
-  label: string;
+export type HeaderItemProps = {
   icon: IconType;
   to: string;
   isActive?<Params extends { [K in keyof Params]?: string }>(
@@ -15,35 +14,25 @@ export type SidebarItemProps = {
   ): boolean;
 };
 
-const SidebarItem = ({ label, icon, to, isActive }: SidebarItemProps) => {
+const HeaderItem = ({ icon, to, isActive }: HeaderItemProps) => {
   return (
     <li>
       <NavLink css={box} to={to} isActive={isActive}>
         <Icon css={iconStyle} icon={icon} />
-        {label}
       </NavLink>
     </li>
   );
 };
 
 const box = css`
-  width: 100%;
-  height: 3rem;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  color: ${COLORS.tertiary};
-  font-size: 1.4rem;
-  font-weight: 600;
-  text-decoration: none;
-
   &:hover {
-    background: ${COLORS.pageBase};
+    svg {
+      fill: ${COLORS.black};
+    }
   }
 
   &.active {
     color: black;
-    background: ${COLORS.pageBase};
     svg {
       fill: ${COLORS.black};
     }
@@ -57,4 +46,4 @@ const iconStyle = () => css`
   fill: ${COLORS.tertiary};
 `;
 
-export default memo(SidebarItem);
+export default memo(HeaderItem);
