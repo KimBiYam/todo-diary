@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';
 import { COLORS } from '../constants';
+import GithubSignInButton from '../components/auth/GithubSignInButton';
 
 export type SignInPageProps = {};
 
@@ -15,7 +16,10 @@ const SignInPage = () => {
       <div css={block}>
         <div css={signInSection}>
           <h1>할일 다이어리</h1>
-          <GoogleSignInButton />
+          <div css={buttonSection}>
+            <GoogleSignInButton />
+            <GithubSignInButton />
+          </div>
         </div>
       </div>
     </>
@@ -40,6 +44,12 @@ const signInSection = css`
     color: ${COLORS.secondary};
     margin-bottom: 5.5rem;
   }
+`;
+
+const buttonSection = css`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export default SignInPage;
