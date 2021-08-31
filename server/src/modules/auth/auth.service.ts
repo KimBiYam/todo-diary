@@ -30,7 +30,7 @@ export class AuthService {
     };
   }
 
-  async googleLogin(googleToken: string): Promise<any> {
+  async googleLogin(googleToken: string) {
     try {
       const socialAcountDto = await this.getGoogleProfile(googleToken);
       const { email, photoUrl, displayName } = socialAcountDto;
@@ -96,7 +96,7 @@ export class AuthService {
   async createGoogleAccount(
     googleToken: string,
     @TransactionManager() manager?: EntityManager,
-  ): Promise<any> {
+  ) {
     const socialAccountDto = await this.getGoogleProfile(googleToken);
 
     const {
@@ -127,4 +127,7 @@ export class AuthService {
     await manager.save(user);
     return await manager.save(socialAccount);
   }
+
+  @Transaction({ isolation: 'SERIALIZABLE' })
+  async createGithubAccount(@TransactionManager() manager?: EntityManager) {}
 }

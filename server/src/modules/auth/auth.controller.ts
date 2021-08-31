@@ -13,24 +13,26 @@ export class AuthController {
 
   @Get('/google/check')
   @ApiResponse({ status: 200, description: '유저 존재여부 조회 성공' })
-  async checkGoogleAccount(
-    @Query() { googleToken }: GoogleTokenDto,
-  ): Promise<any> {
+  async checkGoogleAccount(@Query() { googleToken }: GoogleTokenDto) {
     const isExists = await this.authService.isExistsGoogleAccount(googleToken);
     return { isExists };
   }
 
   @Post('/google/sign-in')
   @ApiResponse({ status: 200, description: '구글 소셜 로그인 성공' })
-  async googleLogin(@Body() { googleToken }: GoogleTokenDto): Promise<any> {
+  async googleLogin(@Body() { googleToken }: GoogleTokenDto) {
     return await this.authService.googleLogin(googleToken);
   }
 
   @Post('/google/sign-up')
   @ApiResponse({ status: 201, description: '구글 소셜 회원가입 성공' })
-  async signupGoogleAccount(
-    @Body() { googleToken }: GoogleTokenDto,
-  ): Promise<any> {
+  async signupGoogleAccount(@Body() { googleToken }: GoogleTokenDto) {
     return await this.authService.createGoogleAccount(googleToken);
+  }
+
+  @Post('/github/sign-up')
+  @ApiResponse({ status: 201, description: '깃허브 소셜 회원가입 성공' })
+  async signupGithubAccton() {
+    return await this.authService.createGithubAccount();
   }
 }
