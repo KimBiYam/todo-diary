@@ -30,9 +30,10 @@ export class AuthController {
     return await this.authService.createGoogleAccount(googleToken);
   }
 
-  @Post('/github/sign-up')
+  @Get('/github/callback')
   @ApiResponse({ status: 201, description: '깃허브 소셜 회원가입 성공' })
-  async signupGithubAccton() {
+  async signupGithubAccton(@Query() code: string) {
+    console.log(code);
     return await this.authService.createGithubAccount();
   }
 }
