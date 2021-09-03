@@ -14,7 +14,14 @@ export class AuthController {
   @Get('/google/check')
   @ApiResponse({ status: 200, description: '유저 존재여부 조회 성공' })
   async checkGoogleAccount(@Query() { googleToken }: GoogleTokenDto) {
-    const isExists = await this.authService.isExistsGoogleAccount(googleToken);
+    const socialAccountDto = await this.authService.getGoogleProfile(
+      googleToken,
+    );
+
+    const isExists = await this.authService.isSocialAccountExists(
+      socialAccountDto,
+    );
+
     return { isExists };
   }
 
@@ -34,8 +41,15 @@ export class AuthController {
   @ApiResponse({ status: 201, description: '깃허브 소셜 회원가입 성공' })
   async callbackGithubOAuth(@Query() { code }: GithubOAuthDTO) {
     const githubToken = await this.authService.getgithubAccessToken(code);
-    const githubProfile = await this.authService.getGithubProfile(githubToken);
-    console.log(githubProfile);
-    return githubToken;
+
+    const socialAccountDto = await this.authService.getGithubProfile(
+      githubToken,
+    );
+
+    const result = await this.authService.registerGithubAccount(
+      socialAccountDto,
+    );
+
+    return result;
   }
 }

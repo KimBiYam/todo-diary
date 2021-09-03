@@ -20,5 +20,5 @@ export class SocialAcountDto {
 
   @ApiProperty({ maxLength: 500 })
   @IsString()
-  photoUrl: string;
+  photoUrl?: string;
 }

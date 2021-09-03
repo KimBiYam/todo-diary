@@ -14,11 +14,8 @@ import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
 import { ConfigService } from '@nestjs/config';
 
-type GitHubOAuthResponse = {
-  access_token: string;
-  token_type: string;
-  scope: string;
-};
+const API_GITHUB_ACCESS_TOKEN = 'https://github.com/login/oauth/access_token';
+const API_GITHUB_USER = 'https://api.github.com/user';
 
 @Injectable()
 export class AuthService {
@@ -92,8 +89,7 @@ export class AuthService {
     }
   }
 
-  async isExistsGoogleAccount(googleToken: string) {
-    const socialAccountDto = await this.getGoogleProfile(googleToken);
+  async isSocialAccountExists(socialAccountDto: SocialAcountDto) {
     const { provider, socialId } = socialAccountDto;
 
     const socialAccount = await this.socialAccountRepository.findOne({
@@ -147,8 +143,8 @@ export class AuthService {
     const githubClientSecret = this.configService.get('GITHUB_SECRET');
 
     const response = await this.httpService
-      .post<GitHubOAuthResponse>(
-        'https://github.com/login/oauth/access_token',
+      .post(
+        API_GITHUB_ACCESS_TOKEN,
         {
           code,
           client_id: githubClientId,
@@ -167,11 +163,32 @@ export class AuthService {
 
   async getGithubProfile(githubToken: string) {
     const response = await this.httpService
-      .get('https://api.github.com/user', {
+      .get(API_GITHUB_USER, {
         headers: { Authorization: `Bearer ${githubToken}` },
       })
       .toPromise();
 
-    return response;
+    const {
+      name: displayName,
+      id: socialId,
+      email,
+      avatar_url: photoUrl,
+    } = response.data;
+
+    const socialAccountDto: SocialAcountDto = {
+      displayName,
+      photoUrl,
+      email,
+      socialId,
+      provider: 'github',
+    };
+
+    return socialAccountDto;
+  }
+
+  async registerGithubAccount(socialAcountDto: SocialAcountDto) {
+    console.log(socialAcountDto);
+
+    return socialAcountDto;
   }
 }
