@@ -53,15 +53,15 @@ const wrapper = (visible: boolean) => css`
 `;
 
 const box = (color?: string | undefined) => css`
-  background-color: ${color ?? COLORS.quaternary};
-  opacity: 0.7;
-  font-weight: 600;
-  width: 12rem;
-  height: 3rem;
+  padding: 1.2rem 2.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  background-color: ${color ?? COLORS.quaternary};
+  opacity: 0.7;
+  border-radius: 16px;
+  font-size: 1.6rem;
+  font-weight: 600;
 `;
 
 export default AppDialog;
