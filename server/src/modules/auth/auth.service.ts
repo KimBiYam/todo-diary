@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpService,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
@@ -7,12 +12,21 @@ import { SocialAcountDto } from './dto';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
+import { ConfigService } from '@nestjs/config';
+
+type GitHubOAuthResponse = {
+  access_token: string;
+  token_type: string;
+  scope: string;
+};
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
     private readonly socialAccountRepository: SocialAccountRepository,
   ) {}
 
@@ -128,6 +142,36 @@ export class AuthService {
     return await manager.save(socialAccount);
   }
 
-  @Transaction({ isolation: 'SERIALIZABLE' })
-  async createGithubAccount(@TransactionManager() manager?: EntityManager) {}
+  async getgithubAccessToken(code: string) {
+    const githubClientId = this.configService.get('GITHUB_CLIENT_ID');
+    const githubClientSecret = this.configService.get('GITHUB_SECRET');
+
+    const response = await this.httpService
+      .post<GitHubOAuthResponse>(
+        'https://github.com/login/oauth/access_token',
+        {
+          code,
+          client_id: githubClientId,
+          client_secret: githubClientSecret,
+        },
+        {
+          headers: { Accept: 'application/json' },
+        },
+      )
+      .toPromise();
+
+    const { access_token: githubToken } = response.data;
+
+    return githubToken;
+  }
+
+  async getGithubProfile(githubToken: string) {
+    const response = await this.httpService
+      .get('https://api.github.com/user', {
+        headers: { Authorization: `Bearer ${githubToken}` },
+      })
+      .toPromise();
+
+    return response;
+  }
 }

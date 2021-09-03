@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +13,7 @@ import { JwtStrategy } from './jwt-strategy';
     ConfigService,
     UserModule,
     TypeOrmModule.forFeature([SocialAccount, User]),
+    HttpModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,
       // TODO : Change expires date

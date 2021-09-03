@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { GoogleTokenDto } from './dto';
+import { GithubOAuthDTO, GoogleTokenDto } from './dto';
 
 @Controller('api/auth')
 @ApiTags('Auth')
@@ -32,8 +32,10 @@ export class AuthController {
 
   @Get('/github/callback')
   @ApiResponse({ status: 201, description: '깃허브 소셜 회원가입 성공' })
-  async signupGithubAccton(@Query() code: string) {
-    console.log(code);
-    return await this.authService.createGithubAccount();
+  async callbackGithubOAuth(@Query() { code }: GithubOAuthDTO) {
+    const githubToken = await this.authService.getgithubAccessToken(code);
+    const githubProfile = await this.authService.getGithubProfile(githubToken);
+    console.log(githubProfile);
+    return githubToken;
   }
 }

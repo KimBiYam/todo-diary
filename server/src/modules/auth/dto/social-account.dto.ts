@@ -8,7 +8,7 @@ export class SocialAcountDto {
 
   @ApiProperty({ maxLength: 20 })
   @IsString()
-  provider: string;
+  provider: 'google' | 'github';
 
   @ApiProperty({ maxLength: 100 })
   @IsEmail()

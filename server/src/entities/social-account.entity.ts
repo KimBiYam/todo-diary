@@ -19,7 +19,7 @@ export class SocialAccount {
 
   @Column({ type: 'varchar', length: 20 })
   @Index()
-  provider: string;
+  provider: 'google' | 'github';
 
   @OneToOne(() => User, {
     cascade: true,

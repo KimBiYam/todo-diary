@@ -21,5 +21,7 @@ export const configModuleOption: ConfigModuleOptions = {
     DB_CHARSET: Joi.string(),
     JWT_SECRET_KEY: Joi.string(),
     TZ: Joi.string(),
+    GITHUB_SECRET: Joi.string(),
+    GITHUB_CLIENT_ID: Joi.string(),
   }),
 };
