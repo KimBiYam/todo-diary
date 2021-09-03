@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
 import { UserService } from '@src/modules/user';
-import { SocialAcountDto } from './dto';
+import { SocialAccountDto } from './dto';
 import { EntityManager, Transaction, TransactionManager } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
@@ -41,10 +41,9 @@ export class AuthService {
     };
   }
 
-  async googleLogin(googleToken: string) {
+  async loginSocialAccount(socialAccountDto: SocialAccountDto) {
     try {
-      const socialAcountDto = await this.getGoogleProfile(googleToken);
-      const { email, photoUrl, displayName } = socialAcountDto;
+      const { email, photoUrl, displayName } = socialAccountDto;
 
       const user = await this.userService.findUserByEmail(email);
 
@@ -62,7 +61,7 @@ export class AuthService {
     }
   }
 
-  async getGoogleProfile(googleToken: string): Promise<SocialAcountDto> {
+  async getGoogleProfile(googleToken: string): Promise<SocialAccountDto> {
     try {
       const { data } = await google.people('v1').people.get({
         access_token: googleToken,
@@ -75,7 +74,7 @@ export class AuthService {
       const email = data.emailAddresses[0].value;
       const socialId = data.names[0].metadata.source.id;
 
-      const socialAccountDto: SocialAcountDto = {
+      const socialAccountDto: SocialAccountDto = {
         displayName,
         photoUrl,
         email,
@@ -89,7 +88,7 @@ export class AuthService {
     }
   }
 
-  async isSocialAccountExists(socialAccountDto: SocialAcountDto) {
+  async isSocialAccountExists(socialAccountDto: SocialAccountDto) {
     const { provider, socialId } = socialAccountDto;
 
     const socialAccount = await this.socialAccountRepository.findOne({
@@ -103,12 +102,10 @@ export class AuthService {
   }
 
   @Transaction({ isolation: 'SERIALIZABLE' })
-  async createGoogleAccount(
-    googleToken: string,
+  async createSocialAccount(
+    socialAccountDto: SocialAccountDto,
     @TransactionManager() manager?: EntityManager,
   ) {
-    const socialAccountDto = await this.getGoogleProfile(googleToken);
-
     const {
       socialId,
       email,
@@ -175,7 +172,7 @@ export class AuthService {
       avatar_url: photoUrl,
     } = response.data;
 
-    const socialAccountDto: SocialAcountDto = {
+    const socialAccountDto: SocialAccountDto = {
       displayName,
       photoUrl,
       email,
@@ -186,9 +183,13 @@ export class AuthService {
     return socialAccountDto;
   }
 
-  async registerGithubAccount(socialAcountDto: SocialAcountDto) {
-    console.log(socialAcountDto);
+  async registerGithubAccount(socialAccountDto: SocialAccountDto) {
+    const isExists = await this.isSocialAccountExists(socialAccountDto);
 
-    return socialAcountDto;
+    if (isExists) {
+      return await this.loginSocialAccount(socialAccountDto);
+    }
+
+    return await this.createSocialAccount(socialAccountDto);
   }
 }

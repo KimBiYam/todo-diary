@@ -28,13 +28,21 @@ export class AuthController {
   @Post('/google/sign-in')
   @ApiResponse({ status: 200, description: '구글 소셜 로그인 성공' })
   async googleLogin(@Body() { googleToken }: GoogleTokenDto) {
-    return await this.authService.googleLogin(googleToken);
+    const socialAccountDto = await this.authService.getGoogleProfile(
+      googleToken,
+    );
+
+    return await this.authService.loginSocialAccount(socialAccountDto);
   }
 
   @Post('/google/sign-up')
   @ApiResponse({ status: 201, description: '구글 소셜 회원가입 성공' })
   async signupGoogleAccount(@Body() { googleToken }: GoogleTokenDto) {
-    return await this.authService.createGoogleAccount(googleToken);
+    const socialAccountDto = await this.authService.getGoogleProfile(
+      googleToken,
+    );
+
+    return await this.authService.createSocialAccount(socialAccountDto);
   }
 
   @Get('/github/callback')
