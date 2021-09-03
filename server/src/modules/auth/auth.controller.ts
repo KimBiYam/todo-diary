@@ -45,8 +45,8 @@ export class AuthController {
     return await this.authService.createSocialAccount(socialAccountDto);
   }
 
-  @Get('/github/callback')
-  @ApiResponse({ status: 201, description: '깃허브 소셜 회원가입 성공' })
+  @Post('/github/sign-in')
+  @ApiResponse({ status: 200, description: '깃허브 소셜 로그인 성공' })
   async callbackGithubOAuth(@Query() { code }: GithubOAuthDTO) {
     const githubToken = await this.authService.getgithubAccessToken(code);
 

@@ -30,7 +30,7 @@ const GoogleSignInButton = () => {
 
       await googleSignIn(googleToken);
     } catch (e) {
-      openDialog(e);
+      openDialog(String(e));
       userLogOut();
     }
   };

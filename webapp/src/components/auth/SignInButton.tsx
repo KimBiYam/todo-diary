@@ -4,7 +4,7 @@ import Icon, { IconType } from '../common/Icon';
 
 export type SigninButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    onClick: () => void;
+    onClick?: () => void;
     icon: IconType;
     label: string;
   };

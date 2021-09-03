@@ -9,6 +9,7 @@ import useCheckUserEffect from './hooks/useCheckUserEffect';
 import { Helmet } from 'react-helmet-async';
 import LoggedOutRoute from './routes/LoggedOutRoute';
 import AppDialog from './components/base/AppDialog';
+import GithubSignInPage from './pages/GithubSignInPage';
 
 const App = () => {
   const { isLoading } = useCheckUserEffect();
@@ -33,6 +34,11 @@ const App = () => {
             component={HomePage}
           />
           <LoggedOutRoute exact path="/sign-in" component={SignInPage} />
+          <LoggedOutRoute
+            exact
+            path="/sign-in/github"
+            component={GithubSignInPage}
+          />
           <Route component={NotFoundPage} />
         </Switch>
       </Router>
