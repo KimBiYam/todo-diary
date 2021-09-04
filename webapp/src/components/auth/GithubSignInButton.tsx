@@ -1,9 +1,10 @@
+import { CLIENT_SERVER_URL } from '../../constants';
 import SignInButton from './SignInButton';
 
 export type GithubSignInButtonProps = {};
 
-const REDIRECT_URL = `http://localhost:3000/sign-in/github`;
-const GITHUB_OAUTH_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${REDIRECT_URL}`;
+const GITHUB_REDIRECT_URL = `${CLIENT_SERVER_URL}/sign-in/github`;
+const GITHUB_OAUTH_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URL}`;
 
 const GithubSignInButton = () => {
   const handleClick = () => {

@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios';
-import { SERVER_URL } from '../constants';
+import { BACKEND_SERVER_URL } from '../constants';
 import tokenStorage from '../storage/tokenStorage';
 import { StatusCodes } from 'http-status-codes';
 
-const apiClient = axios.create({ baseURL: SERVER_URL });
+const apiClient = axios.create({ baseURL: BACKEND_SERVER_URL });
 
 apiClient.interceptors.request.use((config) => {
   const accessToken = tokenStorage.getToken();
