@@ -5,10 +5,10 @@ import {
 import apiClient from './apiClient';
 import { serializeUser } from './userApi';
 
-const API_AUTH_GOOGLE_CHECK = '/api/auth/google/check';
-const API_AUTH_GOOGLE_SIGN_IN = '/api/auth/google/sign-in';
-const API_AUTH_GOOGLE_SIGN_UP = '/api/auth/google/sign-up';
-const API_AUTH_GITHUB_SIGN_IN = '/api/auth/github/sign-in';
+const API_AUTH_GOOGLE_CHECK = '/api/v1/auth/google/check';
+const API_AUTH_GOOGLE_SIGN_IN = '/api/v1/auth/google/sign-in';
+const API_AUTH_GOOGLE_SIGN_UP = '/api/v1/auth/google/sign-up';
+const API_AUTH_GITHUB_SIGN_IN = '/api/v1/auth/github/sign-in';
 
 const checkGoogleAccount = async (googleToken: string) => {
   try {

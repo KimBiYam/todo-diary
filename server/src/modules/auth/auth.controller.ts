@@ -3,7 +3,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { GithubOAuthDTO, GoogleTokenDto } from './dto';
 
-@Controller('api/auth')
+@Controller('api/v1/auth')
 @ApiTags('Auth')
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
