@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { COLORS } from '../../constants';
 import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
 import { BREAK_POINTS } from '../../styles/breakPoints';
@@ -20,13 +20,18 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   const slicedTitle = useTextSliceToBytes(title, MAX_TITLE_BYTES);
   const slicedContent = useTextSliceToBytes(content, MAX_CONTENT_BYTES);
 
+  const finishedText = useMemo(
+    () => (isFinished ? '완료' : '미완료'),
+    [isFinished],
+  );
+
   return (
     <div css={block} onClick={() => onClick(diary)}>
       <div css={titleSection}>
         <h2 css={titleText}>{slicedTitle}</h2>
         <div css={descriptionSection}>
           <span>{dateUtil.getFormattedDate(createdAt)}</span>
-          <span>{isFinished.toString()}</span>
+          <span>{finishedText}</span>
         </div>
       </div>
       <div css={contentSection}>
@@ -71,6 +76,8 @@ const titleText = css`
 
 const descriptionSection = css`
   color: ${COLORS.tertiary};
+  display: flex;
+  gap: 1rem;
 
   ${BREAK_POINTS.medium} {
     font-size: 1.6rem;
