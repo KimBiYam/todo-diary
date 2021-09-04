@@ -18,7 +18,7 @@ services:
     container_name: nestjs-boilerplate-nginx
     restart: always
     depends_on:
-      - nestjs
+      - backend
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
