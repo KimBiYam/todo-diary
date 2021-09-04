@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { GithubOAuthDTO, GoogleTokenDto } from './dto';
 
@@ -12,7 +12,11 @@ export class AuthController {
   private readonly logger = new Logger('AuthController');
 
   @Get('/google/check')
-  @ApiResponse({ status: 200, description: '구글 유저 존재여부 조회 성공' })
+  @ApiOperation({ summary: '구글 Social Account 존재여부 가져오기' })
+  @ApiResponse({
+    status: 200,
+    description: '구글 Social Account 존재여부 가져오기',
+  })
   async checkGoogleAccount(@Query() { googleToken }: GoogleTokenDto) {
     const socialAccountDto = await this.authService.getGoogleProfile(
       googleToken,
@@ -26,7 +30,8 @@ export class AuthController {
   }
 
   @Post('/google/sign-in')
-  @ApiResponse({ status: 201, description: '구글 소셜 로그인 성공' })
+  @ApiOperation({ summary: '구글 Social Account 로그인' })
+  @ApiResponse({ status: 201, description: '구글 Social Account 로그인 성공' })
   async googleLogin(@Body() { googleToken }: GoogleTokenDto) {
     const socialAccountDto = await this.authService.getGoogleProfile(
       googleToken,
@@ -36,7 +41,11 @@ export class AuthController {
   }
 
   @Post('/google/sign-up')
-  @ApiResponse({ status: 201, description: '구글 소셜 회원가입 성공' })
+  @ApiOperation({ summary: '구글 Social Account 회원가입' })
+  @ApiResponse({
+    status: 201,
+    description: '구글 Social Account 회원가입 성공',
+  })
   async signupGoogleAccount(@Body() { googleToken }: GoogleTokenDto) {
     const socialAccountDto = await this.authService.getGoogleProfile(
       googleToken,
@@ -46,6 +55,11 @@ export class AuthController {
   }
 
   @Post('/github/sign-in')
+  @ApiOperation({
+    summary: '깃허브 Social Account 로그인',
+    description:
+      '깃허브 유저 정보를 가져온 뒤 서버에 존재하지 않는 계정이면 생성 후 로그인합니다',
+  })
   @ApiResponse({ status: 201, description: '깃허브 소셜 로그인 성공' })
   async callbackGithubOAuth(@Body() { code }: GithubOAuthDTO) {
     const githubToken = await this.authService.getGithubAccessToken(code);

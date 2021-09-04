@@ -1,5 +1,10 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators';
 import { User } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -13,6 +18,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/me')
+  @ApiOperation({ summary: '로그인 된 자신의 프로필 가져오기' })
   @ApiResponse({ status: 200, description: '유저 프로필 조회 성공' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

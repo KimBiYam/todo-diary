@@ -10,7 +10,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -29,6 +35,7 @@ export class DiaryController {
   private readonly logger = new Logger('DiaryController');
 
   @Get('')
+  @ApiOperation({ summary: '자신의 다이어리 글 리스트 가져오기' })
   @ApiResponse({
     status: 200,
     description: '자신의 다이어리 글 리스트 가져오기 성공',
@@ -52,6 +59,7 @@ export class DiaryController {
   }
 
   @Get('/achievement-rate')
+  @ApiOperation({ summary: '자신의 todo 달성률 가져오기' })
   @ApiResponse({
     status: 200,
     description: '자신의 todo 달성률 가져오기 성공',
@@ -67,6 +75,9 @@ export class DiaryController {
   }
 
   @Get('/statistics')
+  @ApiOperation({
+    summary: '해당 연도에 해당하는 다이어리 달성률 통계 가져오기',
+  })
   @ApiResponse({
     status: 200,
     description: '해당 연도에 해당하는 다이어리 달성률 통계 가져오기 성공',
@@ -84,6 +95,9 @@ export class DiaryController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: '다이어리 글 등록',
+  })
   @ApiResponse({ status: 201, description: '다이어리 글 등록 성공' })
   async createDiary(
     @RequestUser() requestUserDto: RequestUserDto,
@@ -98,6 +112,9 @@ export class DiaryController {
   }
 
   @Get(':id')
+  @ApiOperation({
+    summary: '자신의 특정 다이어리 글 가져오기',
+  })
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 가져오기 성공',
@@ -112,6 +129,9 @@ export class DiaryController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: '자신의 특정 다이어리 글 수정',
+  })
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 수정 성공',
@@ -131,6 +151,9 @@ export class DiaryController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: '자신의 특정 다이어리 글 삭제',
+  })
   @ApiResponse({
     status: 200,
     description: '자신의 특정 다이어리 글 삭제 성공',
