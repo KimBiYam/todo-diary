@@ -15,14 +15,18 @@ export class User {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: string;
 
+  @ApiProperty({ example: 'username' })
+  @IsString()
+  @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
+  username?: string;
+
   @ApiProperty({
     example: 'userId@gmail.com',
     description: '이메일',
-    required: true,
   })
   @IsEmail()
-  @Column({ type: 'varchar', unique: true, length: 100 })
-  email: string;
+  @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
+  email?: string;
 
   @ApiProperty({
     example: 'displayName',
