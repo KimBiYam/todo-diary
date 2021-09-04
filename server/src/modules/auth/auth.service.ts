@@ -135,7 +135,7 @@ export class AuthService {
     return await manager.save(socialAccount);
   }
 
-  async getgithubAccessToken(code: string) {
+  async getGithubAccessToken(code: string) {
     const githubClientId = this.configService.get('GITHUB_CLIENT_ID');
     const githubClientSecret = this.configService.get('GITHUB_SECRET');
 
@@ -181,15 +181,5 @@ export class AuthService {
     };
 
     return socialAccountDto;
-  }
-
-  async registerGithubAccount(socialAccountDto: SocialAccountDto) {
-    const isExists = await this.isSocialAccountExists(socialAccountDto);
-
-    if (isExists) {
-      return await this.loginSocialAccount(socialAccountDto);
-    }
-
-    return await this.createSocialAccount(socialAccountDto);
   }
 }

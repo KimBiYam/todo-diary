@@ -28,14 +28,14 @@ const GoogleSignInButton = () => {
         await authApi.signUpGoogleAccount(googleToken);
       }
 
-      await googleSignIn(googleToken);
+      await signIn(googleToken);
     } catch (e) {
       openDialog(String(e));
       userLogOut();
     }
   };
 
-  const googleSignIn = async (googleToken: string) => {
+  const signIn = async (googleToken: string) => {
     const signInResponse = await authApi.signInGoogleAccount(googleToken);
 
     const { accessToken, user } = signInResponse;

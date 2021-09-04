@@ -12,7 +12,7 @@ export class AuthController {
   private readonly logger = new Logger('AuthController');
 
   @Get('/google/check')
-  @ApiResponse({ status: 200, description: '유저 존재여부 조회 성공' })
+  @ApiResponse({ status: 200, description: '구글 유저 존재여부 조회 성공' })
   async checkGoogleAccount(@Query() { googleToken }: GoogleTokenDto) {
     const socialAccountDto = await this.authService.getGoogleProfile(
       googleToken,
@@ -26,7 +26,7 @@ export class AuthController {
   }
 
   @Post('/google/sign-in')
-  @ApiResponse({ status: 200, description: '구글 소셜 로그인 성공' })
+  @ApiResponse({ status: 201, description: '구글 소셜 로그인 성공' })
   async googleLogin(@Body() { googleToken }: GoogleTokenDto) {
     const socialAccountDto = await this.authService.getGoogleProfile(
       googleToken,
@@ -46,18 +46,22 @@ export class AuthController {
   }
 
   @Post('/github/sign-in')
-  @ApiResponse({ status: 200, description: '깃허브 소셜 로그인 성공' })
-  async callbackGithubOAuth(@Query() { code }: GithubOAuthDTO) {
-    const githubToken = await this.authService.getgithubAccessToken(code);
+  @ApiResponse({ status: 201, description: '깃허브 소셜 로그인 성공' })
+  async callbackGithubOAuth(@Body() { code }: GithubOAuthDTO) {
+    const githubToken = await this.authService.getGithubAccessToken(code);
 
     const socialAccountDto = await this.authService.getGithubProfile(
       githubToken,
     );
 
-    const result = await this.authService.registerGithubAccount(
+    const isExists = await this.authService.isSocialAccountExists(
       socialAccountDto,
     );
 
-    return result;
+    if (!isExists) {
+      await this.authService.createSocialAccount(socialAccountDto);
+    }
+
+    return await this.authService.loginSocialAccount(socialAccountDto);
   }
 }

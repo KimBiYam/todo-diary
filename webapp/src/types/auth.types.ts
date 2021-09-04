@@ -9,10 +9,10 @@ export type GetUserProfileResponseData = {
   user: User;
 };
 
-export type CheckGoogleAccountResponseData = {
+export type CheckSocialAccountResponseData = {
   isExists: boolean;
 };
 
-export type SignInGoogleAccountResponseData = GetUserProfileResponseData & {
+export type SignInSocialAccountResponseData = GetUserProfileResponseData & {
   accessToken: string;
 };
