@@ -98,7 +98,7 @@ export class DiaryService {
     const lastDayOfYear = DateUtil.getLastDayOfYear(year);
 
     const diaries = await this.diaryRepository.find({
-      where: { createdAt: Between(firstDayOfYear, lastDayOfYear) },
+      where: { createdAt: Between(firstDayOfYear, lastDayOfYear), user: user },
     });
 
     return diaries;
