@@ -40,4 +40,5 @@ server/mariadb/data
 server/.env
 server/.env.dev
 webapp/.env
+webapp/.env.development
 
