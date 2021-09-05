@@ -69,7 +69,7 @@ const logoSection = css`
 `;
 
 const logo = css`
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 600;
   text-decoration: none;
   color: ${COLORS.secondary};
