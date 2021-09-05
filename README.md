@@ -1,6 +1,6 @@
 ## [Todo Diary](https://todo-diary.vercel.app/)
 
-해야 할 일을 작성하고, 월별 통계 그래프를 볼 수 있습니다
+> 해야 할 일을 작성하고, 월별 통계 그래프를 볼 수 있습니다
 
 ## Features
 
