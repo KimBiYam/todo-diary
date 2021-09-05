@@ -38,10 +38,10 @@ const Sidebar = () => {
           <SidebarItem
             to="/"
             icon="recent"
-            label="최근 추가한 할 일들"
+            label="최근"
             isActive={isActiveRootItem}
           />
-          <SidebarItem to="/write" icon="write" label="할 일 추가하기" />
+          <SidebarItem to="/write" icon="write" label="할 일 추가" />
           <SidebarItem to="/chart" icon="chart" label="통계" />
         </ul>
       </nav>
