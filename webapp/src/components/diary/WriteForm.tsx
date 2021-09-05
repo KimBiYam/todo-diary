@@ -2,10 +2,8 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
-import useDiariesAchievementRateQuery from '../../hooks/query/useDiariesAchievementRateQuery';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
-import useUserSelector from '../../hooks/useUserSelector';
 import MainButton from '../common/MainButton';
 
 export type WriteFormProps = {};
@@ -16,11 +14,7 @@ const WriteForm = memo(() => {
   const { openDialog } = useDialogAction();
   const history = useHistory();
 
-  const { user } = useUserSelector();
-  const { refetch } = useDiariesAchievementRateQuery(user, { enabled: false });
-
   const handleSuccessWriteDiray = () => {
-    refetch();
     history.push('/');
   };
 

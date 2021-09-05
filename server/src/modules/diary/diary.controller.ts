@@ -58,22 +58,6 @@ export class DiaryController {
     return { diaries: serializedDiaries };
   }
 
-  @Get('/achievement-rate')
-  @ApiOperation({ summary: '자신의 todo 달성률 가져오기' })
-  @ApiResponse({
-    status: 200,
-    description: '자신의 todo 달성률 가져오기 성공',
-  })
-  async getDiariesAchievementRate(
-    @RequestUser() requestUserDto: RequestUserDto,
-  ) {
-    const achievementRate = await this.diaryService.getDiariesAchievementRate(
-      requestUserDto,
-    );
-
-    return { achievementRate };
-  }
-
   @Get('/statistics')
   @ApiOperation({
     summary: '해당 연도에 해당하는 다이어리 달성률 통계 가져오기',

@@ -1,5 +1,4 @@
 import {
-  DiariesAchievementRateResponse,
   DiariesResponse,
   DiariesStatisticsResponse,
   DiaryResponse,
@@ -8,7 +7,6 @@ import {
 import apiClient from './apiClient';
 
 const API_DIARIES = '/api/v1/diaries';
-const API_DIARIES_ACHIEVEMENT_RATE = '/api/v1/diaries/achievement-rate';
 const API_DIARIES_STATISTICS = '/api/v1/diaries/statistics';
 
 const getDiaries = async (page: number, limit: number) => {
@@ -19,20 +17,6 @@ const getDiaries = async (page: number, limit: number) => {
 
     const { diaries } = response.data;
     return diaries;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-};
-
-const getDiariesAchievementRate = async () => {
-  try {
-    const response = await apiClient.get<DiariesAchievementRateResponse>(
-      API_DIARIES_ACHIEVEMENT_RATE,
-    );
-
-    const { achievementRate } = response.data;
-    return achievementRate;
   } catch (e) {
     console.error(e);
     throw e;
@@ -88,7 +72,6 @@ const getDiariesStatisticsByYear = async (year: number) => {
 
 const diaryApi = {
   getDiaries,
-  getDiariesAchievementRate,
   writeDiary,
   updateDiary,
   getDiariesStatisticsByYear,
