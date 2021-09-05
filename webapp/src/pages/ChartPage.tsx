@@ -25,8 +25,11 @@ const ChartPage = () => {
     [setYear],
   );
 
-  const { data: diariesStatistics, isLoading } =
-    useDiariesStatisticsQuery(year);
+  const {
+    data: diariesStatistics,
+    isLoading,
+    isError,
+  } = useDiariesStatisticsQuery(year);
 
   return (
     <>
@@ -47,6 +50,9 @@ const ChartPage = () => {
         </div>
         <div css={chartSection}>
           {isLoading && <LoadingSpinner />}
+          {isError && !diariesStatistics && (
+            <p css={errorText}>서버 에러에요</p>
+          )}
           {diariesStatistics && (
             <DiaryChart
               diariesStatistics={diariesStatistics}
@@ -87,6 +93,11 @@ const chartSection = css`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const errorText = css`
+  font-size: 1.6rem;
+  color: ${COLORS.red};
 `;
 
 export default ChartPage;

@@ -10,7 +10,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 export const store = configureStore({ reducer: rootReducer });
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  defaultOptions: { queries: { refetchOnWindowFocus: false, retry: false } },
 });
 
 ReactDOM.render(

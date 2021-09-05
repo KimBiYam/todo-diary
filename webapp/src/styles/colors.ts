@@ -6,4 +6,5 @@ export const COLORS = {
   pageBase: 'rgba(245, 245, 245, 1)',
   white: 'rgba(255, 255, 255, 1)',
   black: 'rgba(0, 0, 0, 1)',
+  red: 'rgba(255, 77, 79, 0.63)',
 } as const;
