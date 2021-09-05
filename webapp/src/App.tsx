@@ -10,13 +10,10 @@ import { Helmet } from 'react-helmet-async';
 import LoggedOutRoute from './routes/LoggedOutRoute';
 import AppDialog from './components/base/AppDialog';
 import GithubSignInPage from './pages/GithubSignInPage';
+import LoadingPage from './pages/LoadingPage';
 
 const App = () => {
   const { isLoading } = useCheckUserEffect();
-
-  if (isLoading) {
-    return <></>;
-  }
 
   return (
     <>
@@ -27,6 +24,7 @@ const App = () => {
       <Global styles={globalStyle} />
       <Router>
         <Switch>
+          {isLoading && <LoadingPage />}
           <LoggedInRoute exact path="/" component={HomePage} />
           <LoggedInRoute
             exact

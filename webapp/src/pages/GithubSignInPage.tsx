@@ -2,11 +2,10 @@ import { css } from '@emotion/react';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import authApi from '../api/authApi';
-import { COLORS } from '../constants';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import useDialogAction from '../hooks/useDialogAction';
 import useUserAction from '../hooks/useUserAction';
 import tokenStorage from '../storage/tokenStorage';
-import { spin } from '../styles/transitions';
 
 export type GithubSignInPageProps = {};
 
@@ -42,7 +41,7 @@ const GithubSignInPage = () => {
 
   return (
     <div css={box}>
-      <div css={spinner} />
+      <LoadingSpinner />
     </div>
   );
 };
@@ -53,17 +52,6 @@ const box = css`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const spinner = css`
-  border: 8px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 8px solid ${COLORS.quaternary};
-  width: 60px;
-  height: 60px;
-  animation: ${spin} 1s linear infinite;
-
-  ${spin}
 `;
 
 export default GithubSignInPage;

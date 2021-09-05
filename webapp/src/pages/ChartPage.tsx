@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { useCallback, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import DiaryChart from '../components/diary/DiaryChart';
 import YearPicker from '../components/diary/YearPicker';
 import { COLORS } from '../constants';
@@ -24,7 +25,8 @@ const ChartPage = () => {
     [setYear],
   );
 
-  const { data: diariesStatistics } = useDiariesStatisticsQuery(year);
+  const { data: diariesStatistics, isLoading } =
+    useDiariesStatisticsQuery(year);
 
   return (
     <>
@@ -44,6 +46,7 @@ const ChartPage = () => {
           </div>
         </div>
         <div css={chartSection}>
+          {isLoading && <LoadingSpinner />}
           {diariesStatistics && (
             <DiaryChart
               diariesStatistics={diariesStatistics}
