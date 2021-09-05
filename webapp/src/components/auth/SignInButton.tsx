@@ -22,12 +22,11 @@ const box = css`
   width: 25rem;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   border: none;
   background: white;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: ${COLORS.secondary};
   padding: 1rem;
   border-radius: 1px;
@@ -42,7 +41,7 @@ const box = css`
 const iconStyle = css`
   width: 2rem;
   height: 2rem;
-  margin-right: 1.6rem;
+  margin: 0 1.6rem;
 `;
 
 export default SigninButton;

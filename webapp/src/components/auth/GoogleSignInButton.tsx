@@ -51,7 +51,7 @@ const GoogleSignInButton = () => {
       clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
       render={({ onClick, disabled }) => (
         <SignInButton
-          label="Google 계정으로 로그인 하기"
+          label="Google 계정으로 로그인"
           icon="googleIcon"
           onClick={onClick}
           disabled={disabled}

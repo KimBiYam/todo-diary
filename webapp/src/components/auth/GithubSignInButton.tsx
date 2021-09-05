@@ -15,7 +15,7 @@ const GithubSignInButton = () => {
     <SignInButton
       onClick={handleClick}
       icon="githubIcon"
-      label="Github 계정으로 로그인하기"
+      label="Github 계정으로 로그인"
     />
   );
 };
