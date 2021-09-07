@@ -55,7 +55,7 @@ const WriteForm = memo(() => {
           css={contentSection}
           placeholder="내용을 입력하세요"
         />
-        <MainButton type="submit" label="Save" />
+        <MainButton type="submit" label="저장" />
       </form>
     </div>
   );
