@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { memo, useMemo } from 'react';
 import { COLORS } from '../../constants';
-import useTextSliceToBytes from '../../hooks/useTextSliceToBytes';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
@@ -11,14 +10,8 @@ export type DiaryItemProps = {
   onClick: (diary: Diary) => void;
 };
 
-const MAX_TITLE_BYTES = 16;
-const MAX_CONTENT_BYTES = 196;
-
 const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   const { title, content, createdAt, isFinished } = diary;
-
-  const slicedTitle = useTextSliceToBytes(title, MAX_TITLE_BYTES);
-  const slicedContent = useTextSliceToBytes(content, MAX_CONTENT_BYTES);
 
   const finishedText = useMemo(
     () => (isFinished ? '완료' : '미완료'),
@@ -28,14 +21,14 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   return (
     <div css={block} onClick={() => onClick(diary)}>
       <div css={titleSection}>
-        <h2 css={titleText}>{slicedTitle}</h2>
-        <div css={descriptionSection}>
+        <h2 css={titleText}>{title}</h2>
+        <div css={infoSection}>
           <span>{dateUtil.getFormattedDate(createdAt)}</span>
           <span>{finishedText}</span>
         </div>
       </div>
       <div css={contentSection}>
-        <p>{slicedContent}</p>
+        <p>{content}</p>
       </div>
     </div>
   );
@@ -56,14 +49,20 @@ const block = css`
 `;
 
 const titleSection = css`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
 
 const titleText = css`
+  flex: 2;
+  width: 100%;
   font-size: 2rem;
   font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   ${BREAK_POINTS.medium} {
     font-size: 2.5rem;
@@ -74,9 +73,11 @@ const titleText = css`
   }
 `;
 
-const descriptionSection = css`
+const infoSection = css`
+  flex: 1.5;
   color: ${COLORS.tertiary};
   display: flex;
+  justify-content: flex-end;
   gap: 1rem;
 
   ${BREAK_POINTS.medium} {
@@ -90,10 +91,15 @@ const descriptionSection = css`
 
 const contentSection = css`
   margin-top: 1.6rem;
-  line-height: 1.5rem;
+  line-height: 2rem;
   font-size: 1.6rem;
-  height: 5rem;
   color: ${COLORS.tertiary};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
 `;
 
 export default memo(DiaryItem);
