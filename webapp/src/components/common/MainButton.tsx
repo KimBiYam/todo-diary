@@ -20,10 +20,11 @@ const MainButtonButton = memo(
 
 const mainButton = css`
   border: none;
-  width: 6rem;
-  height: 2rem;
-  background-color: ${COLORS.quaternary};
+  width: 14rem;
+  height: 2.4rem;
   border-radius: 8px;
+  background-color: ${COLORS.quaternary};
+  font-size: 1.4rem;
   cursor: pointer;
 `;
 
