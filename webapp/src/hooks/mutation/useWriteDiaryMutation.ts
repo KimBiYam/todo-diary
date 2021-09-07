@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { Diary } from '../../types/diary.types';
@@ -6,7 +5,7 @@ import { Diary } from '../../types/diary.types';
 const useWriteDiaryMutation = (
   options: UseMutationOptions<
     Diary,
-    AxiosError,
+    string,
     { title: string; content: string }
   > = {},
 ) =>

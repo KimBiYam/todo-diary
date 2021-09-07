@@ -16,12 +16,17 @@ const WriteForm = memo(() => {
   const { openDialog } = useDialogAction();
   const history = useHistory();
 
-  const handleSuccessWriteDiray = () => {
+  const handleSuccessWriteDiary = () => {
     history.push('/');
   };
 
+  const handleErrorWriteDiary = (errorMessage: string) => {
+    openDialog(errorMessage);
+  };
+
   const { mutate, isLoading } = useWriteDiaryMutation({
-    onSuccess: handleSuccessWriteDiray,
+    onSuccess: handleSuccessWriteDiary,
+    onError: handleErrorWriteDiary,
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +58,7 @@ const WriteForm = memo(() => {
           onChange={handleChangeTitle}
           css={titleInput}
           placeholder="제목"
+          maxLength={100}
         />
         <textarea
           name="content"
@@ -60,6 +66,7 @@ const WriteForm = memo(() => {
           onChange={handleChangeContent}
           css={contentSection}
           placeholder="내용을 입력하세요"
+          maxLength={5000}
         />
         <div css={buttonWrapper}>
           <MainButton type="submit" label="저장" />
