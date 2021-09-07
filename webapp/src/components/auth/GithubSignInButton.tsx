@@ -1,19 +1,13 @@
-import { CLIENT_SERVER_URL } from '../../constants';
 import SignInButton from './SignInButton';
 
-export type GithubSignInButtonProps = {};
+export type GithubSignInButtonProps = {
+  onClick: () => void;
+};
 
-const GITHUB_REDIRECT_URL = `${CLIENT_SERVER_URL}/sign-in/github`;
-const GITHUB_OAUTH_URL = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${GITHUB_REDIRECT_URL}`;
-
-const GithubSignInButton = () => {
-  const handleClick = () => {
-    window.location.replace(GITHUB_OAUTH_URL);
-  };
-
+const GithubSignInButton = ({ onClick }: GithubSignInButtonProps) => {
   return (
     <SignInButton
-      onClick={handleClick}
+      onClick={onClick}
       icon="githubIcon"
       label="Github 계정으로 로그인"
     />
