@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';
-import { COLORS } from '../constants';
+import { COLORS, GITHUB_OAUTH_URL } from '../constants';
 import GithubSignInButton from '../components/auth/GithubSignInButton';
 import {
   GoogleLoginResponse,
@@ -37,7 +37,7 @@ const SignInPage = () => {
         await authApi.signUpGoogleAccount(googleToken);
       }
 
-      await signIn(googleToken);
+      await googleSignIn(googleToken);
     } catch (e) {
       openDialog('서버 에러입니다');
       userLogOut();
@@ -45,7 +45,7 @@ const SignInPage = () => {
     }
   };
 
-  const signIn = async (googleToken: string) => {
+  const googleSignIn = async (googleToken: string) => {
     const signInResponse = await authApi.signInGoogleAccount(googleToken);
 
     const { accessToken, user } = signInResponse;
@@ -55,6 +55,10 @@ const SignInPage = () => {
   };
 
   const handleFailureGoogleSignIn = () => openDialog('서버 에러입니다');
+
+  const handleClickGithubSignIn = () => {
+    window.location.replace(GITHUB_OAUTH_URL);
+  };
 
   if (isLoading) {
     return <LoadingPage />;
@@ -73,7 +77,7 @@ const SignInPage = () => {
               onSuccess={handleSuccessGoogleSignIn}
               onFailure={handleFailureGoogleSignIn}
             />
-            <GithubSignInButton />
+            <GithubSignInButton onClick={handleClickGithubSignIn} />
           </div>
         </div>
       </div>
