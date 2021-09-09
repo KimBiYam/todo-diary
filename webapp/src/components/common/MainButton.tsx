@@ -20,12 +20,18 @@ const MainButton = memo(
 
 const mainButton = (color: keyof typeof COLORS) => css`
   border: none;
-  width: 14rem;
-  height: 2.4rem;
-  border-radius: 8px;
+  width: 8rem;
+  height: 4rem;
+  border-radius: 4px;
   background-color: ${COLORS[color]};
-  font-size: 1.4rem;
+  font-size: 1.6rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export default MainButton;
