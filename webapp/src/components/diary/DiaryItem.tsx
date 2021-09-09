@@ -5,6 +5,9 @@ import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
 
+const TITLE_MAXIMUM_LENGTH = 20;
+const CONTENT_MAXIMUM_LENGTH = 200;
+
 export type DiaryItemProps = {
   diary: Diary;
   onClick: (diary: Diary) => void;
@@ -18,17 +21,27 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
     [isFinished],
   );
 
+  const slicedTitle = useMemo(
+    () => title.slice(0, TITLE_MAXIMUM_LENGTH),
+    [title],
+  );
+
+  const slicedContent = useMemo(
+    () => content.slice(0, CONTENT_MAXIMUM_LENGTH),
+    [content],
+  );
+
   return (
     <div css={block} onClick={() => onClick(diary)}>
       <div css={titleSection}>
-        <h2 css={titleText}>{title}</h2>
+        <h2 css={titleText}>{slicedTitle}</h2>
         <div css={infoSection}>
           <span>{dateUtil.getFormattedDate(createdAt)}</span>
           <span>{finishedText}</span>
         </div>
       </div>
       <div css={contentSection}>
-        <p>{content}</p>
+        <p>{slicedContent}</p>
       </div>
     </div>
   );
