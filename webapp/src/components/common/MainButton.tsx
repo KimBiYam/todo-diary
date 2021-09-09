@@ -2,30 +2,30 @@ import { css } from '@emotion/react';
 import { memo } from 'react';
 import { COLORS } from '../../constants';
 
-export type MainButtonButtonProps =
-  React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    label: string;
-    onClick?: () => void;
-  };
+export type MainButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  label: string;
+  onClick?: () => void;
+  color?: keyof typeof COLORS;
+};
 
-const MainButtonButton = memo(
-  ({ label, onClick, ...rest }: MainButtonButtonProps) => {
+const MainButton = memo(
+  ({ label, onClick, color = 'quaternary', ...rest }: MainButtonProps) => {
     return (
-      <button css={mainButton} onClick={onClick} {...rest}>
+      <button css={mainButton(color)} onClick={onClick} {...rest}>
         {label}
       </button>
     );
   },
 );
 
-const mainButton = css`
+const mainButton = (color: keyof typeof COLORS) => css`
   border: none;
   width: 14rem;
   height: 2.4rem;
   border-radius: 8px;
-  background-color: ${COLORS.quaternary};
+  background-color: ${COLORS[color]};
   font-size: 1.4rem;
   cursor: pointer;
 `;
 
-export default MainButtonButton;
+export default MainButton;
