@@ -5,14 +5,14 @@ export type User = {
   photoUrl?: string;
 };
 
-export type GetUserProfileResponseData = {
+export type GetUserProfileResponse = {
   user: User;
 };
 
-export type CheckSocialAccountResponseData = {
+export type CheckSocialAccountResponse = {
   isExists: boolean;
 };
 
-export type SignInSocialAccountResponseData = GetUserProfileResponseData & {
+export type SignInSocialAccountResponse = GetUserProfileResponse & {
   accessToken: string;
 };

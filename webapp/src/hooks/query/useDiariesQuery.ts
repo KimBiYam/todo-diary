@@ -1,11 +1,10 @@
-import { AxiosError } from 'axios';
 import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { Diary } from '../../types/diary.types';
 
 const useDiariesQuery = (
   limit: number,
-  options: UseInfiniteQueryOptions<Diary[], AxiosError> = {},
+  options: UseInfiniteQueryOptions<Diary[]> = {},
 ) =>
   useInfiniteQuery(
     'diaries',
