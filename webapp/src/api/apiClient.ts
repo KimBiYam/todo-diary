@@ -19,7 +19,7 @@ apiClient.interceptors.response.use(
   (error: AxiosError) => {
     const errorText = convertErrorText(error.response?.status);
 
-    throw errorText;
+    return Promise.reject(errorText);
   },
 );
 
