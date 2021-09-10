@@ -9,6 +9,18 @@ import apiClient from './apiClient';
 const API_DIARIES = '/api/v1/diaries';
 const API_DIARIES_STATISTICS = '/api/v1/diaries/statistics';
 
+const getDiaryById = async (id: string) => {
+  try {
+    const response = await apiClient.get<DiaryResponse>(`${API_DIARIES}/${id}`);
+
+    const { diary } = response.data;
+    return diary;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
 const getDiaries = async (page: number, limit: number) => {
   try {
     const response = await apiClient.get<DiariesResponse>(API_DIARIES, {
@@ -71,6 +83,7 @@ const getDiariesStatisticsByYear = async (year: number) => {
 };
 
 const diaryApi = {
+  getDiaryById,
   getDiaries,
   writeDiary,
   updateDiary,

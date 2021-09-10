@@ -1,6 +1,6 @@
 import {
-  CheckSocialAccountResponseData,
-  SignInSocialAccountResponseData,
+  CheckSocialAccountResponse,
+  SignInSocialAccountResponse,
 } from '../types/auth.types';
 import apiClient from './apiClient';
 import { serializeUser } from './userApi';
@@ -12,7 +12,7 @@ const API_AUTH_GITHUB_SIGN_IN = '/api/v1/auth/github/sign-in';
 
 const checkGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await apiClient.get<CheckSocialAccountResponseData>(
+    const response = await apiClient.get<CheckSocialAccountResponse>(
       API_AUTH_GOOGLE_CHECK,
       {
         params: { googleToken },
@@ -29,7 +29,7 @@ const checkGoogleAccount = async (googleToken: string) => {
 
 const signInGoogleAccount = async (googleToken: string) => {
   try {
-    const response = await apiClient.post<SignInSocialAccountResponseData>(
+    const response = await apiClient.post<SignInSocialAccountResponse>(
       API_AUTH_GOOGLE_SIGN_IN,
       {
         googleToken,
@@ -60,7 +60,7 @@ const signUpGoogleAccount = async (googleToken: string) => {
 
 const signInGithubAccount = async (code: string) => {
   try {
-    const response = await apiClient.post<SignInSocialAccountResponseData>(
+    const response = await apiClient.post<SignInSocialAccountResponse>(
       API_AUTH_GITHUB_SIGN_IN,
       {
         code,
