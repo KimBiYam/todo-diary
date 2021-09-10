@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import Sidebar from '../components/base/Sidebar';
 import HomeLayout from '../components/base/HomeLayout';
-import RecentPage from './RecentPage';
+import DiaryPage from './DiaryPage';
 import WritePage from './WritePage';
 import ChartPage from './ChartPage';
 import { useMediaQuery } from 'react-responsive';
@@ -18,7 +18,7 @@ const HomePage = () => {
       {isTabletOrMobile ? <MobileHeader /> : <Sidebar />}
       <HomeLayout>
         <Switch>
-          <Route exact path={['/', '/diary']} component={RecentPage} />
+          <Route exact path={['/', '/diary']} component={DiaryPage} />
           <Route exact path="/write" component={WritePage} />
           <Route exact path="/chart" component={ChartPage} />
           <Route exact path="/diary/:id" component={DiaryDetailPage} />

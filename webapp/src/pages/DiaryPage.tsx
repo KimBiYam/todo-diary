@@ -1,9 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import DiaryList from '../components/diary/DiaryList';
 
-export type RecentPageProps = {};
+export type DiaryPageProps = {};
 
-const RecentPage = () => {
+const DiaryPage = () => {
   return (
     <>
       <Helmet>
@@ -14,4 +14,4 @@ const RecentPage = () => {
   );
 };
 
-export default RecentPage;
+export default DiaryPage;
