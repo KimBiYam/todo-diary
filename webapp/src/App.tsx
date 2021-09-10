@@ -25,12 +25,12 @@ const App = () => {
       <Router>
         <Switch>
           {isLoading && <LoadingPage />}
-          <LoggedInRoute exact path="/" component={HomePage} />
           <LoggedInRoute
             exact
-            path="/:path(calendar|write|recent|chart)"
+            path={['/', '/:path(calendar|write|recent|chart|diary)']}
             component={HomePage}
           />
+          <LoggedInRoute exact path="/diary/:id" component={HomePage} />
           <LoggedOutRoute exact path="/sign-in" component={SignInPage} />
           <LoggedOutRoute
             exact
