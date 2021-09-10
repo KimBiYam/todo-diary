@@ -18,7 +18,7 @@ const HomePage = () => {
       {isTabletOrMobile ? <MobileHeader /> : <Sidebar />}
       <HomeLayout>
         <Switch>
-          <Route exact path={['/', '/recent']} component={RecentPage} />
+          <Route exact path={['/', '/diary']} component={RecentPage} />
           <Route exact path="/write" component={WritePage} />
           <Route exact path="/chart" component={ChartPage} />
           <Route exact path="/diary/:id" component={DiaryDetailPage} />

@@ -17,11 +17,11 @@ const MobileHeader = () => {
   const { userLogOut } = useUserAction();
 
   const isActiveRootItem = useCallback((match, location) => {
-    if (!match) {
-      return false;
+    if (location.pathname === '/') {
+      return true;
     }
 
-    return ['/', 'recent'].includes(location.pathname);
+    return match;
   }, []);
 
   return (
@@ -34,7 +34,7 @@ const MobileHeader = () => {
       <div css={buttonSection}>
         <nav>
           <ul css={navList}>
-            <HeaderItem to="/" icon="recent" isActive={isActiveRootItem} />
+            <HeaderItem to="/diary" icon="recent" isActive={isActiveRootItem} />
             <HeaderItem to="/write" icon="write" />
             <HeaderItem to="/chart" icon="chart" />
           </ul>

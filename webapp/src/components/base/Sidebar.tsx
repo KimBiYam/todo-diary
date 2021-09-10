@@ -18,17 +18,17 @@ const Sidebar = () => {
   const { userLogOut } = useUserAction();
 
   const isActiveRootItem = useCallback((match, location) => {
-    if (!match) {
-      return false;
+    if (location.pathname === '/') {
+      return true;
     }
 
-    return ['/', 'recent'].includes(location.pathname);
+    return match;
   }, []);
 
   return (
     <aside css={block}>
       <div css={logoSection}>
-        <Link to="/" css={logo}>
+        <Link to="/diary" css={logo}>
           할일 다이어리
         </Link>
       </div>
@@ -36,7 +36,7 @@ const Sidebar = () => {
         <SidebarCategory category="할일 다이어리" />
         <ul>
           <SidebarItem
-            to="/"
+            to="/diary"
             icon="recent"
             label="최근"
             isActive={isActiveRootItem}
