@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { COLORS } from '../../constants';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 
@@ -8,6 +9,7 @@ export type DiaryCardProps = {
   onChangeTitle?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeContent?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   renderButtons?: () => React.ReactNode;
+  infoTexts?: string[];
 };
 
 const DiaryCard = ({
@@ -16,6 +18,7 @@ const DiaryCard = ({
   onChangeContent,
   onChangeTitle,
   renderButtons,
+  infoTexts,
 }: DiaryCardProps) => {
   return (
     <div css={box}>
@@ -28,6 +31,13 @@ const DiaryCard = ({
         maxLength={100}
         readOnly={mode === 'view'}
       />
+      {infoTexts && (
+        <div css={infoWrapper}>
+          {infoTexts.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
+        </div>
+      )}
       <textarea
         name="content"
         onChange={onChangeContent}
@@ -64,6 +74,15 @@ const titleInput = css`
   font-size: 2rem;
   font-weight: 500;
   border: none;
+`;
+
+const infoWrapper = css`
+  margin: 0.8rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 1.4rem;
+  color: ${COLORS.secondary};
 `;
 
 const contentWrapper = css`
