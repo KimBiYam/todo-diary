@@ -1,13 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 
 const useInput = () => {
   const [value, setValue] = useState('');
 
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setValue(e.target.value);
-  };
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setValue(e.target.value);
+    },
+    [setValue],
+  );
 
   return [value, handleChange] as const;
 };
