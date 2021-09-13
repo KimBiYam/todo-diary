@@ -64,6 +64,19 @@ const updateDiary = async ({ id, ...body }: UpdateDiaryParams) => {
   }
 };
 
+const deleteDiary = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`${API_DIARIES}/${id}`);
+
+    const { diary } = response.data;
+
+    return diary;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+};
+
 const getDiariesStatisticsByYear = async (year: number) => {
   try {
     const response = await apiClient.get<DiariesStatisticsResponse>(
@@ -87,6 +100,7 @@ const diaryApi = {
   getDiaries,
   writeDiary,
   updateDiary,
+  deleteDiary,
   getDiariesStatisticsByYear,
 };
 

@@ -1,10 +1,9 @@
-import { AxiosError } from 'axios';
 import { useMutation, UseMutationOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { UpdateDiaryParams } from '../../types/diary.types';
 
 const useUpdateDiaryMutation = (
-  options?: UseMutationOptions<unknown, AxiosError, UpdateDiaryParams>,
+  options?: UseMutationOptions<unknown, string, UpdateDiaryParams>,
 ) =>
   useMutation(
     (params: UpdateDiaryParams) => diaryApi.updateDiary(params),
