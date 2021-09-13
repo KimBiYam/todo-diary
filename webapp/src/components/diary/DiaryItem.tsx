@@ -32,7 +32,7 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   );
 
   return (
-    <div css={block} onClick={() => onClick(diary)}>
+    <div css={block(isFinished)} onClick={() => onClick(diary)}>
       <div css={titleSection}>
         <h2 css={titleText}>{slicedTitle}</h2>
         <div css={infoSection}>
@@ -47,7 +47,7 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   );
 };
 
-const block = css`
+const block = (isFinished: boolean) => css`
   height: 12rem;
   padding: 1rem;
   margin: 1rem;
@@ -59,6 +59,11 @@ const block = css`
   :hover {
     transform: translateY(-8px);
   }
+
+  ${isFinished &&
+  css`
+    opacity: 0.3;
+  `}
 `;
 
 const titleSection = css`
