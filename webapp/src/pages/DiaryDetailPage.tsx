@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useHistory, useParams } from 'react-router';
+import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
+import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import dateUtil from '../utils/dateUtil';
@@ -28,7 +30,11 @@ const DiaryDetailPage = () => {
     history.push('/');
   };
 
-  const { data: diary, isLoading } = useDiaryQuery(id ?? '', {
+  const {
+    data: diary,
+    isFetching,
+    refetch,
+  } = useDiaryQuery(id ?? '', {
     enabled: id !== undefined,
     onError: handleDiaryQueryError,
   });
@@ -38,7 +44,34 @@ const DiaryDetailPage = () => {
     [diary],
   );
 
-  if (isLoading) {
+  const infoTexts = useMemo(
+    () =>
+      diary && [
+        `작성일 : ${dateUtil.getFormattedDate(diary?.createdAt)}`,
+        `완료 여부 : ${finishedText}`,
+      ],
+    [diary],
+  );
+
+  const { mutate, isLoading: isUpdateDiaryLoading } = useUpdateDiaryMutation({
+    onSuccess: () => refetch(),
+  });
+
+  const renderButtons = useCallback(
+    () =>
+      diary && (
+        <MainButton
+          label={diary.isFinished ? '미완료' : '완료'}
+          color="primary"
+          onClick={() =>
+            mutate({ id: diary.id, isFinished: !diary.isFinished })
+          }
+        />
+      ),
+    [diary],
+  );
+
+  if (isFetching || isUpdateDiaryLoading) {
     return <LoadingPage />;
   }
 
@@ -52,10 +85,8 @@ const DiaryDetailPage = () => {
           <DiaryCard
             mode="view"
             diary={diary}
-            infoTexts={[
-              `작성일 : ${dateUtil.getFormattedDate(diary?.createdAt)}`,
-              `완료 여부 : ${finishedText}`,
-            ]}
+            infoTexts={infoTexts}
+            renderButtons={renderButtons}
           />
         </div>
       )}
