@@ -57,7 +57,6 @@ const WriteForm = memo(() => {
   return (
     <form css={box} onSubmit={handleSubmit}>
       <DiaryCard
-        mode="write"
         onChangeTitle={handleChangeTitle}
         onChangeContent={handleChangeContent}
         renderButtons={renderButtons}

@@ -5,7 +5,6 @@ import { Diary } from '../../types/diary.types';
 
 export type DiaryCardProps = {
   diary?: Diary;
-  mode: 'view' | 'write';
   onChangeTitle?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onChangeContent?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   renderButtons?: () => React.ReactNode;
@@ -14,7 +13,6 @@ export type DiaryCardProps = {
 
 const DiaryCard = ({
   diary,
-  mode,
   onChangeContent,
   onChangeTitle,
   renderButtons,
@@ -29,7 +27,6 @@ const DiaryCard = ({
         placeholder="제목"
         defaultValue={diary?.title}
         maxLength={100}
-        readOnly={mode === 'view'}
       />
       {infoTexts && (
         <div css={infoWrapper}>
@@ -45,7 +42,6 @@ const DiaryCard = ({
         placeholder="내용을 입력하세요"
         defaultValue={diary?.content}
         maxLength={5000}
-        readOnly={mode === 'view'}
       />
       {renderButtons && <div css={buttonWrapper}>{renderButtons()}</div>}
     </div>
