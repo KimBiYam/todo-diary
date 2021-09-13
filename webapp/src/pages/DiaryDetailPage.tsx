@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
+import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
 import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
@@ -57,20 +58,32 @@ const DiaryDetailPage = () => {
     [diary],
   );
 
-  const { mutate, isLoading: isUpdateDiaryLoading } = useUpdateDiaryMutation({
-    onSuccess: () => refetch(),
-  });
+  const handleMutateError = (e: string) => {
+    openDialog(e);
+  };
+
+  const { mutate: updateDiaryMutate, isLoading: isUpdateDiaryLoading } =
+    useUpdateDiaryMutation({
+      onSuccess: () => refetch(),
+      onError: handleMutateError,
+    });
+
+  const { mutate: deleteDiaryMutate, isLoading: isDeleteDiaryLoading } =
+    useDeleteDiaryMutation({
+      onSuccess: () => history.push('/'),
+      onError: handleMutateError,
+    });
 
   const handleFinishedButtonClick = () => {
     if (diary) {
-      mutate({ id: diary.id, isFinished: !diary.isFinished });
+      updateDiaryMutate({ id: diary.id, isFinished: !diary.isFinished });
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm() && diary) {
-      mutate({ id: diary.id, title, content });
+      updateDiaryMutate({ id: diary.id, title, content });
     }
   };
 
@@ -83,6 +96,12 @@ const DiaryDetailPage = () => {
     return true;
   };
 
+  const handleDeleteClick = () => {
+    if (diary) {
+      deleteDiaryMutate(diary.id);
+    }
+  };
+
   const renderButtons = () =>
     diary && (
       <>
@@ -91,11 +110,12 @@ const DiaryDetailPage = () => {
           color="primary"
           onClick={handleFinishedButtonClick}
         />
+        <MainButton label="삭제" color="red" onClick={handleDeleteClick} />
         <MainButton label="수정" color="quaternary" type="submit" />
       </>
     );
 
-  if (isFetching || isUpdateDiaryLoading) {
+  if (isFetching || isUpdateDiaryLoading || isDeleteDiaryLoading) {
     return <LoadingPage />;
   }
 
