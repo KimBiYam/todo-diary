@@ -67,10 +67,20 @@ const DiaryDetailPage = () => {
     }
   };
 
-  const handleModifyButtonClick = () => {
-    if (diary) {
-      mutate({ id: diary.id, content: content, title: title });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validateForm() && diary) {
+      mutate({ id: diary.id, title, content });
     }
+  };
+
+  const validateForm = () => {
+    if (!title || !content) {
+      openDialog('글을 입력하세요');
+      return false;
+    }
+
+    return true;
   };
 
   const renderButtons = () =>
@@ -81,11 +91,7 @@ const DiaryDetailPage = () => {
           color="primary"
           onClick={handleFinishedButtonClick}
         />
-        <MainButton
-          label="수정"
-          color="quaternary"
-          onClick={handleModifyButtonClick}
-        />
+        <MainButton label="수정" color="quaternary" type="submit" />
       </>
     );
 
@@ -99,7 +105,7 @@ const DiaryDetailPage = () => {
         <title>Todo Diary | Diary Detail</title>
       </Helmet>
       {diary && (
-        <div css={box}>
+        <form css={box} onSubmit={handleSubmit}>
           <DiaryCard
             diary={diary}
             infoTexts={infoTexts}
@@ -107,7 +113,7 @@ const DiaryDetailPage = () => {
             onChangeContent={handleChangeContent}
             renderButtons={renderButtons}
           />
-        </div>
+        </form>
       )}
     </>
   );
