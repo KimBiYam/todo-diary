@@ -10,6 +10,7 @@ const globalStyle = css`
     height: 100%;
     box-sizing: border-box;
     font-size: 62.5%;
+    font-family: 'Noto Sans CJK KR';
 
     body {
       background-color: ${COLORS.pageBase};
@@ -24,6 +25,7 @@ const globalStyle = css`
     * {
       box-sizing: inherit;
       font-size: inherit;
+      font-family: inherit;
     }
   }
 `;
