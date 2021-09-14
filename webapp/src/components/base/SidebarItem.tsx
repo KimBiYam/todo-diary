@@ -34,7 +34,7 @@ const box = css`
   align-items: center;
   color: ${COLORS.tertiary};
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
 
   &:hover {
