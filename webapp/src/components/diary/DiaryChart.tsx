@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import {
   CartesianGrid,
   Legend,
@@ -18,11 +19,20 @@ export type DiaryChartProps = {
 
 const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
   return (
-    <LineChart width={width} height={height} data={diariesStatistics}>
+    <LineChart
+      width={width}
+      height={height}
+      data={diariesStatistics}
+      css={chart}
+    >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="month" />
+      <XAxis dataKey="month" fontStyle={1.6} />
       <YAxis width={15} />
-      <Tooltip />
+      <Tooltip
+        labelFormatter={(label) => `${label}월`}
+        labelStyle={{ fontSize: '1.4rem' }}
+        contentStyle={{ fontSize: '1.4rem' }}
+      />
       <Legend />
       <Line
         type="monotone"
@@ -39,5 +49,15 @@ const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
     </LineChart>
   );
 };
+
+const chart = css`
+  .recharts-cartesian-axis-tick-value {
+    font-size: 1.2rem;
+  }
+
+  .recharts-legend-item {
+    font-size: 1.4rem;
+  }
+`;
 
 export default DiaryChart;
