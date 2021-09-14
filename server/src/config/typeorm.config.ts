@@ -12,6 +12,6 @@ export const typeormConfig: TypeOrmModuleOptions = {
   synchronize: true,
   charset: process.env.DB_CHARSET,
   keepConnectionAlive: true,
-  logging: true,
+  logging: process.env.NODE_ENV === 'DEVELOPMENT' ? true : false,
   entities: [User, SocialAccount, Diary, DiaryMeta],
 };
