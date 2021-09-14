@@ -11,6 +11,7 @@ import LoggedOutRoute from './routes/LoggedOutRoute';
 import AppDialog from './components/base/AppDialog';
 import GithubSignInPage from './pages/GithubSignInPage';
 import LoadingPage from './pages/LoadingPage';
+import './styles/fonts.css';
 
 const App = () => {
   const { isLoading } = useCheckUserEffect();
