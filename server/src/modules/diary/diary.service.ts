@@ -1,4 +1,4 @@
-import { Diary, DiaryMeta } from '@src/entities';
+import { Diary, DiaryMeta, User } from '@src/entities';
 import {
   BadRequestException,
   Injectable,
@@ -6,13 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
-import {
-  Between,
-  DeleteResult,
-  EntityManager,
-  Transaction,
-  TransactionManager,
-} from 'typeorm';
+import { Between, Connection, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
 import { CreateDiaryDto } from './dto';
 import { UserService } from '../user';
@@ -25,6 +19,7 @@ export class DiaryService {
   constructor(
     private readonly diaryRepository: DiaryRepository,
     private readonly userService: UserService,
+    private readonly connection: Connection,
   ) {}
   private readonly logger = new Logger('DiaryService');
 
@@ -104,55 +99,89 @@ export class DiaryService {
     return diaries;
   }
 
-  @Transaction({ isolation: 'SERIALIZABLE' })
   async createDiary(
     requestUserDto: RequestUserDto,
     createDiaryDto: CreateDiaryDto,
-    @TransactionManager() manager?: EntityManager,
   ): Promise<any> {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+
     const { email } = requestUserDto;
     const { content, title } = createDiaryDto;
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await queryRunner.manager
+      .getRepository(User)
+      .findOne({ where: { email } });
 
     if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
     }
 
-    const diaryMeta = new DiaryMeta();
-    diaryMeta.content = content;
+    try {
+      await queryRunner.startTransaction();
 
-    const diary = new Diary();
-    diary.title = title;
-    diary.diaryMeta = diaryMeta;
-    diary.user = user;
+      const diaryMeta = new DiaryMeta();
+      diaryMeta.content = content;
 
-    await manager.save(diaryMeta);
-    return await manager.save(diary);
+      const diary = new Diary();
+      diary.title = title;
+      diary.diaryMeta = diaryMeta;
+      diary.user = user;
+
+      await queryRunner.manager.getRepository(DiaryMeta).save(diaryMeta);
+
+      const result = await queryRunner.manager.getRepository(Diary).save(diary);
+
+      await queryRunner.commitTransaction();
+
+      return result;
+    } catch (e) {
+      queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      queryRunner.release();
+    }
   }
 
-  @Transaction({ isolation: 'SERIALIZABLE' })
   async updateMyDiary(
     requestUserDto: RequestUserDto,
     updateDiaryDto: UpdateDiaryDto,
     id: number,
-    @TransactionManager() manager?: EntityManager,
   ): Promise<Diary> {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+
     const { content, isFinished, title } = updateDiaryDto;
 
     const diary = await this.findMyDiary(requestUserDto, id);
 
-    const updateDiary = new Diary();
-    updateDiary.title = title;
-    updateDiary.isFinished = isFinished;
-    updateDiary.id = diary.id;
+    try {
+      await queryRunner.startTransaction();
 
-    const updateDiartyMeta = new DiaryMeta();
-    updateDiartyMeta.content = content;
-    updateDiartyMeta.id = diary.diaryMeta.id;
+      const updateDiary = new Diary();
+      updateDiary.title = title;
+      updateDiary.isFinished = isFinished;
+      updateDiary.id = diary.id;
 
-    await manager.save(updateDiartyMeta);
-    return await manager.save(updateDiary);
+      const updateDiartyMeta = new DiaryMeta();
+      updateDiartyMeta.content = content;
+      updateDiartyMeta.id = diary.diaryMeta.id;
+
+      await queryRunner.manager.getRepository(DiaryMeta).save(updateDiartyMeta);
+
+      const result = await queryRunner.manager
+        .getRepository(Diary)
+        .save(updateDiary);
+
+      await queryRunner.commitTransaction();
+
+      return result;
+    } catch (e) {
+      queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      queryRunner.release();
+    }
   }
 
   async deleteMyDiary(
