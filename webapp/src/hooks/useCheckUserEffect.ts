@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import userApi from '../api/userApi';
 import tokenStorage from '../storage/tokenStorage';
 import useUserAction from './useUserAction';
@@ -12,19 +12,21 @@ const useCheckUserEffect = () => {
       return;
     }
 
-    setIsLoading(true);
+    signin();
+  }, []);
 
-    userApi
-      .getCurrentUser()
-      .then((user) => {
-        userLogIn(user);
-      })
-      .catch(() => {
-        userLogOut();
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const signin = useCallback(async () => {
+    try {
+      setIsLoading(true);
+
+      const user = await userApi.getCurrentUser();
+
+      userLogIn(user);
+    } catch (e) {
+      userLogOut();
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   return { isLoading };
