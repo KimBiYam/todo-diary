@@ -9,6 +9,7 @@ import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
+import { Diary } from '../types/diary.types';
 import dateUtil from '../utils/dateUtil';
 import LoadingPage from './LoadingPage';
 
@@ -21,11 +22,21 @@ const DiaryDetailPage = () => {
   const { id } = useParams<DiaryDetailParams>();
   const { openDialog } = useDialogAction();
 
+  const [title, setTitle, handleChangeTitle] = useInput();
+  const [content, setContent, handleChangeContent] = useInput();
+
   useEffect(() => {
     if (id === undefined) {
       history.push('/');
     }
   }, []);
+
+  const handleDiaryQuerySuccess = (diary: Diary) => {
+    const { title, content } = diary;
+
+    setTitle(title);
+    setContent(content);
+  };
 
   const handleDiaryQueryError = (e: string) => {
     openDialog(e);
@@ -38,11 +49,9 @@ const DiaryDetailPage = () => {
     refetch,
   } = useDiaryQuery(id ?? '', {
     enabled: id !== undefined,
+    onSuccess: handleDiaryQuerySuccess,
     onError: handleDiaryQueryError,
   });
-
-  const [title, handleChangeTitle] = useInput(diary?.title);
-  const [content, handleChangeContent] = useInput(diary?.content);
 
   const finishedText = useMemo(
     () => (diary?.isFinished ? '완료' : '미완료'),

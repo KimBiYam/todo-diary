@@ -10,7 +10,7 @@ const useInput = (deafultValue?: string) => {
     [setValue],
   );
 
-  return [value, handleChange] as const;
+  return [value, setValue, handleChange] as const;
 };
 
 export default useInput;
