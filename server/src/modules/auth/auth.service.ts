@@ -9,7 +9,7 @@ import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
 import { UserService } from '@src/modules/user';
 import { SocialAccountDto } from './dto';
-import { EntityManager, Transaction, TransactionManager } from 'typeorm';
+import { Connection } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
 import { ConfigService } from '@nestjs/config';
@@ -25,6 +25,7 @@ export class AuthService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly socialAccountRepository: SocialAccountRepository,
+    private readonly connection: Connection,
   ) {}
 
   private readonly logger = new Logger('AuthService');
@@ -101,11 +102,7 @@ export class AuthService {
     return !!socialAccount;
   }
 
-  @Transaction({ isolation: 'SERIALIZABLE' })
-  async createSocialAccount(
-    socialAccountDto: SocialAccountDto,
-    @TransactionManager() manager?: EntityManager,
-  ) {
+  async createSocialAccount(socialAccountDto: SocialAccountDto) {
     const {
       socialId,
       email,
@@ -113,26 +110,46 @@ export class AuthService {
       photoUrl,
       provider,
     } = socialAccountDto;
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
 
-    const foundUser = await this.userService.findUserByEmail(email);
+    const foundUser = await queryRunner.connection
+      .getRepository(User)
+      .findOne({ where: { email } });
 
     if (CommonUtil.isDataExists(foundUser)) {
       throw new BadRequestException('This user is exists!');
     }
 
-    const user = new User();
-    user.isCertified = true;
-    user.email = email;
-    user.photoUrl = photoUrl ?? undefined;
-    user.displayName = displayName;
+    try {
+      await queryRunner.startTransaction();
 
-    const socialAccount = new SocialAccount();
-    socialAccount.provider = provider;
-    socialAccount.socialId = socialId;
-    socialAccount.user = user;
+      const user = new User();
+      user.isCertified = true;
+      user.email = email;
+      user.photoUrl = photoUrl ?? undefined;
+      user.displayName = displayName;
 
-    await manager.save(user);
-    return await manager.save(socialAccount);
+      const socialAccount = new SocialAccount();
+      socialAccount.provider = provider;
+      socialAccount.socialId = socialId;
+      socialAccount.user = user;
+
+      await queryRunner.manager.getRepository(User).save(user);
+
+      await queryRunner.manager
+        .getRepository(SocialAccount)
+        .save(socialAccount);
+
+      await queryRunner.commitTransaction();
+
+      return true;
+    } catch (e) {
+      queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      queryRunner.release();
+    }
   }
 
   async getGithubAccessToken(code: string) {
