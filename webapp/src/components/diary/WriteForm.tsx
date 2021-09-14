@@ -11,8 +11,8 @@ import DiaryCard from './DiaryCard';
 export type WriteFormProps = {};
 
 const WriteForm = memo(() => {
-  const [title, handleChangeTitle] = useInput();
-  const [content, handleChangeContent] = useInput();
+  const [title, , handleChangeTitle] = useInput();
+  const [content, , handleChangeContent] = useInput();
   const { openDialog } = useDialogAction();
   const history = useHistory();
 
