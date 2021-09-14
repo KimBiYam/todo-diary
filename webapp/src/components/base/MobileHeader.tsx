@@ -66,7 +66,7 @@ const logoSection = css`
 `;
 
 const logo = css`
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: none;
   color: ${COLORS.secondary};
 

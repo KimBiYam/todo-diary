@@ -15,7 +15,7 @@ const block = css`
   display: flex;
   align-items: center;
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 600;
   color: ${COLORS.tertiary};
   user-select: none;
 `;
