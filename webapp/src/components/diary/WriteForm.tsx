@@ -14,14 +14,14 @@ import DiaryCard from './DiaryCard';
 export type WriteFormProps = {};
 
 const WriteForm = memo(() => {
-  const [title, , handleChangeTitle] = useInput();
-  const [content, , handleChangeContent] = useInput();
+  const [title, , handleTitleChange] = useInput();
+  const [content, , handleContentChange] = useInput();
 
   const { openDialog } = useDialogAction();
   const history = useHistory();
   const queryClient = useQueryClient();
 
-  const handleSuccessWriteDiary = () => {
+  const handleWriteDiarySuccess = () => {
     const currentYear = new Date().getFullYear();
 
     queryClient.invalidateQueries(useDiariesQuery.createKey());
@@ -32,13 +32,13 @@ const WriteForm = memo(() => {
     history.push('/');
   };
 
-  const handleErrorWriteDiary = (errorMessage: string) => {
+  const handleWriteDiaryError = (errorMessage: string) => {
     openDialog(errorMessage);
   };
 
   const { mutate, isLoading } = useWriteDiaryMutation({
-    onSuccess: handleSuccessWriteDiary,
-    onError: handleErrorWriteDiary,
+    onSuccess: handleWriteDiarySuccess,
+    onError: handleWriteDiaryError,
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,8 +69,8 @@ const WriteForm = memo(() => {
   return (
     <form css={box} onSubmit={handleSubmit}>
       <DiaryCard
-        onChangeTitle={handleChangeTitle}
-        onChangeContent={handleChangeContent}
+        onTitleChange={handleTitleChange}
+        onContentChange={handleContentChange}
         renderButtons={renderButtons}
       />
     </form>

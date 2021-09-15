@@ -5,16 +5,16 @@ import { Diary } from '../../types/diary.types';
 
 export type DiaryCardProps = {
   diary?: Diary;
-  onChangeTitle?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onChangeContent?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onContentChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   renderButtons?: () => React.ReactNode;
   infoTexts?: string[];
 };
 
 const DiaryCard = ({
   diary,
-  onChangeContent,
-  onChangeTitle,
+  onContentChange,
+  onTitleChange,
   renderButtons,
   infoTexts,
 }: DiaryCardProps) => {
@@ -22,7 +22,7 @@ const DiaryCard = ({
     <div css={box}>
       <input
         name="title"
-        onChange={onChangeTitle}
+        onChange={onTitleChange}
         css={titleInput}
         placeholder="제목"
         defaultValue={diary?.title}
@@ -37,7 +37,7 @@ const DiaryCard = ({
       )}
       <textarea
         name="content"
-        onChange={onChangeContent}
+        onChange={onContentChange}
         css={contentWrapper}
         placeholder="내용을 입력하세요"
         defaultValue={diary?.content}

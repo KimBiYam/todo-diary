@@ -21,8 +21,8 @@ export type DiaryDetailPageProps = {};
 type DiaryDetailParams = { id?: string };
 
 const DiaryDetailPage = () => {
-  const [title, setTitle, handleChangeTitle] = useInput();
-  const [content, setContent, handleChangeContent] = useInput();
+  const [title, setTitle, handleTitleChange] = useInput();
+  const [content, setContent, handleContentChange] = useInput();
 
   const { id } = useParams<DiaryDetailParams>();
   const { openDialog } = useDialogAction();
@@ -163,8 +163,8 @@ const DiaryDetailPage = () => {
           <DiaryCard
             diary={diary}
             infoTexts={infoTexts}
-            onChangeTitle={handleChangeTitle}
-            onChangeContent={handleChangeContent}
+            onTitleChange={handleTitleChange}
+            onContentChange={handleContentChange}
             renderButtons={renderButtons}
           />
         </form>
