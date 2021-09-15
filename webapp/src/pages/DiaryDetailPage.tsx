@@ -1,11 +1,14 @@
 import { css } from '@emotion/react';
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
 import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
+import useDiariesQuery from '../hooks/query/useDiariesQuery';
+import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
@@ -18,12 +21,13 @@ export type DiaryDetailPageProps = {};
 type DiaryDetailParams = { id?: string };
 
 const DiaryDetailPage = () => {
-  const history = useHistory();
-  const { id } = useParams<DiaryDetailParams>();
-  const { openDialog } = useDialogAction();
-
   const [title, setTitle, handleChangeTitle] = useInput();
   const [content, setContent, handleChangeContent] = useInput();
+
+  const { id } = useParams<DiaryDetailParams>();
+  const { openDialog } = useDialogAction();
+  const history = useHistory();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (id === undefined) {
@@ -71,15 +75,36 @@ const DiaryDetailPage = () => {
     openDialog(e);
   };
 
+  const invalidateDiaryQuries = () => {
+    if (diary) {
+      const createdYear = new Date(diary?.createdAt).getFullYear();
+
+      queryClient.invalidateQueries(useDiariesQuery.createKey());
+      queryClient.invalidateQueries(
+        useDiariesStatisticsQuery.createKey(createdYear),
+      );
+    }
+  };
+
+  const handleUpdateDiaryMutateSuccess = () => {
+    refetch();
+    invalidateDiaryQuries();
+  };
+
+  const handleDeleteDiaryMutateSuccess = () => {
+    invalidateDiaryQuries();
+    history.push('/');
+  };
+
   const { mutate: updateDiaryMutate, isLoading: isUpdateDiaryLoading } =
     useUpdateDiaryMutation({
-      onSuccess: () => refetch(),
+      onSuccess: handleUpdateDiaryMutateSuccess,
       onError: handleMutateError,
     });
 
   const { mutate: deleteDiaryMutate, isLoading: isDeleteDiaryLoading } =
     useDeleteDiaryMutation({
-      onSuccess: () => history.push('/'),
+      onSuccess: handleDeleteDiaryMutateSuccess,
       onError: handleMutateError,
     });
 
