@@ -7,7 +7,7 @@ const useDiariesQuery = (
   options: UseInfiniteQueryOptions<Diary[]> = {},
 ) =>
   useInfiniteQuery(
-    'diaries',
+    createKey(),
     ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit),
     {
       getNextPageParam: (lastPage, allPages) => {
@@ -16,5 +16,9 @@ const useDiariesQuery = (
       ...options,
     },
   );
+
+const createKey = () => 'diaries';
+
+useDiariesQuery.createKey = createKey;
 
 export default useDiariesQuery;

@@ -14,4 +14,6 @@ const useDiariesStatisticsQuery = (
 
 const createKey = (year: number) => ['diariesStatistics', year];
 
+useDiariesStatisticsQuery.createKey = createKey;
+
 export default useDiariesStatisticsQuery;

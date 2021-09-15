@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
 import { memo, useCallback } from 'react';
+import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
+import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
 import LoadingPage from '../../pages/LoadingPage';
@@ -13,10 +15,13 @@ export type WriteFormProps = {};
 const WriteForm = memo(() => {
   const [title, , handleChangeTitle] = useInput();
   const [content, , handleChangeContent] = useInput();
+
   const { openDialog } = useDialogAction();
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const handleSuccessWriteDiary = () => {
+    queryClient.invalidateQueries(useDiariesQuery.createKey());
     history.push('/');
   };
 

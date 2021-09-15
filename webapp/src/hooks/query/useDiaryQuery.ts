@@ -7,4 +7,6 @@ const useDiaryQuery = (id: string, options?: UseQueryOptions<Diary, string>) =>
 
 const createKey = (id: string) => ['diary', id];
 
+useDiaryQuery.createKey = createKey;
+
 export default useDiaryQuery;
