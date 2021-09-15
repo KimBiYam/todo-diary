@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { COLORS } from '../../constants';
 import useUserAction from '../../hooks/useUserAction';
 import useUserSelector from '../../hooks/useUserSelector';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
+import Icon from '../common/Icon';
 import HeaderItem from './HeaderItem';
 import UserProfile from './UserProfile';
 
@@ -28,7 +28,7 @@ const MobileHeader = () => {
     <header css={box}>
       <div css={logoSection}>
         <Link to="/" css={logo}>
-          할일 다이어리
+          <Icon icon="logo" css={logo} />
         </Link>
       </div>
       <div css={buttonSection}>
@@ -66,12 +66,12 @@ const logoSection = css`
 `;
 
 const logo = css`
-  font-weight: 500;
-  text-decoration: none;
-  color: ${COLORS.secondary};
+  width: 8rem;
+  height: 8rem;
 
   ${BREAK_POINTS.medium} {
-    font-size: 1.6rem;
+    width: 12rem;
+    height: 12rem;
   }
 `;
 

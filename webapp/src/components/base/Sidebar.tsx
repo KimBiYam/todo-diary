@@ -6,6 +6,7 @@ import useUserAction from '../../hooks/useUserAction';
 import useUserSelector from '../../hooks/useUserSelector';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
+import Icon from '../common/Icon';
 import SidebarCategory from './SidebarCategory';
 import SidebarItem from './SidebarItem';
 import UserProfile from './UserProfile';
@@ -29,7 +30,7 @@ const Sidebar = () => {
     <aside css={block}>
       <div css={logoSection}>
         <Link to="/diary" css={logo}>
-          할일 다이어리
+          <Icon icon="logo" css={logo} />
         </Link>
       </div>
       <nav css={navSection}>
@@ -69,10 +70,8 @@ const logoSection = css`
 `;
 
 const logo = css`
-  font-size: 1.8rem;
-  font-weight: 500;
-  text-decoration: none;
-  color: ${COLORS.secondary};
+  width: 100%;
+  height: 100%;
 `;
 
 const navSection = css`
