@@ -1,37 +1,6 @@
 @font-face {
   font-family: 'Noto Sans CJK KR';
   font-style: normal;
-  font-weight: 100;
-  src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Thin.woff') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Thin.woff2') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Thin.otf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Noto Sans CJK KR';
-  font-style: normal;
-  font-weight: 300;
-  src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Light.woff') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Light.woff2') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Light.otf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Noto Sans CJK KR';
-  font-style: normal;
-  font-weight: 350;
-  src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-DemiLight.woff') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-DemiLight.woff2') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-DemiLight.otf')
-      format('truetype');
-}
-
-@font-face {
-  font-family: 'Noto Sans CJK KR';
-  font-style: normal;
   font-weight: 400;
   src: local('Noto Sans CJK KR'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Regular.woff') format('woff2'),
@@ -57,14 +26,4 @@
     url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff2'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.woff2') format('woff2'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.otf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Noto Sans CJK KR';
-  font-style: normal;
-  font-weight: 900;
-  src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Black.woff') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Black.woff2') format('woff2'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Black.otf') format('truetype');
 }
