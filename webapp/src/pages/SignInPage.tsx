@@ -72,7 +72,7 @@ const SignInPage = () => {
       </Helmet>
       <div css={block}>
         <div css={signInSection}>
-          <Icon css={logoIcon} icon="logo" />
+          <Icon css={logo} icon="logo" />
           <div css={buttonSection}>
             <GoogleSignInButton
               onSuccess={handleSuccessGoogleSignIn}
@@ -94,7 +94,7 @@ const block = css`
   align-items: center;
 `;
 
-const logoIcon = css`
+const logo = css`
   width: 24rem;
   height: 16rem;
   margin-bottom: 1.2rem;
