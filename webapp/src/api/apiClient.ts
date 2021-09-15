@@ -2,6 +2,10 @@ import axios, { AxiosError } from 'axios';
 import { BACKEND_SERVER_URL } from '../constants';
 import tokenStorage from '../storage/tokenStorage';
 import { StatusCodes } from 'http-status-codes';
+import { store } from '..';
+import { logout } from '../reducers/user';
+import { openDialog } from '../reducers/dialog';
+import { createBrowserHistory } from 'history';
 
 const apiClient = axios.create({ baseURL: BACKEND_SERVER_URL });
 
@@ -17,11 +21,25 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (config) => config,
   (error: AxiosError) => {
+    const status = error.response?.status;
+
     const errorText = convertErrorText(error.response?.status);
+
+    if (status === StatusCodes.UNAUTHORIZED) {
+      handleUnauthorzied(errorText);
+    }
 
     return Promise.reject(errorText);
   },
 );
+
+const handleUnauthorzied = (errorText: string) => {
+  tokenStorage.clearToken();
+  store.dispatch(logout());
+  store.dispatch(openDialog(errorText));
+
+  createBrowserHistory().push('/');
+};
 
 const convertErrorText = (status: number | undefined) => {
   switch (status) {
