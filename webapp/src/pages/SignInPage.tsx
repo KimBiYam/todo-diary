@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';
-import { COLORS, GITHUB_OAUTH_URL } from '../constants';
+import { GITHUB_OAUTH_URL } from '../constants';
 import GithubSignInButton from '../components/auth/GithubSignInButton';
 import {
   GoogleLoginResponse,
@@ -13,6 +13,7 @@ import useDialogAction from '../hooks/useDialogAction';
 import tokenStorage from '../storage/tokenStorage';
 import { useState } from 'react';
 import LoadingPage from './LoadingPage';
+import Icon from '../components/common/Icon';
 
 export type SignInPageProps = {};
 
@@ -71,7 +72,7 @@ const SignInPage = () => {
       </Helmet>
       <div css={block}>
         <div css={signInSection}>
-          <h1>할일 다이어리</h1>
+          <Icon css={logoIcon} icon="logo" />
           <div css={buttonSection}>
             <GoogleSignInButton
               onSuccess={handleSuccessGoogleSignIn}
@@ -93,16 +94,18 @@ const block = css`
   align-items: center;
 `;
 
+const logoIcon = css`
+  width: 24rem;
+  height: 16rem;
+  margin-bottom: 1.2rem;
+`;
+
 const signInSection = css`
   display: flex;
   align-items: center;
   flex-direction: column;
   font-size: 2rem;
   font-weight: 600;
-  h1 {
-    color: ${COLORS.secondary};
-    margin-bottom: 5.5rem;
-  }
 `;
 
 const buttonSection = css`
