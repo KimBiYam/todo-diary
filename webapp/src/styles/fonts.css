@@ -3,8 +3,8 @@
   font-style: normal;
   font-weight: 400;
   src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Regular.woff') format('woff2'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Regular.woff2') format('woff2'),
+    url('../assets/fonts/NotoSansKR/NotoSansKR-Regular.woff') format('woff'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Regular.otf') format('truetype');
 }
 
@@ -13,8 +13,8 @@
   font-style: normal;
   font-weight: 500;
   src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Medium.woff') format('woff2'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Medium.woff2') format('woff2'),
+    url('../assets/fonts/NotoSansKR/NotoSansKR-Medium.woff') format('woff'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Medium.otf') format('truetype');
 }
 
@@ -23,7 +23,7 @@
   font-style: normal;
   font-weight: 700;
   src: local('Noto Sans CJK KR'),
-    url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff2'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.woff2') format('woff2'),
+    url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.woff') format('woff'),
     url('../assets/fonts/NotoSansKR/NotoSansKR-Bold.otf') format('truetype');
 }
