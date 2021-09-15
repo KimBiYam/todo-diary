@@ -98,7 +98,7 @@ const signInSection = css`
   align-items: center;
   flex-direction: column;
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 600;
   h1 {
     color: ${COLORS.secondary};
     margin-bottom: 5.5rem;
