@@ -4,6 +4,7 @@ import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
+import useDiariesStatisticsQuery from '../../hooks/query/useDiariesStatisticsQuery';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
 import LoadingPage from '../../pages/LoadingPage';
@@ -21,7 +22,13 @@ const WriteForm = memo(() => {
   const queryClient = useQueryClient();
 
   const handleSuccessWriteDiary = () => {
+    const currentYear = new Date().getFullYear();
+
     queryClient.invalidateQueries(useDiariesQuery.createKey());
+    queryClient.invalidateQueries(
+      useDiariesStatisticsQuery.createKey(currentYear),
+    );
+
     history.push('/');
   };
 
