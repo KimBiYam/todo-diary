@@ -23,7 +23,7 @@ const SignInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { openDialog } = useDialogAction();
 
-  const handleSuccessGoogleSignIn = async (
+  const handleGoogleSignInSuccess = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => {
     try {
@@ -55,9 +55,9 @@ const SignInPage = () => {
     userLogIn(user);
   };
 
-  const handleFailureGoogleSignIn = () => openDialog('서버 에러입니다');
+  const handleGoogleSignInFailure = () => openDialog('서버 에러입니다');
 
-  const handleClickGithubSignIn = () => {
+  const handleGithubSignInClick = () => {
     window.location.replace(GITHUB_OAUTH_URL);
   };
 
@@ -75,10 +75,10 @@ const SignInPage = () => {
           <Icon css={logo} icon="logo" />
           <div css={buttonSection}>
             <GoogleSignInButton
-              onSuccess={handleSuccessGoogleSignIn}
-              onFailure={handleFailureGoogleSignIn}
+              onSuccess={handleGoogleSignInSuccess}
+              onFailure={handleGoogleSignInFailure}
             />
-            <GithubSignInButton onClick={handleClickGithubSignIn} />
+            <GithubSignInButton onClick={handleGithubSignInClick} />
           </div>
         </div>
       </div>

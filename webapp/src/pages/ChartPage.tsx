@@ -18,7 +18,7 @@ const ChartPage = () => {
 
   const { width, height } = windowSize;
 
-  const handleChangeYear = useCallback(
+  const handleYearChange = useCallback(
     (year: number) => {
       setYear(year);
     },
@@ -41,7 +41,7 @@ const ChartPage = () => {
           <p css={description}>연도를 클릭하여 변경이 가능합니다</p>
           <div>
             <YearPicker
-              onChange={handleChangeYear}
+              onChange={handleYearChange}
               minYear={minYear}
               maxYear={currentYear}
             />
