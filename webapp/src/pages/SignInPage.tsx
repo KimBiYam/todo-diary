@@ -97,7 +97,6 @@ const block = css`
 const logo = css`
   width: 24rem;
   height: 16rem;
-  margin-bottom: 1.2rem;
 `;
 
 const signInSection = css`
@@ -106,6 +105,7 @@ const signInSection = css`
   flex-direction: column;
   font-size: 2rem;
   font-weight: 600;
+  gap: 2.4rem;
 `;
 
 const buttonSection = css`
