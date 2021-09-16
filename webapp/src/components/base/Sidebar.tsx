@@ -28,11 +28,9 @@ const Sidebar = () => {
 
   return (
     <aside css={block}>
-      <div css={logoSection}>
-        <Link to="/diary" css={logo}>
-          <Icon icon="logo" css={logo} />
-        </Link>
-      </div>
+      <Link to="/diary" css={logoLink}>
+        <Icon icon="logo" css={logo} />
+      </Link>
       <nav css={navSection}>
         <SidebarCategory category="할일 다이어리" />
         <ul>
@@ -62,11 +60,8 @@ const block = css`
   z-index: ${Z_INDEXES.sidebar};
 `;
 
-const logoSection = css`
+const logoLink = css`
   height: 12rem;
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
 `;
 
 const logo = css`

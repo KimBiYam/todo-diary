@@ -26,11 +26,9 @@ const MobileHeader = () => {
 
   return (
     <header css={box}>
-      <div css={logoSection}>
-        <Link to="/" css={logo}>
-          <Icon icon="logo" css={logo} />
-        </Link>
-      </div>
+      <Link to="/" css={logoLink}>
+        <Icon icon="logo" css={logo} />
+      </Link>
       <div css={buttonSection}>
         <nav>
           <ul css={navList}>
@@ -60,19 +58,20 @@ const box = css`
   }
 `;
 
-const logoSection = css`
+const logoLink = css`
+  width: 8rem;
+  height: 100%;
   display: flex;
   align-items: center;
-`;
-
-const logo = css`
-  width: 8rem;
-  height: 8rem;
 
   ${BREAK_POINTS.medium} {
     width: 12rem;
-    height: 12rem;
   }
+`;
+
+const logo = css`
+  width: 100%;
+  height: 100%;
 `;
 
 const buttonSection = css`
