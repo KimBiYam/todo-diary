@@ -31,7 +31,7 @@ const MobileHeader = () => {
       </Link>
       <div css={buttonSection}>
         <nav>
-          <ul css={navList}>
+          <ul css={navSection}>
             <HeaderItem to="/diary" icon="recent" isActive={isActiveRootItem} />
             <HeaderItem to="/write" icon="write" />
             <HeaderItem to="/chart" icon="chart" />
@@ -77,10 +77,12 @@ const logo = css`
 const buttonSection = css`
   display: flex;
   align-items: center;
+  gap: 0.8rem;
 `;
 
-const navList = css`
+const navSection = css`
   display: flex;
+  gap: 1.6rem;
 `;
 
 export default MobileHeader;
