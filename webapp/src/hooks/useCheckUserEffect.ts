@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import userApi from '../api/userApi';
 import tokenStorage from '../storage/tokenStorage';
 import useUserAction from './useUserAction';
@@ -15,7 +15,7 @@ const useCheckUserEffect = () => {
     signin();
   }, []);
 
-  const signin = useCallback(async () => {
+  const signin = async () => {
     try {
       setIsLoading(true);
 
@@ -27,7 +27,7 @@ const useCheckUserEffect = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
 
   return { isLoading };
 };
