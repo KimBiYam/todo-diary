@@ -5,6 +5,10 @@ export type User = {
   photoUrl?: string;
 };
 
+export type GoogleSignInResponse = {
+  accessToken: string;
+};
+
 export type GetUserProfileResponse = {
   user: User;
 };

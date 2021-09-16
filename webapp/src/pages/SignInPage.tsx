@@ -3,10 +3,6 @@ import GoogleSignInButton from '../components/auth/GoogleSignInButton';
 import { Helmet } from 'react-helmet-async';
 import { GITHUB_OAUTH_URL } from '../constants';
 import GithubSignInButton from '../components/auth/GithubSignInButton';
-import {
-  GoogleLoginResponse,
-  GoogleLoginResponseOffline,
-} from 'react-google-login';
 import authApi from '../api/authApi';
 import useUserAction from '../hooks/useUserAction';
 import useDialogAction from '../hooks/useDialogAction';
@@ -14,6 +10,7 @@ import tokenStorage from '../storage/tokenStorage';
 import { useState } from 'react';
 import LoadingPage from './LoadingPage';
 import Icon from '../components/common/Icon';
+import { GoogleSignInResponse } from '../types/auth.types';
 
 export type SignInPageProps = {};
 
@@ -23,12 +20,10 @@ const SignInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { openDialog } = useDialogAction();
 
-  const handleGoogleSignInSuccess = async (
-    response: GoogleLoginResponse | GoogleLoginResponseOffline,
-  ) => {
+  const handleGoogleSignInSuccess = async (response: GoogleSignInResponse) => {
     try {
       setIsLoading(true);
-      const { accessToken: googleToken } = response as GoogleLoginResponse;
+      const { accessToken: googleToken } = response;
 
       const isExistsGoogleAccount = await authApi.checkGoogleAccount(
         googleToken,
