@@ -56,7 +56,6 @@
     "react-app-polyfill": "^2.0.0",
     "react-dev-utils": "^11.0.3",
     "react-dom": "^17.0.2",
-    "react-google-login": "^5.2.2",
     "react-helmet-async": "^1.0.9",
     "react-intersection-observer": "^8.32.0",
     "react-query": "^3.18.1",
