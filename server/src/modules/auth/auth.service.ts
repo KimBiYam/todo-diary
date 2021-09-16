@@ -183,14 +183,15 @@ export class AuthService {
       .toPromise();
 
     const {
-      name: displayName,
+      login,
+      name,
       id: socialId,
       email,
       avatar_url: photoUrl,
     } = response.data;
 
     const socialAccountDto: SocialAccountDto = {
-      displayName,
+      displayName: name ?? login,
       photoUrl,
       email,
       socialId,
