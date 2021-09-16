@@ -9,9 +9,9 @@ export const typeormConfig: TypeOrmModuleOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DEFAULT_DATABASE,
   timezone: process.env.TZ,
-  synchronize: true,
+  synchronize: process.env.NODE_ENV === 'DEVELOPMENT',
   charset: process.env.DB_CHARSET,
   keepConnectionAlive: true,
-  logging: process.env.NODE_ENV === 'DEVELOPMENT' ? true : false,
+  logging: process.env.NODE_ENV === 'DEVELOPMENT',
   entities: [User, SocialAccount, Diary, DiaryMeta],
 };
