@@ -25,6 +25,9 @@ const HeaderItem = ({ icon, to, isActive }: HeaderItemProps) => {
 };
 
 const box = css`
+  width: 1.6rem;
+  height: 1.6rem;
+
   &:hover {
     svg {
       fill: ${COLORS.black};
@@ -40,9 +43,8 @@ const box = css`
 `;
 
 const iconStyle = () => css`
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-right: 1.6rem;
+  width: inherit;
+  height: inherit;
   fill: ${COLORS.tertiary};
 `;
 
