@@ -5,6 +5,7 @@ import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
+import DiaryEmptyError from './DiaryEmptyError';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 
@@ -38,6 +39,10 @@ const DiaryList = () => {
     (diary: Diary) => history.push(`/diary/${diary.id}`),
     [],
   );
+
+  if (diaries?.pages[0].length === 0) {
+    return <DiaryEmptyError />;
+  }
 
   return (
     <div css={box}>
