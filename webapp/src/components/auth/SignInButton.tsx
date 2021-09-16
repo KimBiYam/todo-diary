@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { forwardRef, memo, Ref } from 'react';
 import { COLORS } from '../../constants';
 import Icon, { IconType } from '../common/Icon';
 
@@ -9,9 +10,12 @@ export type SigninButtonProps =
     label: string;
   };
 
-const SigninButton = ({ onClick, icon, label, ...rest }: SigninButtonProps) => {
+const SigninButton = (
+  { onClick, icon, label, ...rest }: SigninButtonProps,
+  ref: Ref<HTMLButtonElement>,
+) => {
   return (
-    <button css={box} onClick={onClick} {...rest}>
+    <button css={box} onClick={onClick} ref={ref} {...rest}>
       <Icon icon={icon} css={iconStyle} />
       <p>{label}</p>
     </button>
@@ -44,4 +48,4 @@ const iconStyle = css`
   margin: 0 1.6rem;
 `;
 
-export default SigninButton;
+export default memo(forwardRef(SigninButton));
