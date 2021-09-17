@@ -25,9 +25,9 @@ const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
       data={diariesStatistics}
       css={chart}
     >
-      <CartesianGrid strokeDasharray="3 3" />
+      <CartesianGrid vertical={false} />
       <XAxis dataKey="month" fontStyle={1.6} />
-      <YAxis width={15} />
+      <YAxis width={30} allowDecimals={false} />
       <Tooltip
         labelFormatter={(label) => `${label}월`}
         labelStyle={{ fontSize: '1.4rem' }}
@@ -37,14 +37,20 @@ const DiaryChart = ({ diariesStatistics, width, height }: DiaryChartProps) => {
       <Line
         type="monotone"
         dataKey="totalCount"
-        stroke={COLORS.tertiary}
+        stroke={COLORS.quaternary}
         name="전체 글"
+        legendType="square"
+        dot={false}
+        strokeWidth={2}
       />
       <Line
         type="monotone"
         dataKey="finishedDiariesCount"
-        stroke={COLORS.quaternary}
+        stroke={COLORS.tertiary}
         name="완료 수"
+        legendType="square"
+        dot={false}
+        strokeWidth={2}
       />
     </LineChart>
   );
