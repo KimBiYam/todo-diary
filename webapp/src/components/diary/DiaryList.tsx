@@ -46,7 +46,7 @@ const DiaryList = () => {
     return <DiaryEmptyError />;
   }
 
-  if (isStale) {
+  if (!isLoading && isStale) {
     return <LoadingPage />;
   }
 
