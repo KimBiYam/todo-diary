@@ -13,7 +13,6 @@ import UserProfile from './UserProfile';
 
 export type SidebarProps = {};
 
-// TODO : 로고 아이콘 적용
 const Sidebar = () => {
   const { user } = useUserSelector();
   const { userLogOut } = useUserAction();

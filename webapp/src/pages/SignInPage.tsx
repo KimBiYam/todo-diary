@@ -14,7 +14,6 @@ import { GoogleSignInResponse } from '../types/auth.types';
 
 export type SignInPageProps = {};
 
-// TODO : 로고 아이콘 적용
 const SignInPage = () => {
   const { userLogIn, userLogOut } = useUserAction();
   const [isLoading, setIsLoading] = useState(false);
