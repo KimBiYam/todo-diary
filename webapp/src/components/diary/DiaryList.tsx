@@ -3,6 +3,7 @@ import { useCallback, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
+import LoadingPage from '../../pages/LoadingPage';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 import DiaryEmptyError from './DiaryEmptyError';
@@ -20,13 +21,14 @@ const DiaryList = () => {
     data: diaries,
     hasNextPage,
     fetchNextPage,
-    isFetching,
+    isStale,
     isLoading,
+    isFetchingNextPage,
   } = useDiariesQuery(PAGE_LIMIT);
 
   const isShowSkeleton = useMemo(
-    () => (hasNextPage && isFetching) || isLoading,
-    [hasNextPage, isFetching, isLoading],
+    () => isFetchingNextPage || isLoading,
+    [isFetchingNextPage, isLoading],
   );
 
   useScrollObserver({
@@ -42,6 +44,10 @@ const DiaryList = () => {
 
   if (diaries?.pages[0].length === 0) {
     return <DiaryEmptyError />;
+  }
+
+  if (isStale) {
+    return <LoadingPage />;
   }
 
   return (
@@ -60,7 +66,7 @@ const DiaryList = () => {
         Array.from({ length: PAGE_LIMIT }).map((_, index) => (
           <DiaryItemSkeleton key={index} />
         ))}
-      {hasNextPage && <div ref={scrollableTrigerRef} />}
+      {hasNextPage && !isFetchingNextPage && <div ref={scrollableTrigerRef} />}
     </div>
   );
 };
