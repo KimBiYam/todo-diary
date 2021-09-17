@@ -68,6 +68,7 @@ const block = (isFinished: boolean) => css`
 
 const titleSection = css`
   width: 100%;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,6 +77,7 @@ const titleSection = css`
 const titleText = css`
   flex: 2;
   width: 100%;
+  height: 100%;
   font-size: 2rem;
   font-weight: 500;
   white-space: nowrap;
