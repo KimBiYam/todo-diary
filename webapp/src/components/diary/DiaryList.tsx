@@ -33,7 +33,7 @@ const DiaryList = () => {
 
   useScrollObserver({
     targetRef: scrollableTrigerRef,
-    enabled: hasNextPage,
+    enabled: hasNextPage && !isStale,
     onIntersect: fetchNextPage,
   });
 
