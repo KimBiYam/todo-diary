@@ -34,7 +34,7 @@ const useScrollObserver = ({
 
     observer.observe(element);
 
-    return () => observer.unobserve(element);
+    return () => observer && observer.unobserve(element);
   }, [targetRef.current, enabled]);
 };
 
