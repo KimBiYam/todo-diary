@@ -21,9 +21,9 @@ const DiaryList = () => {
     data: diaries,
     hasNextPage,
     fetchNextPage,
-    isStale,
     isLoading,
     isFetchingNextPage,
+    isFetching,
   } = useDiariesQuery(PAGE_LIMIT);
 
   const isShowSkeleton = useMemo(
@@ -33,7 +33,7 @@ const DiaryList = () => {
 
   useScrollObserver({
     targetRef: scrollableTrigerRef,
-    enabled: hasNextPage && !isStale,
+    enabled: hasNextPage,
     onIntersect: fetchNextPage,
   });
 
@@ -46,7 +46,7 @@ const DiaryList = () => {
     return <DiaryEmptyError />;
   }
 
-  if (!isLoading && isStale) {
+  if (isFetching && !isFetchingNextPage && !isLoading) {
     return <LoadingPage />;
   }
 

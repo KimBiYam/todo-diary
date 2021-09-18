@@ -11,7 +11,9 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 
 export const store = configureStore({ reducer: rootReducer });
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60 * 1000 * 1 } },
+  defaultOptions: {
+    queries: { staleTime: 60 * 1000 * 1, refetchOnWindowFocus: false },
+  },
 });
 
 ReactDOM.render(
