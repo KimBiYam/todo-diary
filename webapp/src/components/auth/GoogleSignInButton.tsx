@@ -23,10 +23,10 @@ const GoogleSignInButton = ({
       auth2.attachClickHandler(
         buttonRef.current,
         {},
-        (response: any) => {
-          const { access_token } = response.Zb;
+        (googleUser: any) => {
+          const accessToken = googleUser.getAuthResponse(true).access_token;
 
-          onSuccess({ accessToken: access_token });
+          onSuccess({ accessToken });
         },
         () => onFailure(),
       );
