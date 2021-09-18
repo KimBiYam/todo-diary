@@ -2,8 +2,8 @@
 환경변수 설정을 위해 env 파일이 필요
 .env.sample 과 .env.dev.sample 파일을 참고하여 설정
 
-Devlopment Mode : .env.dev
-Production Mode : .env
+- Devlopment Mode : .env.dev
+- Production Mode : .env
 
 ## Run
 
