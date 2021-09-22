@@ -31,9 +31,9 @@ export class AuthService {
   private readonly logger = new Logger('AuthService');
 
   async login(user: User) {
-    const { email, displayName } = user;
+    const { id, displayName } = user;
 
-    const payload = { username: email, sub: displayName };
+    const payload = { id, displayName };
 
     // TODO : Apply refresh token
     return {

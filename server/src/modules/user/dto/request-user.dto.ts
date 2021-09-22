@@ -1,4 +1,4 @@
 export class RequestUserDto {
+  id: string;
   displayName: string;
-  email: string;
 }
