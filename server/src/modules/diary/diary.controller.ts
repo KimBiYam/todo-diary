@@ -22,7 +22,7 @@ import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import { DiariesStatisticalDto, CreateDiaryDto, UpdateDiaryDto } from './dto';
+import { DiariesStatisticsDto, CreateDiaryDto, UpdateDiaryDto } from './dto';
 
 @Controller('api/v1/diaries')
 @UseGuards(JwtAuthGuard)
@@ -68,7 +68,7 @@ export class DiaryController {
   })
   async getDiariesStatistics(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Query() { year }: DiariesStatisticalDto,
+    @Query() { year }: DiariesStatisticsDto,
   ) {
     const diariesStatisticsByYear = await this.diaryService.getDiariesStatisticsByYear(
       requestUserDto,
