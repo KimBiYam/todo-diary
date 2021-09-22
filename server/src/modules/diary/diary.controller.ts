@@ -22,7 +22,12 @@ import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
-import { DiariesStatisticsDto, CreateDiaryDto, UpdateDiaryDto } from './dto';
+import {
+  DiariesStatisticsDto,
+  CreateDiaryDto,
+  UpdateDiaryDto,
+  DiariesExistsDatesDto,
+} from './dto';
 
 @Controller('api/v1/diaries')
 @UseGuards(JwtAuthGuard)
@@ -47,7 +52,7 @@ export class DiaryController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    const diaries = await this.diaryService.findMyDiaries(
+    const diaries = await this.diaryService.findMyDiariesByPage(
       requestUserDto,
       page,
       limit,
@@ -76,6 +81,24 @@ export class DiaryController {
     );
 
     return { diariesStatisticsByYear };
+  }
+
+  @Get('exists-dates')
+  @ApiOperation({
+    summary: '해당 년도 해당 월에 다이어리가 존재하는 날짜들 가져오기',
+  })
+  @ApiResponse({
+    status: 200,
+    description: '해당 년도 해당 월에 다이어리가 존재하는 날짜들 가져오기 성공',
+  })
+  async getTheDatesTheDiaryExists(
+    @RequestUser() requestUserDto: RequestUserDto,
+    @Query() diariesExistsDatesDto: DiariesExistsDatesDto,
+  ) {
+    const result = await this.diaryService.getTheDatesTheDiaryExists(
+      requestUserDto,
+      diariesExistsDatesDto,
+    );
   }
 
   @Post()

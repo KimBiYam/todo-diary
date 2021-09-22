@@ -8,7 +8,7 @@ import {
 import { DiaryRepository } from './diary.repository';
 import { Between, Connection, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary-dto';
-import { CreateDiaryDto } from './dto';
+import { CreateDiaryDto, DiariesExistsDatesDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
@@ -23,7 +23,27 @@ export class DiaryService {
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findMyDiaries(
+  async findMyDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
+    const { id } = requestUserDto;
+
+    const user = await this.userService.findUserById(id);
+
+    if (!CommonUtil.isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
+    const diaries = await this.diaryRepository
+      .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .select(['diary', 'diary_meta'])
+      .where('diary.user_id = :userId', { userId: user.id })
+      .orderBy('diary.createdAt', 'DESC')
+      .getMany();
+
+    return diaries;
+  }
+
+  async findMyDiariesByPage(
     requestUserDto: RequestUserDto,
     page: number,
     limit: number,
@@ -211,6 +231,13 @@ export class DiaryService {
     );
 
     return diariesStatisticsByYear;
+  }
+
+  async getTheDatesTheDiaryExists(
+    requestUserDto: RequestUserDto,
+    diariesExistsDatesDto: DiariesExistsDatesDto,
+  ) {
+    const diaries = await this.findMyDiaries(requestUserDto);
   }
 
   groupDiariesByMonth = (diaries: Diary[]) => {
