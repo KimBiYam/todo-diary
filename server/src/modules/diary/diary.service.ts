@@ -263,6 +263,10 @@ export class DiaryService {
     const { year, month } = diariesExistsDatesDto;
 
     const diaries = await this.findDiariesByMonth(requestUserDto, year, month);
+
+    const dates = new Set(diaries.map((diary) => diary.createdAt.getDate()));
+
+    return [...dates];
   }
 
   groupDiariesByMonth = (diaries: Diary[]) => {

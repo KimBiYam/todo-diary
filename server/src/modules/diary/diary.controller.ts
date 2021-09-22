@@ -95,10 +95,12 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
-    const result = await this.diaryService.getTheDatesTheDiaryExists(
+    const dates = await this.diaryService.getTheDatesTheDiaryExists(
       requestUserDto,
       diariesExistsDatesDto,
     );
+
+    return dates;
   }
 
   @Post()
