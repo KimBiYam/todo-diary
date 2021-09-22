@@ -109,11 +109,34 @@ export class DiaryService {
       throw new NotFoundException('This user is not exists!');
     }
 
-    const firstDayOfYear = DateUtil.getFirstDayOfYear(year);
-    const lastDayOfYear = DateUtil.getLastDayOfYear(year);
+    const firstDate = DateUtil.getFirstDateOfYear(year);
+    const lastDate = DateUtil.getLastDateOfYear(year);
 
     const diaries = await this.diaryRepository.find({
-      where: { createdAt: Between(firstDayOfYear, lastDayOfYear), user: user },
+      where: { createdAt: Between(firstDate, lastDate), user: user },
+    });
+
+    return diaries;
+  }
+
+  async findDiariesByMonth(
+    requestUserDto: RequestUserDto,
+    year: number,
+    month: number,
+  ) {
+    const { id } = requestUserDto;
+
+    const user = await this.userService.findUserById(id);
+
+    if (!CommonUtil.isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
+    const firstDate = DateUtil.getFirstDateOfMonth(year, month);
+    const lastDate = DateUtil.getLastDateOfMonth(year, month);
+
+    const diaries = await this.diaryRepository.find({
+      where: { createdAt: Between(firstDate, lastDate), user: user },
     });
 
     return diaries;
@@ -237,7 +260,9 @@ export class DiaryService {
     requestUserDto: RequestUserDto,
     diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
-    const diaries = await this.findMyDiaries(requestUserDto);
+    const { year, month } = diariesExistsDatesDto;
+
+    const diaries = await this.findDiariesByMonth(requestUserDto, year, month);
   }
 
   groupDiariesByMonth = (diaries: Diary[]) => {
