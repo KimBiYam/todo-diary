@@ -6,6 +6,11 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async findUserById(id: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    return user;
+  }
+
   async findUserByEmail(email: string): Promise<User | undefined> {
     const user = await this.userRepository.findOne({ where: { email } });
     return user;

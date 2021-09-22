@@ -28,9 +28,9 @@ export class DiaryService {
     page: number,
     limit: number,
   ): Promise<Diary[]> {
-    const { email } = requestUserDto;
+    const { id } = requestUserDto;
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.findUserById(id);
 
     if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
@@ -53,9 +53,9 @@ export class DiaryService {
     requestUserDto: RequestUserDto,
     id: number,
   ): Promise<Diary> {
-    const { email } = requestUserDto;
+    const { id: userId } = requestUserDto;
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.findUserById(userId);
 
     if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
@@ -81,9 +81,9 @@ export class DiaryService {
   }
 
   async findDiariesByYear(requestUserDto: RequestUserDto, year: number) {
-    const { email } = requestUserDto;
+    const { id } = requestUserDto;
 
-    const user = await this.userService.findUserByEmail(email);
+    const user = await this.userService.findUserById(id);
 
     if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');
@@ -106,12 +106,12 @@ export class DiaryService {
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
 
-    const { email } = requestUserDto;
+    const { id } = requestUserDto;
     const { content, title } = createDiaryDto;
 
     const user = await queryRunner.manager
       .getRepository(User)
-      .findOne({ where: { email } });
+      .findOne({ where: { id } });
 
     if (!CommonUtil.isDataExists(user)) {
       throw new NotFoundException('This user is not exists!');

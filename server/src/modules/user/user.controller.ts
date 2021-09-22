@@ -6,8 +6,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { RequestUser } from '@src/decorators';
-import { User } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RequestUserDto } from './dto';
 import { UserService } from './user.service';
 
 @Controller('api/v1/users')
@@ -22,9 +22,9 @@ export class UserController {
   @ApiResponse({ status: 200, description: '유저 프로필 조회 성공' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  async findUserProfile(@RequestUser() user: User) {
-    const { email } = user;
-    const findUser = await this.userService.findUserByEmail(email);
+  async findUserProfile(@RequestUser() user: RequestUserDto) {
+    const { id } = user;
+    const findUser = await this.userService.findUserById(id);
     return { user: findUser };
   }
 }

@@ -4,11 +4,11 @@ import { RequestUserDto } from '@src/modules/user/dto';
 export const RequestUser = createParamDecorator(
   (data: unknown, ctx: ExecutionContext): RequestUserDto => {
     const request = ctx.switchToHttp().getRequest();
-    const { userId, username } = request.user;
+    const { id, displayName } = request.user;
 
     const user = new RequestUserDto();
-    user.displayName = userId;
-    user.email = username;
+    user.id = id;
+    user.displayName = displayName;
 
     return user;
   },
