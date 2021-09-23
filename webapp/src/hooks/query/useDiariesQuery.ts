@@ -4,7 +4,7 @@ import { Diary } from '../../types/diary.types';
 
 const useDiariesQuery = (
   limit: number,
-  options: UseInfiniteQueryOptions<Diary[]> = {},
+  options: UseInfiniteQueryOptions<Diary[], string> = {},
 ) =>
   useInfiniteQuery(
     createKey(),
