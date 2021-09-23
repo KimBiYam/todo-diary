@@ -91,11 +91,11 @@ export class DiaryController {
     status: 200,
     description: '해당 년도 해당 월에 다이어리가 존재하는 날짜들 가져오기 성공',
   })
-  async getTheDatesTheDiaryExists(
+  async getDatesTheDiaryExists(
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
-    const dates = await this.diaryService.getTheDatesTheDiaryExists(
+    const dates = await this.diaryService.getDatesTheDiaryExists(
       requestUserDto,
       diariesExistsDatesDto,
     );
