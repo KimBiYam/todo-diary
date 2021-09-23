@@ -34,3 +34,8 @@ export type UpdateDiaryParams = {
   content?: string;
   isFinished?: boolean;
 };
+
+export type DatesTheDiaryExistsQueryParams = {
+  year: number;
+  month: number;
+};

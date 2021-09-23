@@ -8,7 +8,7 @@ import apiClient from './apiClient';
 
 const API_DIARIES = '/api/v1/diaries';
 const API_DIARIES_STATISTICS = '/api/v1/diaries/statistics';
-const API_DIARIES_EXISTS_DATES = ' /api/v1/diaries/exists-dates';
+const API_DIARIES_EXISTS_DATES = '/api/v1/diaries/exists-dates';
 
 const getDiaryById = async (id: string) => {
   const response = await apiClient.get<DiaryResponse>(`${API_DIARIES}/${id}`);
