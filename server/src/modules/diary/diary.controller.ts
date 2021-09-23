@@ -13,7 +13,6 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
-  ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -27,6 +26,7 @@ import {
   CreateDiaryDto,
   UpdateDiaryDto,
   DiariesExistsDatesDto,
+  GetDiariesDto,
 } from './dto';
 
 @Controller('api/v1/diaries')
@@ -45,18 +45,30 @@ export class DiaryController {
     status: 200,
     description: '자신의 다이어리 글 리스트 가져오기 성공',
   })
-  @ApiQuery({ name: 'page', type: Number, required: true, example: 1 })
-  @ApiQuery({ name: 'limit', type: Number, required: true, example: 10 })
   async findMyDiaries(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Query('page') page: number,
-    @Query('limit') limit: number,
+    @Query() getDiariesDto: GetDiariesDto,
   ) {
-    const diaries = await this.diaryService.findMyDiariesByPage(
-      requestUserDto,
-      page,
-      limit,
-    );
+    const { page, limit, createdDate } = getDiariesDto;
+
+    let diaries: Diary[] = [];
+
+    if (createdDate) {
+      const foundDiaries = await this.diaryService.findDiariesByDateWithPage(
+        requestUserDto,
+        getDiariesDto,
+      );
+
+      diaries = [...foundDiaries];
+    } else {
+      const foundDiaries = await this.diaryService.findMyDiariesByPage(
+        requestUserDto,
+        page,
+        limit,
+      );
+
+      diaries = [...foundDiaries];
+    }
 
     const serializedDiaries = diaries.map((diary) => diary.serialize());
 

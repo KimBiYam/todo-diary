@@ -19,8 +19,8 @@ const PAGE_LIMIT = 10;
 const DiaryList = () => {
   const history = useHistory();
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
-  const currentDate = useMemo(() => new Date(), []);
 
+  const currentDate = useMemo(() => new Date(), []);
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [yearMonth, setYearMonth] = useState<DatesTheDiaryExistsQueryParams>({
     year: currentDate.getFullYear(),
@@ -49,7 +49,7 @@ const DiaryList = () => {
     onIntersect: fetchNextPage,
   });
 
-  const handleClickDiaryItem = useCallback(
+  const handleDiaryItemClick = useCallback(
     (diary: Diary) => history.push(`/diary/${diary.id}`),
     [],
   );
@@ -94,7 +94,7 @@ const DiaryList = () => {
               <DiaryItem
                 key={diary.id}
                 diary={diary}
-                onClick={handleClickDiaryItem}
+                onClick={handleDiaryItemClick}
               />
             )),
           )}
