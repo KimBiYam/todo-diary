@@ -14,6 +14,7 @@ const getDiaryById = async (id: string) => {
   const response = await apiClient.get<DiaryResponse>(`${API_DIARIES}/${id}`);
 
   const { diary } = response.data;
+
   return diary;
 };
 
