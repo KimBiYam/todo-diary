@@ -4,7 +4,7 @@ import Picker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export type DatePickerProps = {
-  selectedDate: Date;
+  selectedDate: Date | undefined;
   onDateChange: (date: Date) => void;
   onMonthChange: (date: Date) => void;
   existsDates: number[] | undefined;
