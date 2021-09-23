@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import { Between, Connection, DeleteResult } from 'typeorm';
-import { UpdateDiaryDto } from './dto/update-diary-dto';
-import { CreateDiaryDto, DiariesExistsDatesDto } from './dto';
+import { UpdateDiaryDto } from './dto/update-diary.dto';
+import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
 import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
@@ -61,6 +61,43 @@ export class DiaryService {
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta'])
       .where('diary.user_id = :userId', { userId: user.id })
+      .orderBy('diary.createdAt', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getMany();
+
+    return diaries;
+  }
+
+  async findDiariesByDateWithPage(
+    requestUserDto: RequestUserDto,
+    getDiariesDto: GetDiariesDto,
+  ) {
+    const { id } = requestUserDto;
+
+    const user = await this.userService.findUserById(id);
+
+    if (!CommonUtil.isDataExists(user)) {
+      throw new NotFoundException('This user is not exists!');
+    }
+
+    const { limit, page, createdDate } = getDiariesDto;
+
+    const firstDate = new Date(createdDate);
+    const lastDate = new Date(createdDate);
+
+    firstDate.setHours(0, 0, 0);
+    lastDate.setHours(23, 59, 59);
+
+    const diaries = await this.diaryRepository
+      .createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .select(['diary', 'diary_meta'])
+      .where('diary.user_id = :userId', { userId: user.id })
+      .andWhere('diary.createdAt BETWEEN :firstDate AND :lastDate', {
+        firstDate,
+        lastDate,
+      })
       .orderBy('diary.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit)
