@@ -8,6 +8,7 @@ import apiClient from './apiClient';
 
 const API_DIARIES = '/api/v1/diaries';
 const API_DIARIES_STATISTICS = '/api/v1/diaries/statistics';
+const API_DIARIES_EXISTS_DATES = ' /api/v1/diaries/exists-dates';
 
 const getDiaryById = async (id: string) => {
   const response = await apiClient.get<DiaryResponse>(`${API_DIARIES}/${id}`);
@@ -65,7 +66,16 @@ const getDiariesStatisticsByYear = async (year: number) => {
   return diariesStatisticsByYear;
 };
 
-const getDatesTheDiaryExists = async (year: number, month: number) => {};
+const getDatesTheDiaryExists = async (year: number, month: number) => {
+  const response = await apiClient.get<{ dates: number[] }>(
+    API_DIARIES_EXISTS_DATES,
+    { params: { year, month } },
+  );
+
+  const { dates } = response.data;
+
+  return dates;
+};
 
 const diaryApi = {
   getDiaryById,
@@ -74,6 +84,7 @@ const diaryApi = {
   updateDiary,
   deleteDiary,
   getDiariesStatisticsByYear,
+  getDatesTheDiaryExists,
 };
 
 export default diaryApi;

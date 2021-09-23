@@ -4,7 +4,7 @@ import { DiariesStatistics } from '../../types/diary.types';
 
 const useDiariesStatisticsQuery = (
   year: number,
-  options?: UseQueryOptions<DiariesStatistics[]>,
+  options?: UseQueryOptions<DiariesStatistics[], string>,
 ) =>
   useQuery(
     createKey(year),

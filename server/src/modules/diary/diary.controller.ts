@@ -100,7 +100,7 @@ export class DiaryController {
       diariesExistsDatesDto,
     );
 
-    return dates;
+    return { dates };
   }
 
   @Post()
