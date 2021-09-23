@@ -1,10 +1,6 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
-
-type DatesTheDiaryExistsQueryParams = {
-  year: number;
-  month: number;
-};
+import { DatesTheDiaryExistsQueryParams } from '../../types/diary.types';
 
 const useDatesTheDiaryExistsQuery = (
   { year, month }: DatesTheDiaryExistsQueryParams,
@@ -21,5 +17,7 @@ const createkey = (year: number, month: number) => [
   year,
   month,
 ];
+
+useDatesTheDiaryExistsQuery.createKey = createkey;
 
 export default useDatesTheDiaryExistsQuery;

@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
+import useDatesTheDiaryExistsQuery from '../../hooks/query/useDatesTheDiaryExistsQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import LoadingPage from '../../pages/LoadingPage';
 import { BREAK_POINTS } from '../../styles/breakPoints';
-import { Diary } from '../../types/diary.types';
+import { DatesTheDiaryExistsQueryParams, Diary } from '../../types/diary.types';
+import DatePicker from '../common/DatePicker';
 import DiaryEmptyError from './DiaryEmptyError';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
@@ -17,6 +19,14 @@ const PAGE_LIMIT = 10;
 const DiaryList = () => {
   const history = useHistory();
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
+  const currentDate = useMemo(() => new Date(), []);
+
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [yearMonth, setYearMonth] = useState<DatesTheDiaryExistsQueryParams>({
+    year: currentDate.getFullYear(),
+    month: currentDate.getMonth() + 1,
+  });
+
   const {
     data: diaries,
     hasNextPage,
@@ -25,6 +35,8 @@ const DiaryList = () => {
     isFetchingNextPage,
     isFetching,
   } = useDiariesQuery(PAGE_LIMIT);
+
+  const { data: existsDates } = useDatesTheDiaryExistsQuery(yearMonth);
 
   const isShowSkeleton = useMemo(
     () => isFetchingNextPage || isLoading,
@@ -42,6 +54,23 @@ const DiaryList = () => {
     [],
   );
 
+  const handleMonthChange = useCallback(
+    (date: Date) => {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+
+      setYearMonth({ year, month });
+    },
+    [setYearMonth],
+  );
+
+  const handleDateChange = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+    },
+    [setSelectedDate],
+  );
+
   if (diaries?.pages[0].length === 0) {
     return <DiaryEmptyError />;
   }
@@ -52,27 +81,40 @@ const DiaryList = () => {
 
   return (
     <div css={box}>
-      {diaries &&
-        diaries.pages.map((diaries) =>
-          diaries.map((diary) => (
-            <DiaryItem
-              key={diary.id}
-              diary={diary}
-              onClick={handleClickDiaryItem}
-            />
-          )),
+      <DatePicker
+        selectedDate={selectedDate}
+        onDateChange={handleDateChange}
+        onMonthChange={handleMonthChange}
+        existsDates={existsDates}
+      />
+      <div css={diarySection}>
+        {diaries &&
+          diaries.pages.map((diaries) =>
+            diaries.map((diary) => (
+              <DiaryItem
+                key={diary.id}
+                diary={diary}
+                onClick={handleClickDiaryItem}
+              />
+            )),
+          )}
+        {isShowSkeleton &&
+          Array.from({ length: PAGE_LIMIT }).map((_, index) => (
+            <DiaryItemSkeleton key={index} />
+          ))}
+        {hasNextPage && !isFetchingNextPage && (
+          <div ref={scrollableTrigerRef} />
         )}
-      {isShowSkeleton &&
-        Array.from({ length: PAGE_LIMIT }).map((_, index) => (
-          <DiaryItemSkeleton key={index} />
-        ))}
-      {hasNextPage && !isFetchingNextPage && <div ref={scrollableTrigerRef} />}
+      </div>
     </div>
   );
 };
 
 const box = css`
   padding: 2rem;
+`;
+
+const diarySection = css`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
 

@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import DiaryChart from '../components/diary/DiaryChart';
-import YearPicker from '../components/diary/YearPicker';
+import YearPicker from '../components/common/YearPicker';
 import { COLORS } from '../constants';
 import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useWindowSize from '../hooks/useWindowDimensions';
