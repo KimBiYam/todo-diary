@@ -17,9 +17,13 @@ const getDiaryById = async (id: string) => {
   return diary;
 };
 
-const getDiaries = async (page: number, limit: number) => {
+const getDiaries = async (
+  page: number,
+  limit: number,
+  createdDate?: string,
+) => {
   const response = await apiClient.get<DiariesResponse>(API_DIARIES, {
-    params: { page, limit },
+    params: { page, limit, createdDate },
   });
 
   const { diaries } = response.data;

@@ -2,13 +2,18 @@ import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { Diary } from '../../types/diary.types';
 
+type DiaresQueryParams = {
+  limit: number;
+  createdDate?: string;
+};
+
 const useDiariesQuery = (
-  limit: number,
+  { limit, createdDate }: DiaresQueryParams,
   options: UseInfiniteQueryOptions<Diary[], string> = {},
 ) =>
   useInfiniteQuery(
-    createKey(),
-    ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit),
+    createKey(createdDate),
+    ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit, createdDate),
     {
       getNextPageParam: (lastPage, allPages) => {
         return lastPage.length === limit ? allPages.length + 1 : undefined;
@@ -17,7 +22,7 @@ const useDiariesQuery = (
     },
   );
 
-const createKey = () => 'diaries';
+const createKey = (createdDate?: string) => ['diaries', createdDate];
 
 useDiariesQuery.createKey = createKey;
 

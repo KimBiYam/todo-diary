@@ -7,6 +7,7 @@ import useScrollObserver from '../../hooks/useScrollObserver';
 import LoadingPage from '../../pages/LoadingPage';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { DatesTheDiaryExistsQueryParams, Diary } from '../../types/diary.types';
+import dateUtil from '../../utils/dateUtil';
 import DatePicker from '../common/DatePicker';
 import DiaryEmptyError from './DiaryEmptyError';
 import DiaryItem from './DiaryItem';
@@ -21,7 +22,7 @@ const DiaryList = () => {
   const scrollableTrigerRef = useRef<HTMLDivElement>(null);
 
   const currentDate = useMemo(() => new Date(), []);
-  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [yearMonth, setYearMonth] = useState<DatesTheDiaryExistsQueryParams>({
     year: currentDate.getFullYear(),
     month: currentDate.getMonth() + 1,
@@ -34,7 +35,11 @@ const DiaryList = () => {
     isLoading,
     isFetchingNextPage,
     isFetching,
-  } = useDiariesQuery(PAGE_LIMIT);
+  } = useDiariesQuery({
+    limit: PAGE_LIMIT,
+    createdDate:
+      selectedDate && dateUtil.getFormattedDate(selectedDate.toDateString()),
+  });
 
   const { data: existsDates } = useDatesTheDiaryExistsQuery(yearMonth);
 
