@@ -256,7 +256,7 @@ export class DiaryService {
     return diariesStatisticsByYear;
   }
 
-  async getTheDatesTheDiaryExists(
+  async getDatesTheDiaryExists(
     requestUserDto: RequestUserDto,
     diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
