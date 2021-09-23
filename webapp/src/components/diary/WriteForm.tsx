@@ -24,7 +24,7 @@ const WriteForm = memo(() => {
   const handleWriteDiarySuccess = () => {
     const currentYear = new Date().getFullYear();
 
-    queryClient.invalidateQueries(useDiariesQuery.createKey());
+    queryClient.invalidateQueries(useDiariesQuery.defaultKey);
     queryClient.invalidateQueries(
       useDiariesStatisticsQuery.createKey(currentYear),
     );
