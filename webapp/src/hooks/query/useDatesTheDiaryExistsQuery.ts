@@ -12,12 +12,10 @@ const useDatesTheDiaryExistsQuery = (
     options,
   );
 
-const createkey = (year: number, month: number) => [
-  'datesTheDiaryExists',
-  year,
-  month,
-];
+const defaultKey = 'datesTheDiaryExists';
+const createkey = (year: number, month: number) => [defaultKey, year, month];
 
+useDatesTheDiaryExistsQuery.defaultKey = defaultKey;
 useDatesTheDiaryExistsQuery.createKey = createkey;
 
 export default useDatesTheDiaryExistsQuery;

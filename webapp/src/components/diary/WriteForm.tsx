@@ -3,6 +3,7 @@ import { memo, useCallback } from 'react';
 import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
+import useDatesTheDiaryExistsQuery from '../../hooks/query/useDatesTheDiaryExistsQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useDiariesStatisticsQuery from '../../hooks/query/useDiariesStatisticsQuery';
 import useDialogAction from '../../hooks/useDialogAction';
@@ -25,6 +26,7 @@ const WriteForm = memo(() => {
     const currentYear = new Date().getFullYear();
 
     queryClient.invalidateQueries(useDiariesQuery.defaultKey);
+    queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
     queryClient.invalidateQueries(
       useDiariesStatisticsQuery.createKey(currentYear),
     );
