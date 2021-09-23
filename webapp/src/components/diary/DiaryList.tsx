@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
+import { COLORS } from '../../constants';
 import useDatesTheDiaryExistsQuery from '../../hooks/query/useDatesTheDiaryExistsQuery';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
@@ -76,6 +77,10 @@ const DiaryList = () => {
     [setSelectedDate],
   );
 
+  const handleDateResetClick = useCallback(() => {
+    setSelectedDate(undefined);
+  }, [setSelectedDate]);
+
   if (diaries?.pages[0].length === 0) {
     return <DiaryEmptyError />;
   }
@@ -86,12 +91,19 @@ const DiaryList = () => {
 
   return (
     <div css={box}>
-      <DatePicker
-        selectedDate={selectedDate}
-        onDateChange={handleDateChange}
-        onMonthChange={handleMonthChange}
-        existsDates={existsDates}
-      />
+      <div style={{ display: 'flex' }}>
+        <DatePicker
+          selectedDate={selectedDate}
+          onDateChange={handleDateChange}
+          onMonthChange={handleMonthChange}
+          existsDates={existsDates}
+        />
+        {selectedDate && (
+          <button css={dateResetButton} onClick={handleDateResetClick}>
+            날짜 초기화
+          </button>
+        )}
+      </div>
       <div css={diarySection}>
         {diaries &&
           diaries.pages.map((diaries) =>
@@ -117,6 +129,14 @@ const DiaryList = () => {
 
 const box = css`
   padding: 2rem;
+`;
+
+const dateResetButton = css`
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: ${COLORS.quaternary};
+  cursor: pointer;
 `;
 
 const diarySection = css`
