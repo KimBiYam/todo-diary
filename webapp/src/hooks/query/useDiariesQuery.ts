@@ -22,8 +22,10 @@ const useDiariesQuery = (
     },
   );
 
-const createKey = (createdDate?: string) => ['diaries', createdDate];
+const defaultKey = 'diaries';
+const createKey = (createdDate?: string) => [defaultKey, createdDate];
 
+useDiariesQuery.defaultKey = defaultKey;
 useDiariesQuery.createKey = createKey;
 
 export default useDiariesQuery;

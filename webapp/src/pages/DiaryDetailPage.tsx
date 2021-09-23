@@ -79,7 +79,7 @@ const DiaryDetailPage = () => {
     if (diary) {
       const createdYear = new Date(diary?.createdAt).getFullYear();
 
-      queryClient.invalidateQueries(useDiariesQuery.createKey());
+      queryClient.invalidateQueries(useDiariesQuery.defaultKey);
       queryClient.invalidateQueries(
         useDiariesStatisticsQuery.createKey(createdYear),
       );
