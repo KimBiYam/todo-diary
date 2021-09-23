@@ -7,6 +7,7 @@ import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
 import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
+import useDatesTheDiaryExistsQuery from '../hooks/query/useDatesTheDiaryExistsQuery';
 import useDiariesQuery from '../hooks/query/useDiariesQuery';
 import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
@@ -80,6 +81,7 @@ const DiaryDetailPage = () => {
       const createdYear = new Date(diary?.createdAt).getFullYear();
 
       queryClient.invalidateQueries(useDiariesQuery.defaultKey);
+      queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
       queryClient.invalidateQueries(
         useDiariesStatisticsQuery.createKey(createdYear),
       );
