@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Diary, DiaryMeta } from '@src/entities';
+import { Diary } from '@src/entities';
+import { Connection } from 'typeorm';
 import { UserService } from '../user';
 import { DiaryService } from './diary.service';
 
@@ -11,18 +12,9 @@ describe('DiaryService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         DiaryService,
-        {
-          provide: UserService,
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(Diary),
-          useValue: {},
-        },
-        {
-          provide: getRepositoryToken(DiaryMeta),
-          useValue: {},
-        },
+        { provide: UserService, useValue: {} },
+        { provide: Connection, useValue: {} },
+        { provide: getRepositoryToken(Diary), useValue: {} },
       ],
     }).compile();
 

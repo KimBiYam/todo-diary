@@ -1,7 +1,10 @@
+import { HttpService } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { SocialAccount } from '@src/entities';
+import { Connection } from 'typeorm';
 import { UserService } from '../user';
 import { AuthService } from './auth.service';
 
@@ -14,6 +17,9 @@ describe('AuthService', () => {
         AuthService,
         { provide: UserService, useValue: {} },
         { provide: JwtService, useValue: {} },
+        { provide: HttpService, useValue: {} },
+        { provide: ConfigService, useValue: {} },
+        { provide: Connection, useValue: {} },
         { provide: getRepositoryToken(SocialAccount), useValue: {} },
       ],
     }).compile();
