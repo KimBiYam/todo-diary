@@ -20,3 +20,9 @@ export type CheckSocialAccountResponse = {
 export type SignInSocialAccountResponse = GetUserProfileResponse & {
   accessToken: string;
 };
+
+export const deserializeUser = (user: User) => {
+  const { email, displayName, photoUrl, createdAt } = user;
+
+  return { email, displayName, photoUrl, createdAt };
+};
