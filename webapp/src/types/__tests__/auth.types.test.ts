@@ -8,7 +8,6 @@ describe('auth types', () => {
         displayName: 'test',
         email: 'test@test.com',
         createdAt: new Date(),
-        photoUrl: 'test',
         unuseField: 'unuseField',
       } as User;
 
@@ -19,7 +18,6 @@ describe('auth types', () => {
         displayName: 'test',
         email: 'test@test.com',
         createdAt: new Date(),
-        photoUrl: 'test',
       };
 
       //then
