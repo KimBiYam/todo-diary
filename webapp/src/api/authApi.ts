@@ -1,9 +1,9 @@
 import {
   CheckSocialAccountResponse,
+  deserializeUser,
   SignInSocialAccountResponse,
 } from '../types/auth.types';
 import apiClient from './apiClient';
-import { deserializeUser } from './userApi';
 
 const API_AUTH_GOOGLE_CHECK = '/api/v1/auth/google/check';
 const API_AUTH_GOOGLE_SIGN_IN = '/api/v1/auth/google/sign-in';
