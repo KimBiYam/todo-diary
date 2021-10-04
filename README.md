@@ -12,7 +12,6 @@
 - [x] 지정한 날짜의 할일 조회
 - [x] 월별 통계 그래프
 
-
 ## Project Stack
 
 ### Server
@@ -43,21 +42,18 @@
 - Client
   - Vercel
 
-
-### Getting started
+## Getting started
 
 ## Server 
 
-## Environments
+### Environments
 환경변수 설정을 위해 env 파일이 필요
 .env.sample 과 .env.dev.sample 파일을 참고하여 설정
 
 - Devlopment Mode : .env.dev
 - Production Mode : .env
 
-## Run
-
-## Devlopment Mode
+### Run Devlopment Mode
 
 ### Run
 
@@ -71,7 +67,11 @@
 > ./run-dev.sh down
 ```
 
-## Production Mode
+---
+
+### Run Production Mode
+
+### Run
 
 ```
 > ./run.sh up
@@ -83,6 +83,8 @@
 > ./run.sh down
 ```
 
+---
+
 ### Run Test
 ```
 > npm run test
@@ -90,16 +92,14 @@
 
 ## Client
 
-## Environments
+### Environments
 환경변수 설정을 위해 env 파일이 필요
 .env.sample 과 .env.development.sample 파일을 참고하여 설정
 
 - Devlopment Mode : .env.development
 - Production Mode : .env
 
-## Run
-
-### Development Mode
+### Run Development Mode
 
 ```bash
 > npm run start
