@@ -7,15 +7,15 @@ const useDatesTheDiaryExistsQuery = (
   options?: UseQueryOptions<number[], string>,
 ) =>
   useQuery(
-    createkey(year, month),
+    createKey(year, month),
     () => diaryApi.getDatesTheDiaryExists(year, month),
     options,
   );
 
 const defaultKey = 'datesTheDiaryExists';
-const createkey = (year: number, month: number) => [defaultKey, year, month];
+const createKey = (year: number, month: number) => [defaultKey, year, month];
 
 useDatesTheDiaryExistsQuery.defaultKey = defaultKey;
-useDatesTheDiaryExistsQuery.createKey = createkey;
+useDatesTheDiaryExistsQuery.createKey = createKey;
 
 export default useDatesTheDiaryExistsQuery;

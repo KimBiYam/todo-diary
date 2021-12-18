@@ -3,15 +3,15 @@ import { forwardRef, memo, Ref } from 'react';
 import { COLORS } from '../../constants';
 import Icon, { IconType } from '../common/Icon';
 
-export type SigninButtonProps =
+export type SignInButtonProps =
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     onClick?: () => void;
     icon: IconType;
     label: string;
   };
 
-const SigninButton = (
-  { onClick, icon, label, ...rest }: SigninButtonProps,
+const SignInButton = (
+  { onClick, icon, label, ...rest }: SignInButtonProps,
   ref: Ref<HTMLButtonElement>,
 ) => {
   return (
@@ -48,4 +48,4 @@ const iconStyle = css`
   margin: 0 1.6rem;
 `;
 
-export default memo(forwardRef(SigninButton));
+export default memo(forwardRef(SignInButton));

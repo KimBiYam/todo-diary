@@ -20,7 +20,7 @@ const PAGE_LIMIT = 10;
 
 const DiaryList = () => {
   const history = useHistory();
-  const scrollableTrigerRef = useRef<HTMLDivElement>(null);
+  const scrollableTriggerRef = useRef<HTMLDivElement>(null);
 
   const currentDate = useMemo(() => new Date(), []);
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -50,7 +50,7 @@ const DiaryList = () => {
   );
 
   useScrollObserver({
-    targetRef: scrollableTrigerRef,
+    targetRef: scrollableTriggerRef,
     enabled: hasNextPage,
     onIntersect: fetchNextPage,
   });
@@ -120,7 +120,7 @@ const DiaryList = () => {
             <DiaryItemSkeleton key={index} />
           ))}
         {hasNextPage && !isFetchingNextPage && (
-          <div ref={scrollableTrigerRef} />
+          <div ref={scrollableTriggerRef} />
         )}
       </div>
     </div>

@@ -12,10 +12,10 @@ const useCheckUserEffect = () => {
       return;
     }
 
-    signin();
+    signIn();
   }, []);
 
-  const signin = async () => {
+  const signIn = async () => {
     try {
       setIsLoading(true);
 

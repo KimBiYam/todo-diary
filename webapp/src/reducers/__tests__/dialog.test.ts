@@ -10,8 +10,8 @@ import { RootState } from '../rootReducer';
 
 describe('dialog reducer', () => {
   const setup = () => {
-    const middlewares = getDefaultMiddleware();
-    const mockStore = configureStore(middlewares);
+    const middleWares = getDefaultMiddleware();
+    const mockStore = configureStore(middleWares);
 
     return { mockStore };
   };

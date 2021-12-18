@@ -76,7 +76,7 @@ const DiaryDetailPage = () => {
     openDialog(e);
   };
 
-  const invalidateDiaryQuries = () => {
+  const invalidateDiaryQueries = () => {
     if (diary) {
       const createdYear = new Date(diary?.createdAt).getFullYear();
 
@@ -90,11 +90,11 @@ const DiaryDetailPage = () => {
 
   const handleUpdateDiaryMutateSuccess = () => {
     refetch();
-    invalidateDiaryQuries();
+    invalidateDiaryQueries();
   };
 
   const handleDeleteDiaryMutateSuccess = () => {
-    invalidateDiaryQuries();
+    invalidateDiaryQueries();
     history.push('/');
   };
 

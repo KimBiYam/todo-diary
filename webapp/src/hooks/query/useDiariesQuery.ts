@@ -2,13 +2,13 @@ import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
 import { Diary } from '../../types/diary.types';
 
-type DiaresQueryParams = {
+type DiariesQueryParams = {
   limit: number;
   createdDate?: string;
 };
 
 const useDiariesQuery = (
-  { limit, createdDate }: DiaresQueryParams,
+  { limit, createdDate }: DiariesQueryParams,
   options: UseInfiniteQueryOptions<Diary[], string> = {},
 ) =>
   useInfiniteQuery(

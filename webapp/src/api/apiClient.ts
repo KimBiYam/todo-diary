@@ -26,14 +26,14 @@ apiClient.interceptors.response.use(
     const errorText = convertErrorText(error.response?.status);
 
     if (status === StatusCodes.UNAUTHORIZED) {
-      handleUnauthorzied(errorText);
+      handleUnauthorized(errorText);
     }
 
     return Promise.reject(errorText);
   },
 );
 
-const handleUnauthorzied = (errorText: string) => {
+const handleUnauthorized = (errorText: string) => {
   tokenStorage.clearToken();
   store.dispatch(logout());
   store.dispatch(openDialog(errorText));
