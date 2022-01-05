@@ -142,6 +142,22 @@ export class AuthService {
     }
   }
 
+  async getSocialAccountDtoByGithubCode(code: string) {
+    const githubToken = await this.getGithubAccessToken(code);
+
+    const socialAccountDto = await this.getGithubProfile(githubToken);
+
+    const isSocialAccountExists = await this.isSocialAccountExists(
+      socialAccountDto,
+    );
+
+    if (!isSocialAccountExists) {
+      await this.createSocialAccount(socialAccountDto);
+    }
+
+    return socialAccountDto;
+  }
+
   async getGithubAccessToken(code: string) {
     const githubClientId = this.configService.get('GITHUB_CLIENT_ID');
     const githubClientSecret = this.configService.get('GITHUB_SECRET');
