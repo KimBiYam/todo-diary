@@ -1,15 +1,9 @@
 import { Diary, DiaryMeta, User } from '@src/entities';
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import { Between, Connection, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary.dto';
 import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
-import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
@@ -18,20 +12,11 @@ import { DateUtil } from '@src/util/date.util';
 export class DiaryService {
   constructor(
     private readonly diaryRepository: DiaryRepository,
-    private readonly userService: UserService,
     private readonly connection: Connection,
   ) {}
   private readonly logger = new Logger('DiaryService');
 
-  async findMyDiaries(requestUserDto: RequestUserDto): Promise<Diary[]> {
-    const { id } = requestUserDto;
-
-    const user = await this.userService.findUserById(id);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
+  async findMyDiaries(user: User): Promise<Diary[]> {
     const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
@@ -44,18 +29,10 @@ export class DiaryService {
   }
 
   async findMyDiariesByPage(
-    requestUserDto: RequestUserDto,
+    user: User,
     page: number,
     limit: number,
   ): Promise<Diary[]> {
-    const { id } = requestUserDto;
-
-    const user = await this.userService.findUserById(id);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
     const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
@@ -69,18 +46,7 @@ export class DiaryService {
     return diaries;
   }
 
-  async findDiariesByDateWithPage(
-    requestUserDto: RequestUserDto,
-    getDiariesDto: GetDiariesDto,
-  ) {
-    const { id } = requestUserDto;
-
-    const user = await this.userService.findUserById(id);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
+  async findDiariesByDateWithPage(user: User, getDiariesDto: GetDiariesDto) {
     const { limit, page, createdDate } = getDiariesDto;
 
     const firstDate = new Date(createdDate);
@@ -92,7 +58,7 @@ export class DiaryService {
     const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta'])
+      .select(['diary', 'diary_meta', 'user'])
       .where('diary.user_id = :userId', { userId: user.id })
       .andWhere('diary.createdAt BETWEEN :firstDate AND :lastDate', {
         firstDate,
@@ -106,23 +72,13 @@ export class DiaryService {
     return diaries;
   }
 
-  async findMyDiary(
-    requestUserDto: RequestUserDto,
-    id: number,
-  ): Promise<Diary> {
-    const { id: userId } = requestUserDto;
-
-    const user = await this.userService.findUserById(userId);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
+  async findMyDiary(user: User, id: number): Promise<Diary> {
     const diary = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.user', 'user')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta', 'user'])
+      .where('diary.user', { user })
       .where('diary.id = :id', { id })
       .getOne();
 
@@ -130,22 +86,10 @@ export class DiaryService {
       throw new NotFoundException('This diary is not exist');
     }
 
-    if (diary.user.id !== user.id) {
-      throw new BadRequestException('This diary is not your diary post');
-    }
-
     return diary;
   }
 
-  async findDiariesByYear(requestUserDto: RequestUserDto, year: number) {
-    const { id } = requestUserDto;
-
-    const user = await this.userService.findUserById(id);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
+  async findDiariesByYear(user: User, year: number) {
     const firstDate = DateUtil.getFirstDateOfYear(year);
     const lastDate = DateUtil.getLastDateOfYear(year);
 
@@ -156,19 +100,7 @@ export class DiaryService {
     return diaries;
   }
 
-  async findDiariesByMonth(
-    requestUserDto: RequestUserDto,
-    year: number,
-    month: number,
-  ) {
-    const { id } = requestUserDto;
-
-    const user = await this.userService.findUserById(id);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
-
+  async findDiariesByMonth(user: User, year: number, month: number) {
     const firstDate = DateUtil.getFirstDateOfMonth(year, month);
     const lastDate = DateUtil.getLastDateOfMonth(year, month);
 
@@ -224,7 +156,7 @@ export class DiaryService {
   }
 
   async updateMyDiary(
-    requestUserDto: RequestUserDto,
+    user: User,
     updateDiaryDto: UpdateDiaryDto,
     id: number,
   ): Promise<Diary> {
@@ -233,7 +165,7 @@ export class DiaryService {
 
     const { content, isFinished, title } = updateDiaryDto;
 
-    const diary = await this.findMyDiary(requestUserDto, id);
+    const diary = await this.findMyDiary(user, id);
 
     try {
       await queryRunner.startTransaction();
@@ -264,20 +196,14 @@ export class DiaryService {
     }
   }
 
-  async deleteMyDiary(
-    requestUserDto: RequestUserDto,
-    id: number,
-  ): Promise<DeleteResult> {
-    const diary = await this.findMyDiary(requestUserDto, id);
+  async deleteMyDiary(user: User, id: number): Promise<DeleteResult> {
+    const diary = await this.findMyDiary(user, id);
 
     return await this.diaryRepository.delete(diary.id);
   }
 
-  async getDiariesStatisticsByYear(
-    requestUserDto: RequestUserDto,
-    year: number,
-  ) {
-    const diariesByYear = await this.findDiariesByYear(requestUserDto, year);
+  async getDiariesStatisticsByYear(user: User, year: number) {
+    const diariesByYear = await this.findDiariesByYear(user, year);
     const groupedDiariesByMonth = this.groupDiariesByMonth(diariesByYear);
 
     const diariesStatisticsByYear = Object.keys(groupedDiariesByMonth).map(
@@ -294,12 +220,12 @@ export class DiaryService {
   }
 
   async getDatesTheDiaryExists(
-    requestUserDto: RequestUserDto,
+    user: User,
     diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
     const { year, month } = diariesExistsDatesDto;
 
-    const diaries = await this.findDiariesByMonth(requestUserDto, year, month);
+    const diaries = await this.findDiariesByMonth(user, year, month);
 
     const dates = new Set(diaries.map((diary) => diary.createdAt.getDate()));
 

@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Patch,
   Post,
@@ -19,6 +18,7 @@ import {
 import { RequestUser } from '@src/decorators/request-user.decorator';
 import { Diary } from '@src/entities';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import {
@@ -36,8 +36,10 @@ import {
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
 export class DiaryController {
-  constructor(private readonly diaryService: DiaryService) {}
-  private readonly logger = new Logger('DiaryController');
+  constructor(
+    private readonly diaryService: DiaryService,
+    private readonly userService: UserService,
+  ) {}
 
   @Get('')
   @ApiOperation({ summary: '자신의 다이어리 글 리스트 가져오기' })
@@ -49,20 +51,22 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() getDiariesDto: GetDiariesDto,
   ) {
+    const user = await this.userService.findUserById(requestUserDto.id);
+
     const { page, limit, createdDate } = getDiariesDto;
 
     let diaries: Diary[] = [];
 
     if (createdDate) {
       const foundDiaries = await this.diaryService.findDiariesByDateWithPage(
-        requestUserDto,
+        user,
         getDiariesDto,
       );
 
       diaries = [...foundDiaries];
     } else {
       const foundDiaries = await this.diaryService.findMyDiariesByPage(
-        requestUserDto,
+        user,
         page,
         limit,
       );
@@ -87,8 +91,10 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() { year }: DiariesStatisticsDto,
   ) {
+    const user = await this.userService.findUserById(requestUserDto.id);
+
     const diariesStatisticsByYear = await this.diaryService.getDiariesStatisticsByYear(
-      requestUserDto,
+      user,
       year,
     );
 
@@ -107,8 +113,10 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Query() diariesExistsDatesDto: DiariesExistsDatesDto,
   ) {
+    const user = await this.userService.findUserById(requestUserDto.id);
+
     const dates = await this.diaryService.getDatesTheDiaryExists(
-      requestUserDto,
+      user,
       diariesExistsDatesDto,
     );
 
@@ -144,7 +152,9 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ) {
-    const diary = await this.diaryService.findMyDiary(requestUserDto, id);
+    const user = await this.userService.findUserById(requestUserDto.id);
+
+    const diary = await this.diaryService.findMyDiary(user, id);
 
     return { diary: diary.serialize() };
   }
@@ -162,8 +172,10 @@ export class DiaryController {
     @Body() updateDiaryDto: UpdateDiaryDto,
     @Param('id') id: number,
   ): Promise<{ diary: Diary }> {
+    const user = await this.userService.findUserById(requestUserDto.id);
+
     const diary = await this.diaryService.updateMyDiary(
-      requestUserDto,
+      user,
       updateDiaryDto,
       id,
     );
@@ -183,7 +195,10 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Param('id') id: number,
   ): Promise<{ msg: string }> {
-    await this.diaryService.deleteMyDiary(requestUserDto, id);
+    const user = await this.userService.findUserById(requestUserDto.id);
+
+    await this.diaryService.deleteMyDiary(user, id);
+
     return { msg: 'Successfully deleted your diary' };
   }
 }

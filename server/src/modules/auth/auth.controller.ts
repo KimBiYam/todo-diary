@@ -1,13 +1,5 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CommonUtil } from '@src/util/common.util';
 import { UserService } from '../user';
 import { AuthService } from './auth.service';
 import { GithubOAuthDTO, GoogleTokenDto } from './dto';
@@ -52,10 +44,6 @@ export class AuthController {
 
     const user = await this.userService.findUserByEmail(email);
 
-    if (!CommonUtil.isDataExists(user)) {
-      throw new BadRequestException('This user is not exists!');
-    }
-
     return await this.authService.loginSocialAccount(user, socialAccountDto);
   }
 
@@ -88,10 +76,6 @@ export class AuthController {
     const { email } = socialAccountDto;
 
     const user = await this.userService.findUserByEmail(email);
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new BadRequestException('This user is not exists!');
-    }
 
     return await this.authService.loginSocialAccount(user, socialAccountDto);
   }
