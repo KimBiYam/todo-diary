@@ -243,11 +243,11 @@ export class DiaryService {
       updateDiary.isFinished = isFinished;
       updateDiary.id = diary.id;
 
-      const updateDiartyMeta = new DiaryMeta();
-      updateDiartyMeta.content = content;
-      updateDiartyMeta.id = diary.diaryMeta.id;
+      const updateDiaryMeta = new DiaryMeta();
+      updateDiaryMeta.content = content;
+      updateDiaryMeta.id = diary.diaryMeta.id;
 
-      await queryRunner.manager.getRepository(DiaryMeta).save(updateDiartyMeta);
+      await queryRunner.manager.getRepository(DiaryMeta).save(updateDiaryMeta);
 
       const result = await queryRunner.manager
         .getRepository(Diary)
@@ -278,12 +278,12 @@ export class DiaryService {
     year: number,
   ) {
     const diariesByYear = await this.findDiariesByYear(requestUserDto, year);
-    const groupedDairesByMonth = this.groupDiariesByMonth(diariesByYear);
+    const groupedDiariesByMonth = this.groupDiariesByMonth(diariesByYear);
 
-    const diariesStatisticsByYear = Object.keys(groupedDairesByMonth).map(
+    const diariesStatisticsByYear = Object.keys(groupedDiariesByMonth).map(
       (month) => {
         const diariesStatistics = this.getDiariesStatistics(
-          groupedDairesByMonth[month],
+          groupedDiariesByMonth[month],
         );
 
         return { month: parseInt(month), ...diariesStatistics };
@@ -308,21 +308,21 @@ export class DiaryService {
 
   groupDiariesByMonth = (diaries: Diary[]) => {
     const months = DateUtil.getAllMonths();
-    const groupedDairesByMonth: { [key: string]: Diary[] } = {};
+    const groupedDiariesByMonth: { [key: string]: Diary[] } = {};
 
     months.forEach((month) => {
       diaries.forEach((diary) => {
-        if (groupedDairesByMonth[month] === undefined) {
-          groupedDairesByMonth[month] = [];
+        if (groupedDiariesByMonth[month] === undefined) {
+          groupedDiariesByMonth[month] = [];
         }
 
         if (diary.createdAt.getMonth() + 1 === month) {
-          groupedDairesByMonth[month].push(diary);
+          groupedDiariesByMonth[month].push(diary);
         }
       });
     });
 
-    return groupedDairesByMonth;
+    return groupedDiariesByMonth;
   };
 
   getDiariesStatistics(diaries: Diary[]) {
