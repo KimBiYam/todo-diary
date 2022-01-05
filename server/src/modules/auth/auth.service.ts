@@ -7,12 +7,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
-import { UserService } from '@src/modules/user';
 import { SocialAccountDto } from './dto';
 import { Connection } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
 import { ConfigService } from '@nestjs/config';
+import { UserRepository } from '../user/user.repository';
 
 const API_GITHUB_ACCESS_TOKEN = 'https://github.com/login/oauth/access_token';
 const API_GITHUB_USER = 'https://api.github.com/user';
@@ -20,7 +20,7 @@ const API_GITHUB_USER = 'https://api.github.com/user';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
@@ -42,24 +42,14 @@ export class AuthService {
     };
   }
 
-  async loginSocialAccount(socialAccountDto: SocialAccountDto) {
-    try {
-      const { email, photoUrl, displayName } = socialAccountDto;
+  async loginSocialAccount(user: User, socialAccountDto: SocialAccountDto) {
+    const { photoUrl, displayName } = socialAccountDto;
 
-      const user = await this.userService.findUserByEmail(email);
-
-      if (!CommonUtil.isDataExists(user)) {
-        throw new BadRequestException('This user is not exists!');
-      }
-
-      if (photoUrl !== user.photoUrl || displayName !== user.displayName) {
-        await this.userService.updateUser({ ...user, photoUrl, displayName });
-      }
-
-      return await this.login(user);
-    } catch (e) {
-      throw new BadRequestException(e);
+    if (photoUrl !== user.photoUrl || displayName !== user.displayName) {
+      await this.userRepository.save({ ...user, photoUrl, displayName });
     }
+
+    return await this.login(user);
   }
 
   async getGoogleProfile(googleToken: string): Promise<SocialAccountDto> {

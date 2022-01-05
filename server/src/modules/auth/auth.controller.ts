@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CommonUtil } from '@src/util/common.util';
+import { UserService } from '../user';
 import { AuthService } from './auth.service';
 import { GithubOAuthDTO, GoogleTokenDto } from './dto';
 
@@ -8,8 +17,10 @@ import { GithubOAuthDTO, GoogleTokenDto } from './dto';
 @ApiResponse({ status: 400, description: '잘못된 요청' })
 @ApiResponse({ status: 500, description: '서버 에러' })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-  private readonly logger = new Logger('AuthController');
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Get('/google/check')
   @ApiOperation({ summary: '구글 Social Account 존재여부 가져오기' })
@@ -37,7 +48,15 @@ export class AuthController {
       googleToken,
     );
 
-    return await this.authService.loginSocialAccount(socialAccountDto);
+    const { email } = socialAccountDto;
+
+    const user = await this.userService.findUserByEmail(email);
+
+    if (!CommonUtil.isDataExists(user)) {
+      throw new BadRequestException('This user is not exists!');
+    }
+
+    return await this.authService.loginSocialAccount(user, socialAccountDto);
   }
 
   @Post('/google/sign-up')
@@ -68,14 +87,22 @@ export class AuthController {
       githubToken,
     );
 
-    const isExists = await this.authService.isSocialAccountExists(
+    const isSocialAccountExists = await this.authService.isSocialAccountExists(
       socialAccountDto,
     );
 
-    if (!isExists) {
+    if (!isSocialAccountExists) {
       await this.authService.createSocialAccount(socialAccountDto);
     }
 
-    return await this.authService.loginSocialAccount(socialAccountDto);
+    const { email } = socialAccountDto;
+
+    const user = await this.userService.findUserByEmail(email);
+
+    if (!CommonUtil.isDataExists(user)) {
+      throw new BadRequestException('This user is not exists!');
+    }
+
+    return await this.authService.loginSocialAccount(user, socialAccountDto);
   }
 }
