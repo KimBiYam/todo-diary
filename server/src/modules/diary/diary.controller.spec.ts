@@ -1,7 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { SocialAccount } from '@src/entities';
+import { UserService } from '../user';
 import { DiaryController } from './diary.controller';
 import { DiaryService } from './diary.service';
 
@@ -13,8 +12,8 @@ describe('DiaryController', () => {
       controllers: [DiaryController],
       providers: [
         { provide: DiaryService, useValue: {} },
+        { provide: UserService, useValue: {} },
         { provide: JwtService, useValue: {} },
-        { provide: getRepositoryToken(SocialAccount), useValue: {} },
       ],
     }).compile();
 
