@@ -6,6 +6,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { SocialAccount } from '@src/entities';
 import { Connection } from 'typeorm';
 import { UserService } from '../user';
+import { UserRepository } from '../user/user.repository';
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
@@ -21,6 +22,7 @@ describe('AuthService', () => {
         { provide: ConfigService, useValue: {} },
         { provide: Connection, useValue: {} },
         { provide: getRepositoryToken(SocialAccount), useValue: {} },
+        { provide: UserRepository, useValue: {} },
       ],
     }).compile();
 
