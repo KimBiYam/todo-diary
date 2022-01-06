@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '@src/entities';
+import { user } from '@src/__fixtures__/user/user';
 import { EntityNotFoundError } from 'typeorm';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
@@ -11,10 +10,7 @@ describe('UserService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UserService,
-        { provide: getRepositoryToken(User), useValue: {} },
-      ],
+      providers: [UserService, { provide: UserRepository, useValue: {} }],
     }).compile();
 
     userService = module.get<UserService>(UserService);
@@ -30,30 +26,22 @@ describe('UserService', () => {
       // given
       const email = 'test@test.co.kr';
 
-      const sampleUser: User = {
-        id: '1',
-        createdAt: new Date(),
-        diaries: [],
-        displayName: 'displayName',
-        isCertified: true,
-        email,
-      };
-
-      userRepository.findOne = jest.fn().mockResolvedValue(sampleUser);
+      userRepository.findOne = jest.fn().mockResolvedValue(user);
 
       // when
       const result = await userService.findUserByEmail(email);
 
       // then
-      expect(result).toEqual(sampleUser);
+      expect(result).toEqual(user);
     });
 
     it('should failure when user not exists', async () => {
       // given
       const email = 'test@test.co.kr';
 
-      // when
       userRepository.findOne = jest.fn().mockRejectedValue(EntityNotFoundError);
+
+      // when
 
       // then
       await expect(userService.findUserByEmail(email)).rejects.toEqual(
@@ -65,22 +53,15 @@ describe('UserService', () => {
   describe('updateUser', () => {
     it('should response updated user when success update user', async () => {
       // given
-      const changeDisplayName = 'test@test.co.kr';
+      const changeDisplayName = 'changeDisplayName';
 
-      const sampleUser: User = {
-        id: '1',
-        createdAt: new Date(),
-        diaries: [],
-        displayName: 'displayName',
-        isCertified: true,
-        email: 'test@test.co.kr',
-      };
-
-      userRepository.save = jest.fn().mockImplementation((user: User) => user);
+      userRepository.save = jest
+        .fn()
+        .mockResolvedValue({ ...user, displayName: changeDisplayName });
 
       // when
       const result = await userService.updateUser({
-        ...sampleUser,
+        ...user,
         displayName: changeDisplayName,
       });
 
