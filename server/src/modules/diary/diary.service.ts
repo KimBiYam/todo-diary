@@ -1,5 +1,5 @@
 import { Diary, DiaryMeta, User } from '@src/entities';
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
 import { Between, Connection, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary.dto';
@@ -8,6 +8,7 @@ import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
 import { DiariesStatisticsResponseDto } from './dto/diaries-statistics-response.dto';
+import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
 
 @Injectable()
 export class DiaryService {
@@ -15,60 +16,35 @@ export class DiaryService {
     private readonly diaryRepository: DiaryRepository,
     private readonly connection: Connection,
   ) {}
-  private readonly logger = new Logger('DiaryService');
-
-  async findMyDiaries(user: User): Promise<Diary[]> {
-    const diaries = await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta'])
-      .where('diary.user_id = :userId', { userId: user.id })
-      .orderBy('diary.createdAt', 'DESC')
-      .getMany();
-
-    return diaries;
-  }
-
-  async findMyDiariesByPage(
+  async findMyDiaries(
     user: User,
-    page: number,
-    limit: number,
+    getDiariesDto: GetDiariesDto,
   ): Promise<Diary[]> {
-    const diaries = await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta'])
-      .where('diary.user_id = :userId', { userId: user.id })
-      .orderBy('diary.createdAt', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit)
-      .getMany();
+    let diaries: Diary[] = [];
 
-    return diaries;
-  }
+    if (getDiariesDto.createdDate) {
+      const { limit, page, createdDate } = getDiariesDto;
 
-  async findDiariesByDateWithPage(user: User, getDiariesDto: GetDiariesDto) {
-    const { limit, page, createdDate } = getDiariesDto;
+      const startDate = new Date(createdDate);
+      const endDate = new Date(createdDate);
 
-    const firstDate = new Date(createdDate);
-    const lastDate = new Date(createdDate);
+      startDate.setHours(0, 0, 0);
+      endDate.setHours(23, 59, 59);
 
-    firstDate.setHours(0, 0, 0);
-    lastDate.setHours(23, 59, 59);
+      const findDiariesByDateDto: FindDiariesByDateDto = {
+        limit,
+        page,
+        startDate,
+        endDate,
+      };
 
-    const diaries = await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta'])
-      .where('diary.user_id = :userId', { userId: user.id })
-      .andWhere('diary.createdAt BETWEEN :firstDate AND :lastDate', {
-        firstDate,
-        lastDate,
-      })
-      .orderBy('diary.createdAt', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit)
-      .getMany();
+      diaries = await this.diaryRepository.findDiariesByDate(
+        user,
+        findDiariesByDateDto,
+      );
+    } else {
+      diaries = await this.diaryRepository.findMyDiaries(user, getDiariesDto);
+    }
 
     return diaries;
   }
