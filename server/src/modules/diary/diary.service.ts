@@ -7,6 +7,7 @@ import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
+import { DiariesStatisticsResponseDto } from './dto/diaries-statistics-response.dto';
 
 @Injectable()
 export class DiaryService {
@@ -216,7 +217,11 @@ export class DiaryService {
       },
     );
 
-    return diariesStatisticsByYear;
+    const diariesStatisticsResponseDto: DiariesStatisticsResponseDto = {
+      diariesStatisticsByYear,
+    };
+
+    return diariesStatisticsResponseDto;
   }
 
   async getDatesTheDiaryExists(
