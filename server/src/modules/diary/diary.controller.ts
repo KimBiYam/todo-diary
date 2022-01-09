@@ -53,26 +53,7 @@ export class DiaryController {
   ) {
     const user = await this.userService.findUserById(requestUserDto.id);
 
-    const { page, limit, createdDate } = getDiariesDto;
-
-    let diaries: Diary[] = [];
-
-    if (createdDate) {
-      const foundDiaries = await this.diaryService.findDiariesByDateWithPage(
-        user,
-        getDiariesDto,
-      );
-
-      diaries = [...foundDiaries];
-    } else {
-      const foundDiaries = await this.diaryService.findMyDiariesByPage(
-        user,
-        page,
-        limit,
-      );
-
-      diaries = [...foundDiaries];
-    }
+    const diaries = await this.diaryService.findMyDiaries(user, getDiariesDto);
 
     const serializedDiaries = diaries.map((diary) => diary.serialize());
 
