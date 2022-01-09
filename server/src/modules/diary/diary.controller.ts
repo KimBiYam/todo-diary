@@ -22,7 +22,7 @@ import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import {
-  DiariesStatisticsDto,
+  DiariesStatisticsRequestDto,
   CreateDiaryDto,
   UpdateDiaryDto,
   DiariesExistsDatesDto,
@@ -87,9 +87,9 @@ export class DiaryController {
     status: 200,
     description: '해당 연도에 해당하는 다이어리 달성률 통계 가져오기 성공',
   })
-  async getDiariesStatistics(
+  async getDiariesStatisticsByYear(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Query() { year }: DiariesStatisticsDto,
+    @Query() { year }: DiariesStatisticsRequestDto,
   ) {
     const user = await this.userService.findUserById(requestUserDto.id);
 
@@ -98,7 +98,7 @@ export class DiaryController {
       year,
     );
 
-    return { diariesStatisticsByYear };
+    return diariesStatisticsByYear;
   }
 
   @Get('exists-dates')
