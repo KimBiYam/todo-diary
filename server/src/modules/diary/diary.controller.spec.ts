@@ -11,7 +11,7 @@ import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { DiaryController } from './diary.controller';
 import { DiaryService } from './diary.service';
-import { CreateDiaryDto, UpdateDiaryDto } from './dto';
+import { CreateDiaryDto, DiariesExistsDatesDto, UpdateDiaryDto } from './dto';
 
 describe('DiaryController', () => {
   let diaryController: DiaryController;
@@ -44,9 +44,33 @@ describe('DiaryController', () => {
     expect(diaryController).toBeDefined();
   });
 
+  describe('getDatesTheDiaryExists', () => {
+    it('return dates when succeed find dates the diary exists', async () => {
+      // given
+      const diariesExistsDatesDto: DiariesExistsDatesDto = {
+        year: 2020,
+        month: 1,
+      };
+
+      const dates = [1, 2, 3, 4, 5];
+
+      userService.findUserById = jest.fn().mockResolvedValue(user);
+      diaryService.getDatesTheDiaryExists = jest.fn().mockResolvedValue(dates);
+
+      // when
+      const result = await diaryController.getDatesTheDiaryExists(
+        requestUserDto,
+        diariesExistsDatesDto,
+      );
+
+      // then
+      expect(result).toEqual({ dates });
+    });
+  });
+
   describe('createDiary', () => {
     it('return serialized diary when succeed create diary', async () => {
-      //given
+      // given
       const createDiaryDto: CreateDiaryDto = {
         title: 'title',
         content: 'content',
@@ -69,13 +93,13 @@ describe('DiaryController', () => {
         .spyOn(diaryService, 'createDiary')
         .mockResolvedValue(diary);
 
-      //when
+      // when
       const result = await diaryController.createDiary(
         requestUserDto,
         createDiaryDto,
       );
 
-      //then
+      // then
       const serialized = {
         id: '1',
         createdAt: new Date('2020-01-01'),
@@ -91,7 +115,7 @@ describe('DiaryController', () => {
 
   describe('findMyDiary', () => {
     it('return serialized diary when succeed find my diary', async () => {
-      //given
+      // given
       const diaryId = 1;
 
       const diary = new Diary();
@@ -108,10 +132,10 @@ describe('DiaryController', () => {
       userService.findUserById = jest.fn().mockResolvedValue(user);
       diaryService.findMyDiary = jest.fn().mockResolvedValue(diary);
 
-      //when
+      // when
       const result = await diaryController.findMyDiary(requestUserDto, diaryId);
 
-      //then
+      // then
       const serialized = {
         id: '1',
         createdAt: new Date('2020-01-01'),
@@ -126,7 +150,7 @@ describe('DiaryController', () => {
 
   describe('updateMyDiary', () => {
     it('return diary when succeed update my diary', async () => {
-      //given
+      // given
       const diaryId = 1;
 
       const updateDiaryDto: UpdateDiaryDto = {
@@ -145,14 +169,14 @@ describe('DiaryController', () => {
       userService.findUserById = jest.fn().mockResolvedValue(user);
       diaryService.updateMyDiary = jest.fn().mockResolvedValue(updatedDiary);
 
-      //when
+      // when
       const result = await diaryController.updateMyDiary(
         requestUserDto,
         updateDiaryDto,
         diaryId,
       );
 
-      //then
+      // then
       expect(result).toEqual({ diary });
       expect(result.diary.title).toEqual(title);
       expect(result.diary.isFinished).toEqual(isFinished);
@@ -160,7 +184,7 @@ describe('DiaryController', () => {
     });
 
     it('throw error when failed update my diary', async () => {
-      //given
+      // given
       const updateDiaryDto: UpdateDiaryDto = {
         title: 'updated title',
         isFinished: true,
@@ -174,9 +198,9 @@ describe('DiaryController', () => {
         .fn()
         .mockRejectedValue(new BadRequestException());
 
-      //when
+      // when
 
-      //then
+      // then
       await expect(
         diaryController.updateMyDiary(requestUserDto, updateDiaryDto, diaryId),
       ).rejects.toThrowError(BadRequestException);
@@ -185,7 +209,7 @@ describe('DiaryController', () => {
 
   describe('deleteMyDiary', () => {
     it('return msg when succeed delete my diary', async () => {
-      //given
+      // given
       const diaryId = 1;
 
       userService.findUserById = jest.fn().mockResolvedValue(user);
@@ -194,19 +218,19 @@ describe('DiaryController', () => {
         .spyOn(diaryService, 'deleteMyDiary')
         .mockResolvedValue(new DeleteResult());
 
-      //when
+      // when
       const result = await diaryController.deleteMyDiary(
         requestUserDto,
         diaryId,
       );
 
-      //then
+      // then
       expect(result.msg).toEqual('Successfully deleted your diary');
       expect(deleteMyDiarySpy).toBeCalledWith(user, diaryId);
     });
 
     it('throw error when failed delete my diary', async () => {
-      //given
+      // given
       const diaryId = 1;
 
       userService.findUserById = jest.fn().mockResolvedValue(user);
@@ -214,9 +238,9 @@ describe('DiaryController', () => {
         .fn()
         .mockRejectedValue(new BadRequestException());
 
-      //when
+      // when
 
-      //then
+      // then
       await expect(
         diaryController.deleteMyDiary(requestUserDto, diaryId),
       ).rejects.toThrowError(BadRequestException);
