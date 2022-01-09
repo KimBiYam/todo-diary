@@ -59,7 +59,7 @@ export class DiaryService {
     const diaries = await this.diaryRepository
       .createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta', 'user'])
+      .select(['diary', 'diary_meta'])
       .where('diary.user_id = :userId', { userId: user.id })
       .andWhere('diary.createdAt BETWEEN :firstDate AND :lastDate', {
         firstDate,
