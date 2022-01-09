@@ -14,6 +14,7 @@ import { DiaryService } from './diary.service';
 import {
   CreateDiaryDto,
   DiariesExistsDatesDto,
+  DiariesStatisticsRequestDto,
   GetDiariesDto,
   UpdateDiaryDto,
 } from './dto';
@@ -97,7 +98,9 @@ describe('DiaryController', () => {
   describe('getDiariesStatisticsByYear', () => {
     it('return diaries statistics when succeed get diaries statistics', async () => {
       // given
-      const year = 2020;
+      const diariesStatisticsRequestDto: DiariesStatisticsRequestDto = {
+        year: 2020,
+      };
 
       const diariesStatisticsResponseDto: DiariesStatisticsResponseDto = {
         diariesStatisticsByYear: [
@@ -114,7 +117,10 @@ describe('DiaryController', () => {
         .mockResolvedValue(diariesStatisticsResponseDto);
 
       // when
-      const result = await diaryService.getDiariesStatisticsByYear(user, year);
+      const result = await diaryController.getDiariesStatisticsByYear(
+        user,
+        diariesStatisticsRequestDto,
+      );
 
       // then
       expect(result).toEqual(diariesStatisticsResponseDto);
