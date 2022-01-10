@@ -4,7 +4,6 @@ import { DiaryRepository } from './diary.repository';
 import { Between, Connection, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary.dto';
 import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
-import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
@@ -82,26 +81,14 @@ export class DiaryService {
     return diaries;
   }
 
-  async createDiary(
-    requestUserDto: RequestUserDto,
-    createDiaryDto: CreateDiaryDto,
-  ): Promise<any> {
+  async createDiary(user: User, createDiaryDto: CreateDiaryDto): Promise<any> {
     const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-
-    const { id } = requestUserDto;
-    const { content, title } = createDiaryDto;
-
-    const user = await queryRunner.manager
-      .getRepository(User)
-      .findOne({ where: { id } });
-
-    if (!CommonUtil.isDataExists(user)) {
-      throw new NotFoundException('This user is not exists!');
-    }
 
     try {
+      await queryRunner.connect();
       await queryRunner.startTransaction();
+
+      const { content, title } = createDiaryDto;
 
       const diaryMeta = new DiaryMeta();
       diaryMeta.content = content;

@@ -169,9 +169,7 @@ describe('DiaryController', () => {
         diary,
       };
 
-      const createDiarySpy = jest
-        .spyOn(diaryService, 'createDiary')
-        .mockResolvedValue(diary);
+      diaryService.createDiary = jest.fn().mockResolvedValue(diary);
 
       // when
       const result = await diaryController.createDiary(
@@ -188,7 +186,6 @@ describe('DiaryController', () => {
         content: 'content',
       };
 
-      expect(createDiarySpy).toBeCalledWith(requestUserDto, createDiaryDto);
       expect(result).toEqual({ diary: serialized });
     });
   });
