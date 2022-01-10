@@ -6,6 +6,7 @@ import { store } from '..';
 import { logout } from '../reducers/user';
 import { openDialog } from '../reducers/dialog';
 import { createBrowserHistory } from 'history';
+import HttpError from './models/httpError';
 
 const apiClient = axios.create({ baseURL: BACKEND_SERVER_URL });
 
@@ -22,14 +23,15 @@ apiClient.interceptors.response.use(
   (config) => config,
   (error: AxiosError) => {
     const status = error.response?.status;
-
     const errorText = convertErrorText(error.response?.status);
+
+    const httpError = new HttpError(status, errorText);
 
     if (status === StatusCodes.UNAUTHORIZED) {
       handleUnauthorized(errorText);
     }
 
-    return Promise.reject(errorText);
+    return Promise.reject(httpError);
   },
 );
 

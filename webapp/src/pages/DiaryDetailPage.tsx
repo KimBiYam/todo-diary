@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
+import HttpError from '../api/models/httpError';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
@@ -43,8 +44,8 @@ const DiaryDetailPage = () => {
     setContent(content);
   };
 
-  const handleDiaryQueryError = (e: string) => {
-    openDialog(e);
+  const handleDiaryQueryError = (e: HttpError) => {
+    openDialog(e.message);
     history.push('/');
   };
 

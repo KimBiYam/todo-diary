@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import { useEffect, useState } from 'react';
+import HttpError from '../api/models/httpError';
 import userApi from '../api/userApi';
 import tokenStorage from '../storage/tokenStorage';
 import useUserAction from './useUserAction';
@@ -23,7 +25,9 @@ const useCheckUserEffect = () => {
 
       userLogIn(user);
     } catch (e) {
-      userLogOut();
+      if (e instanceof HttpError && e.statusCode === StatusCodes.UNAUTHORIZED) {
+        userLogOut();
+      }
     } finally {
       setIsLoading(false);
     }
