@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import DatePicker from '../components/common/DatePicker';
 import DiaryList from '../components/diary/DiaryList';
-import { COLORS } from '../constants';
+import { COLORS } from '../styles';
 import useDatesTheDiaryExistsQuery from '../hooks/query/useDatesTheDiaryExistsQuery';
 import { DatesTheDiaryExistsQueryParams } from '../types/diary.types';
 

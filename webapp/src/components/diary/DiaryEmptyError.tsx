@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 
 export type DiaryEmptyErrorProps = {};
 

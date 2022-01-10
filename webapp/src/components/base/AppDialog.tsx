@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
 import { memo, useEffect, useState } from 'react';
 import { setTimeout } from 'timers';
-import { COLORS } from '../../constants';
 import useDialogSelector from '../../hooks/useDialogSelector';
+import { COLORS } from '../../styles';
 import { fadeIn, fadeOut } from '../../styles/transitions';
-import { Z_INDEXES } from '../../styles/zIndexes';
+import { Z_INDEXES } from '../../styles';
 
 export type AppDialogProps = {};
 

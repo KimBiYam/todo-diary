@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { Diary } from '../../types/diary.types';
 

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles/colors';
 
 export type MainButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   label: string;

@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { COLORS } from '../../constants';
 import useUserAction from '../../hooks/useUserAction';
 import useUserSelector from '../../hooks/useUserSelector';
+import { COLORS } from '../../styles/colors';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import Icon from '../common/Icon';

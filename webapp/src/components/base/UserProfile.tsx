@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { memo } from 'react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 import { User } from '../../types/auth.types';
 

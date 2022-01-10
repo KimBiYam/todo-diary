@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 
 export type SidebarCategoryProps = {
   category: string;
