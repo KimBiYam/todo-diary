@@ -1,4 +1,4 @@
-export class DiariesStatisticsResponseDto {
+export class DiariesYearStatisticsResponseDto {
   diariesStatisticsByYear: {
     totalCount: number;
     finishedDiariesCount: number;
