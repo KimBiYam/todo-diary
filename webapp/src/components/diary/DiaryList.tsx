@@ -91,7 +91,7 @@ const DiaryList = () => {
 
   return (
     <div css={box}>
-      <div style={{ display: 'flex' }}>
+      <div>
         <DatePicker
           selectedDate={selectedDate}
           onDateChange={handleDateChange}
