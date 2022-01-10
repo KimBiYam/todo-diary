@@ -113,10 +113,9 @@ export class DiaryController {
     @RequestUser() requestUserDto: RequestUserDto,
     @Body() createDiaryDto: CreateDiaryDto,
   ) {
-    const diary = await this.diaryService.createDiary(
-      requestUserDto,
-      createDiaryDto,
-    );
+    const user = await this.userService.findUserById(requestUserDto.id);
+
+    const diary = await this.diaryService.createDiary(user, createDiaryDto);
 
     return { diary: diary.serialize() };
   }
