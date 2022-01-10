@@ -9,6 +9,7 @@ import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
+import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
 
 @Injectable()
 export class DiaryService {
@@ -50,14 +51,7 @@ export class DiaryService {
   }
 
   async findMyDiary(user: User, id: number): Promise<Diary> {
-    const diary = await this.diaryRepository
-      .createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.user', 'user')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta', 'user'])
-      .where('diary.user', { user })
-      .where('diary.id = :id', { id })
-      .getOne();
+    const diary = await this.diaryRepository.findMyDiary(user, id);
 
     if (!CommonUtil.isDataExists(diary)) {
       throw new NotFoundException('This diary is not exist');
@@ -236,6 +230,11 @@ export class DiaryService {
     const finishedDiariesCount = diaries.filter((diary) => diary.isFinished)
       .length;
 
-    return { totalCount: diaries.length, finishedDiariesCount };
+    const diariesStatisticsDto: DiariesStatisticsDto = {
+      totalCount: diaries.length,
+      finishedDiariesCount,
+    };
+
+    return diariesStatisticsDto;
   }
 }

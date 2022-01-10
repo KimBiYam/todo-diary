@@ -5,6 +5,16 @@ import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
 
 @EntityRepository(Diary)
 export class DiaryRepository extends Repository<Diary> {
+  async findMyDiary(user: User, id: number) {
+    return await this.createQueryBuilder('diary')
+      .leftJoinAndSelect('diary.user', 'user')
+      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
+      .select(['diary', 'diary_meta', 'user'])
+      .where('diary.user', { user })
+      .where('diary.id = :id', { id })
+      .getOne();
+  }
+
   async findMyDiaries(user: User, getDiariesDto: GetDiariesDto) {
     const { page, limit } = getDiariesDto;
 
