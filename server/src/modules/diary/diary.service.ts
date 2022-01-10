@@ -39,7 +39,7 @@ export class DiaryService {
         endDate,
       };
 
-      diaries = await this.diaryRepository.findDiariesByDate(
+      diaries = await this.diaryRepository.findMyDiariesByDate(
         user,
         findDiariesByDateDto,
       );

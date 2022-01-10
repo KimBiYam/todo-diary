@@ -28,7 +28,7 @@ export class DiaryRepository extends Repository<Diary> {
       .getMany();
   }
 
-  async findDiariesByDate(
+  async findMyDiariesByDate(
     user: User,
     findDiariesByDateDto: FindDiariesByDateDto,
   ) {
