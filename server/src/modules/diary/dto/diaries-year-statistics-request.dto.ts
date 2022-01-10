@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, Max, Min } from 'class-validator';
 
-export class DiariesStatisticsRequestDto {
+export class DiariesYearStatisticsRequestDto {
   @ApiProperty()
   @IsNumber()
   @Min(1000)

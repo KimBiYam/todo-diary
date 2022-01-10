@@ -7,7 +7,7 @@ import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
 import { RequestUserDto } from '../user/dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
-import { DiariesStatisticsResponseDto } from './dto/diaries-statistics-response.dto';
+import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
 
 @Injectable()
@@ -193,11 +193,11 @@ export class DiaryService {
       },
     );
 
-    const diariesStatisticsResponseDto: DiariesStatisticsResponseDto = {
+    const diariesYearStatisticsResponseDto: DiariesYearStatisticsResponseDto = {
       diariesStatisticsByYear,
     };
 
-    return diariesStatisticsResponseDto;
+    return diariesYearStatisticsResponseDto;
   }
 
   async getDatesTheDiaryExists(

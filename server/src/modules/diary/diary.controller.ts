@@ -22,7 +22,7 @@ import { UserService } from '../user';
 import { RequestUserDto } from '../user/dto';
 import { DiaryService } from './diary.service';
 import {
-  DiariesStatisticsRequestDto,
+  DiariesYearStatisticsRequestDto,
   CreateDiaryDto,
   UpdateDiaryDto,
   DiariesExistsDatesDto,
@@ -70,7 +70,7 @@ export class DiaryController {
   })
   async getDiariesStatisticsByYear(
     @RequestUser() requestUserDto: RequestUserDto,
-    @Query() { year }: DiariesStatisticsRequestDto,
+    @Query() { year }: DiariesYearStatisticsRequestDto,
   ) {
     const user = await this.userService.findUserById(requestUserDto.id);
 

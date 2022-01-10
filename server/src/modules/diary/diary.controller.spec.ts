@@ -14,11 +14,11 @@ import { DiaryService } from './diary.service';
 import {
   CreateDiaryDto,
   DiariesExistsDatesDto,
-  DiariesStatisticsRequestDto,
+  DiariesYearStatisticsRequestDto,
   GetDiariesDto,
   UpdateDiaryDto,
 } from './dto';
-import { DiariesStatisticsResponseDto } from './dto/diaries-statistics-response.dto';
+import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 
 describe('DiaryController', () => {
   let diaryController: DiaryController;
@@ -98,11 +98,11 @@ describe('DiaryController', () => {
   describe('getDiariesStatisticsByYear', () => {
     it('return diaries statistics when succeed get diaries statistics', async () => {
       // given
-      const diariesStatisticsRequestDto: DiariesStatisticsRequestDto = {
+      const diariesYearStatisticsRequestDto: DiariesYearStatisticsRequestDto = {
         year: 2020,
       };
 
-      const diariesStatisticsResponseDto: DiariesStatisticsResponseDto = {
+      const diariesYearStatisticsResponseDto: DiariesYearStatisticsResponseDto = {
         diariesStatisticsByYear: [
           {
             month: 1,
@@ -114,16 +114,16 @@ describe('DiaryController', () => {
 
       diaryService.getDiariesStatisticsByYear = jest
         .fn()
-        .mockResolvedValue(diariesStatisticsResponseDto);
+        .mockResolvedValue(diariesYearStatisticsResponseDto);
 
       // when
       const result = await diaryController.getDiariesStatisticsByYear(
         user,
-        diariesStatisticsRequestDto,
+        diariesYearStatisticsRequestDto,
       );
 
       // then
-      expect(result).toEqual(diariesStatisticsResponseDto);
+      expect(result).toEqual(diariesYearStatisticsResponseDto);
     });
   });
 
