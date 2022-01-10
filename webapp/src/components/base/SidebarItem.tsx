@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
 import { match, NavLink } from 'react-router-dom';
-import { COLORS } from '../../constants';
 import Icon, { IconType } from '../common/Icon';
 import History from 'history';
 import { memo } from 'react';
+import { COLORS } from '../../styles';
 
 export type SidebarItemProps = {
   label: string;

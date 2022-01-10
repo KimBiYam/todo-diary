@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { match, NavLink } from 'react-router-dom';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 import Icon, { IconType } from '../common/Icon';
 import History from 'history';
 import { memo } from 'react';

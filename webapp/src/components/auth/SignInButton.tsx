@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { forwardRef, memo, Ref } from 'react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 import Icon, { IconType } from '../common/Icon';
 
 export type SignInButtonProps =

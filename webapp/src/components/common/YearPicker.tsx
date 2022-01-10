@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import React, { memo } from 'react';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 
 export type YearPickerProps = {
   minYear: number;

@@ -1,6 +1,6 @@
 import emotionReset from 'emotion-reset';
 import { css } from '@emotion/react';
-import { COLORS } from '../constants';
+import { COLORS } from '../styles';
 
 const globalStyle = css`
   ${emotionReset}

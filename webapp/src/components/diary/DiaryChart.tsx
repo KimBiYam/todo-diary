@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../styles';
 import { DiariesStatistics } from '../../types/diary.types';
 
 export type DiaryChartProps = {

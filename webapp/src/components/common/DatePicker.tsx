@@ -4,10 +4,10 @@ import Picker, { registerLocale } from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './DatePicker.css';
-import { COLORS } from '../../constants';
 import Icon from './Icon';
 
 import ko from 'date-fns/locale/ko';
+import { COLORS } from '../../styles';
 registerLocale('ko', ko);
 
 export type DatePickerProps = {
