@@ -186,6 +186,60 @@ describe('DiaryService', () => {
     });
   });
 
+  describe('updateMyDiary', () => {
+    it('should return diary when succeed update my diary', async () => {
+      // given
+      const updateDiaryDto: UpdateDiaryDto = {
+        title: 'updated title',
+        content: 'updated content',
+        isFinished: true,
+      };
+
+      const id = 1;
+
+      const diary = new Diary();
+      diary.id = '1';
+      diary.title = 'title';
+      diary.diaryMeta = { content: 'content', id: '1', diary };
+      diary.isFinished = false;
+
+      const updatedDiary = new Diary();
+      updatedDiary.id = '1';
+      updatedDiary.title = 'updated title';
+      updatedDiary.diaryMeta = { content: 'updated content', id: '1', diary };
+      updatedDiary.isFinished = true;
+
+      diaryRepository.findMyDiary = jest.fn().mockResolvedValue(diary);
+      diaryRepository.saveDiary = jest.fn().mockResolvedValue(updatedDiary);
+
+      // when
+      const result = await diaryService.updateMyDiary(user, updateDiaryDto, id);
+
+      // then
+      expect(result).toEqual(updatedDiary);
+    });
+
+    it('should throw exception diary when failed find my diary', async () => {
+      // given
+      const updateDiaryDto: UpdateDiaryDto = {
+        title: 'updated title',
+        content: 'updated content',
+        isFinished: true,
+      };
+
+      const id = 1;
+
+      diaryRepository.findMyDiary = jest.fn().mockResolvedValue(null);
+
+      // when
+
+      // then
+      await expect(
+        diaryService.updateMyDiary(user, updateDiaryDto, id),
+      ).rejects.toThrowError(new NotFoundException('This diary is not exist'));
+    });
+  });
+
   describe('getDatesTheDiaryExists', () => {
     it('should return dates the diary exists', async () => {
       // given
