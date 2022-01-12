@@ -78,7 +78,7 @@ export class DiaryService {
     return diaries;
   }
 
-  async createDiary(user: User, createDiaryDto: CreateDiaryDto): Promise<any> {
+  async createDiary(user: User, createDiaryDto: CreateDiaryDto) {
     const { content, title } = createDiaryDto;
 
     const diaryMeta = new DiaryMeta();
@@ -92,11 +92,7 @@ export class DiaryService {
     return this.diaryRepository.saveDiary(diary, diaryMeta);
   }
 
-  async updateMyDiary(
-    user: User,
-    updateDiaryDto: UpdateDiaryDto,
-    id: number,
-  ): Promise<Diary> {
+  async updateMyDiary(user: User, updateDiaryDto: UpdateDiaryDto, id: number) {
     const { content, isFinished, title } = updateDiaryDto;
 
     const diary = await this.findMyDiary(user, id);
@@ -110,7 +106,7 @@ export class DiaryService {
     updateDiaryMeta.content = content;
     updateDiaryMeta.id = diary.diaryMeta.id;
 
-    return this.diaryRepository.saveDiary(updateDiary, updateDiaryMeta);
+    return await this.diaryRepository.saveDiary(updateDiary, updateDiaryMeta);
   }
 
   async deleteMyDiary(user: User, id: number): Promise<DeleteResult> {

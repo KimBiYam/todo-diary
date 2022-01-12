@@ -41,7 +41,7 @@ describe('UserController', () => {
       expect(result).toEqual({ user });
     });
 
-    it('should throw error when failed find user', async () => {
+    it('should throw exception when failed find user', async () => {
       //given
       const requestUserDto: RequestUserDto = {
         id: '1',
