@@ -34,7 +34,7 @@ describe('DiaryService', () => {
   });
 
   describe('findMyDiaries', () => {
-    it('return diaries by date when defined createdDate in getDiariesDto', async () => {
+    it('should return diaries by date when defined createdDate in getDiariesDto', async () => {
       // given
       const getDiariesDto: GetDiariesDto = {
         limit: 10,
@@ -61,7 +61,7 @@ describe('DiaryService', () => {
       expect(result).toEqual(diaries);
     });
 
-    it('return diaries when undefined createdDate in getDiariesDto', async () => {
+    it('should return diaries when undefined createdDate in getDiariesDto', async () => {
       // given
       const getDiariesDto: GetDiariesDto = {
         limit: 10,
@@ -88,7 +88,7 @@ describe('DiaryService', () => {
   });
 
   describe('findMyDiary', () => {
-    it('return diary when succeed find my diary', async () => {
+    it('should return diary when succeed find my diary', async () => {
       //given
       const diaryId = 1;
 
@@ -101,7 +101,7 @@ describe('DiaryService', () => {
       expect(result).toEqual(diary);
     });
 
-    it('throw exception when failed find my diary', async () => {
+    it('should throw exception when failed find my diary', async () => {
       //given
       const diaryId = 1;
 
@@ -117,7 +117,7 @@ describe('DiaryService', () => {
   });
 
   describe('findDiariesByYear', () => {
-    it('return diaries by year', async () => {
+    it('should return diaries by year', async () => {
       // given
       const year = 2020;
 
@@ -140,7 +140,7 @@ describe('DiaryService', () => {
   });
 
   describe('findDiariesByMonth', () => {
-    it('return diaries by month', async () => {
+    it('should return diaries by month', async () => {
       // given
       const year = 2020;
       const month = 1;
@@ -164,7 +164,7 @@ describe('DiaryService', () => {
   });
 
   describe('getDatesTheDiaryExists', () => {
-    it('return dates the diary exists', async () => {
+    it('should return dates the diary exists', async () => {
       // given
       const diariesExistsDatesDto: DiariesExistsDatesDto = {
         year: 2020,
@@ -198,7 +198,7 @@ describe('DiaryService', () => {
   });
 
   describe('groupDiariesByMonth', () => {
-    it('return grouped diaries by month', () => {
+    it('should return grouped diaries by month', () => {
       // given
       const diary1 = new Diary();
       diary1.createdAt = new Date('2020-01-01');
@@ -235,7 +235,7 @@ describe('DiaryService', () => {
   });
 
   describe('getDiariesStatistics', () => {
-    it('return diaries statistics by diaries', () => {
+    it('should return diaries statistics by diaries', () => {
       // given
       const diary1 = new Diary();
       diary1.isFinished = true;

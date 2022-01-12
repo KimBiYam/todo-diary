@@ -25,7 +25,7 @@ describe('UserController', () => {
   });
 
   describe('findUserProfile', () => {
-    it('return user when succeed find user', async () => {
+    it('should return user when succeed find user', async () => {
       //given
       const requestUserDto: RequestUserDto = {
         id: '1',
@@ -41,7 +41,7 @@ describe('UserController', () => {
       expect(result).toEqual({ user });
     });
 
-    it('throw error when failed find user', async () => {
+    it('should throw error when failed find user', async () => {
       //given
       const requestUserDto: RequestUserDto = {
         id: '1',
