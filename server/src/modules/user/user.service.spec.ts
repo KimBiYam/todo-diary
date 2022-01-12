@@ -1,6 +1,6 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { user } from '@src/__fixtures__/user/user';
-import { EntityNotFoundError } from 'typeorm';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 
@@ -22,7 +22,36 @@ describe('UserService', () => {
   });
 
   describe('findUserByEmail', () => {
-    it('should success when user exists', async () => {
+    it('should return user when succeed find user', async () => {
+      // given
+      const id = '1';
+
+      userRepository.findOne = jest.fn().mockResolvedValue(user);
+
+      // when
+      const result = await userService.findUserById(id);
+
+      // then
+      expect(result).toEqual(user);
+    });
+
+    it('should throw exception when user not exists', async () => {
+      // given
+      const id = '1';
+
+      userRepository.findOne = jest.fn().mockResolvedValue(null);
+
+      // when
+
+      // then
+      await expect(userService.findUserById(id)).rejects.toThrowError(
+        NotFoundException,
+      );
+    });
+  });
+
+  describe('findUserByEmail', () => {
+    it('should return user when succeed find user', async () => {
       // given
       const email = 'test@test.co.kr';
 
@@ -39,13 +68,13 @@ describe('UserService', () => {
       // given
       const email = 'test@test.co.kr';
 
-      userRepository.findOne = jest.fn().mockRejectedValue(EntityNotFoundError);
+      userRepository.findOne = jest.fn().mockResolvedValue(null);
 
       // when
 
       // then
-      await expect(userService.findUserByEmail(email)).rejects.toEqual(
-        EntityNotFoundError,
+      await expect(userService.findUserByEmail(email)).rejects.toThrowError(
+        NotFoundException,
       );
     });
   });
