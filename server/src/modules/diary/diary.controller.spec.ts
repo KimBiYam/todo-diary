@@ -258,7 +258,7 @@ describe('DiaryController', () => {
       expect(result.diary.diaryMeta.content).toEqual(content);
     });
 
-    it('should throw error when failed update my diary', async () => {
+    it('should throw exception when failed update my diary', async () => {
       // given
       const updateDiaryDto: UpdateDiaryDto = {
         title: 'updated title',
@@ -301,7 +301,7 @@ describe('DiaryController', () => {
       expect(deleteMyDiarySpy).toBeCalledWith(user, diaryId);
     });
 
-    it('should throw error when failed delete my diary', async () => {
+    it('should throw exception when failed delete my diary', async () => {
       // given
       const diaryId = 1;
 

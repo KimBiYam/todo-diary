@@ -8,7 +8,12 @@ import { Connection } from 'typeorm';
 import { UserService } from '../user';
 import { DiaryRepository } from './diary.repository';
 import { DiaryService } from './diary.service';
-import { DiariesExistsDatesDto, GetDiariesDto } from './dto';
+import {
+  CreateDiaryDto,
+  DiariesExistsDatesDto,
+  GetDiariesDto,
+  UpdateDiaryDto,
+} from './dto';
 import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
 
 describe('DiaryService', () => {
@@ -160,6 +165,24 @@ describe('DiaryService', () => {
 
       // then
       expect(result).toEqual(diaries);
+    });
+  });
+
+  describe('createDiary', () => {
+    it('should return diary when succeed create diary', async () => {
+      // given
+      const createDiaryDto: CreateDiaryDto = {
+        title: 'title',
+        content: 'content',
+      };
+
+      diaryRepository.saveDiary = jest.fn().mockResolvedValue(diary);
+
+      // when
+      const result = await diaryService.createDiary(user, createDiaryDto);
+
+      // then
+      expect(result).toEqual(diary);
     });
   });
 
