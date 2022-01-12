@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@src/entities';
 import { CommonUtil } from '@src/util/common.util';
 import { UserRepository } from './user.repository';
@@ -11,7 +11,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (!CommonUtil.isDataExists(user)) {
-      throw new BadRequestException('This user is not exists!');
+      throw new NotFoundException('This user is not exists!');
     }
 
     return user;
@@ -21,7 +21,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!CommonUtil.isDataExists(user)) {
-      throw new BadRequestException('This user is not exists!');
+      throw new NotFoundException('This user is not exists!');
     }
 
     return user;
