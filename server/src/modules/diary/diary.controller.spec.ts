@@ -54,7 +54,7 @@ describe('DiaryController', () => {
   });
 
   describe('findMyDiaries', () => {
-    it('return serialized diaries when succeed find my diaries', async () => {
+    it('should return serialized diaries when succeed find my diaries', async () => {
       // given
       const getDiariesDto: GetDiariesDto = {
         limit: 10,
@@ -96,7 +96,7 @@ describe('DiaryController', () => {
   });
 
   describe('getDiariesStatisticsByYear', () => {
-    it('return diaries statistics when succeed get diaries statistics', async () => {
+    it('should return diaries statistics when succeed get diaries statistics', async () => {
       // given
       const diariesYearStatisticsRequestDto: DiariesYearStatisticsRequestDto = {
         year: 2020,
@@ -128,7 +128,7 @@ describe('DiaryController', () => {
   });
 
   describe('getDatesTheDiaryExists', () => {
-    it('return dates when succeed find dates the diary exists', async () => {
+    it('should return dates when succeed find dates the diary exists', async () => {
       // given
       const diariesExistsDatesDto: DiariesExistsDatesDto = {
         year: 2020,
@@ -151,7 +151,7 @@ describe('DiaryController', () => {
   });
 
   describe('createDiary', () => {
-    it('return serialized diary when succeed create diary', async () => {
+    it('should return serialized diary when succeed create diary', async () => {
       // given
       const createDiaryDto: CreateDiaryDto = {
         title: 'title',
@@ -191,7 +191,7 @@ describe('DiaryController', () => {
   });
 
   describe('findMyDiary', () => {
-    it('return serialized diary when succeed find my diary', async () => {
+    it('should return serialized diary when succeed find my diary', async () => {
       // given
       const diaryId = 1;
 
@@ -225,7 +225,7 @@ describe('DiaryController', () => {
   });
 
   describe('updateMyDiary', () => {
-    it('return diary when succeed update my diary', async () => {
+    it('should return diary when succeed update my diary', async () => {
       // given
       const diaryId = 1;
 
@@ -258,7 +258,7 @@ describe('DiaryController', () => {
       expect(result.diary.diaryMeta.content).toEqual(content);
     });
 
-    it('throw error when failed update my diary', async () => {
+    it('should throw error when failed update my diary', async () => {
       // given
       const updateDiaryDto: UpdateDiaryDto = {
         title: 'updated title',
@@ -282,7 +282,7 @@ describe('DiaryController', () => {
   });
 
   describe('deleteMyDiary', () => {
-    it('return msg when succeed delete my diary', async () => {
+    it('should return msg when succeed delete my diary', async () => {
       // given
       const diaryId = 1;
 
@@ -301,7 +301,7 @@ describe('DiaryController', () => {
       expect(deleteMyDiarySpy).toBeCalledWith(user, diaryId);
     });
 
-    it('throw error when failed delete my diary', async () => {
+    it('should throw error when failed delete my diary', async () => {
       // given
       const diaryId = 1;
 
