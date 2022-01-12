@@ -45,7 +45,7 @@ describe('UserService', () => {
 
       // then
       await expect(userService.findUserById(id)).rejects.toThrowError(
-        NotFoundException,
+        new NotFoundException('This user is not exists!'),
       );
     });
   });
@@ -74,7 +74,7 @@ describe('UserService', () => {
 
       // then
       await expect(userService.findUserByEmail(email)).rejects.toThrowError(
-        NotFoundException,
+        new NotFoundException('This user is not exists!'),
       );
     });
   });
