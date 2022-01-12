@@ -4,7 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Diary } from '@src/entities';
 import { diary } from '@src/__fixtures__/diary/diary';
 import { user } from '@src/__fixtures__/user/user';
-import { Connection } from 'typeorm';
+import { ResultSetHeader } from 'mysql2';
+import { Connection, DeleteResult } from 'typeorm';
 import { UserService } from '../user';
 import { DiaryRepository } from './diary.repository';
 import { DiaryService } from './diary.service';
@@ -237,6 +238,44 @@ describe('DiaryService', () => {
       await expect(
         diaryService.updateMyDiary(user, updateDiaryDto, id),
       ).rejects.toThrowError(new NotFoundException('This diary is not exist'));
+    });
+  });
+
+  describe('deleteMyDiary', () => {
+    it('should return delete result when succeed delete my diary', async () => {
+      // given
+      const id = 1;
+
+      const deleteResult: DeleteResult = {
+        raw: {
+          affectedRows: 1,
+        } as ResultSetHeader,
+        affected: 1,
+      };
+
+      diaryRepository.findMyDiary = jest.fn().mockResolvedValue(diary);
+
+      diaryRepository.delete = jest.fn().mockResolvedValue(deleteResult);
+
+      // when
+      const result = await diaryService.deleteMyDiary(user, id);
+
+      // then
+      expect(result).toEqual(deleteResult);
+    });
+
+    it('should throw exception when failed find my diary', async () => {
+      // given
+      const id = 1;
+
+      diaryRepository.findMyDiary = jest.fn().mockResolvedValue(null);
+
+      // when
+
+      // then
+      await expect(diaryService.deleteMyDiary(user, id)).rejects.toThrowError(
+        new NotFoundException('This diary is not exist'),
+      );
     });
   });
 
