@@ -1,4 +1,4 @@
-import { Diary, User } from '@src/entities';
+import { Diary, DiaryMeta, User } from '@src/entities';
 import { EntityRepository, Repository } from 'typeorm';
 import { GetDiariesDto } from './dto';
 import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
@@ -46,5 +46,27 @@ export class DiaryRepository extends Repository<Diary> {
       .skip((page - 1) * limit)
       .take(limit)
       .getMany();
+  }
+
+  async saveDiary(diary: Diary, diaryMeta: DiaryMeta) {
+    const queryRunner = this.manager.connection.createQueryRunner();
+
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      await queryRunner.manager.getRepository(DiaryMeta).save(diaryMeta);
+
+      const result = await queryRunner.manager.getRepository(Diary).save(diary);
+
+      await queryRunner.commitTransaction();
+
+      return result;
+    } catch (e) {
+      queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      queryRunner.release();
+    }
   }
 }

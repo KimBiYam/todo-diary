@@ -1,7 +1,7 @@
 import { Diary, DiaryMeta, User } from '@src/entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DiaryRepository } from './diary.repository';
-import { Between, Connection, DeleteResult } from 'typeorm';
+import { Between, DeleteResult } from 'typeorm';
 import { UpdateDiaryDto } from './dto/update-diary.dto';
 import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
 import { CommonUtil } from '@src/util/common.util';
@@ -12,10 +12,7 @@ import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
 
 @Injectable()
 export class DiaryService {
-  constructor(
-    private readonly diaryRepository: DiaryRepository,
-    private readonly connection: Connection,
-  ) {}
+  constructor(private readonly diaryRepository: DiaryRepository) {}
   async findMyDiaries(
     user: User,
     getDiariesDto: GetDiariesDto,
@@ -82,35 +79,17 @@ export class DiaryService {
   }
 
   async createDiary(user: User, createDiaryDto: CreateDiaryDto): Promise<any> {
-    const queryRunner = this.connection.createQueryRunner();
+    const { content, title } = createDiaryDto;
 
-    try {
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
+    const diaryMeta = new DiaryMeta();
+    diaryMeta.content = content;
 
-      const { content, title } = createDiaryDto;
+    const diary = new Diary();
+    diary.title = title;
+    diary.diaryMeta = diaryMeta;
+    diary.user = user;
 
-      const diaryMeta = new DiaryMeta();
-      diaryMeta.content = content;
-
-      const diary = new Diary();
-      diary.title = title;
-      diary.diaryMeta = diaryMeta;
-      diary.user = user;
-
-      await queryRunner.manager.getRepository(DiaryMeta).save(diaryMeta);
-
-      const result = await queryRunner.manager.getRepository(Diary).save(diary);
-
-      await queryRunner.commitTransaction();
-
-      return result;
-    } catch (e) {
-      queryRunner.rollbackTransaction();
-      throw e;
-    } finally {
-      queryRunner.release();
-    }
+    return this.diaryRepository.saveDiary(diary, diaryMeta);
   }
 
   async updateMyDiary(
@@ -118,40 +97,20 @@ export class DiaryService {
     updateDiaryDto: UpdateDiaryDto,
     id: number,
   ): Promise<Diary> {
-    const queryRunner = this.connection.createQueryRunner();
-    await queryRunner.connect();
-
     const { content, isFinished, title } = updateDiaryDto;
 
     const diary = await this.findMyDiary(user, id);
 
-    try {
-      await queryRunner.startTransaction();
+    const updateDiary = new Diary();
+    updateDiary.title = title;
+    updateDiary.isFinished = isFinished;
+    updateDiary.id = diary.id;
 
-      const updateDiary = new Diary();
-      updateDiary.title = title;
-      updateDiary.isFinished = isFinished;
-      updateDiary.id = diary.id;
+    const updateDiaryMeta = new DiaryMeta();
+    updateDiaryMeta.content = content;
+    updateDiaryMeta.id = diary.diaryMeta.id;
 
-      const updateDiaryMeta = new DiaryMeta();
-      updateDiaryMeta.content = content;
-      updateDiaryMeta.id = diary.diaryMeta.id;
-
-      await queryRunner.manager.getRepository(DiaryMeta).save(updateDiaryMeta);
-
-      const result = await queryRunner.manager
-        .getRepository(Diary)
-        .save(updateDiary);
-
-      await queryRunner.commitTransaction();
-
-      return result;
-    } catch (e) {
-      queryRunner.rollbackTransaction();
-      throw e;
-    } finally {
-      queryRunner.release();
-    }
+    return this.diaryRepository.saveDiary(updateDiary, updateDiaryMeta);
   }
 
   async deleteMyDiary(user: User, id: number): Promise<DeleteResult> {
