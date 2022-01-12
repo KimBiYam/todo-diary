@@ -16,6 +16,7 @@ import {
   UpdateDiaryDto,
 } from './dto';
 import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
+import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 
 describe('DiaryService', () => {
   let diaryService: DiaryService;
@@ -210,7 +211,7 @@ describe('DiaryService', () => {
       updatedDiary.diaryMeta = { content: 'updated content', id: '1', diary };
       updatedDiary.isFinished = true;
 
-      diaryRepository.findMyDiary = jest.fn().mockResolvedValue(diary);
+      diaryService.findMyDiary = jest.fn().mockResolvedValue(diary);
       diaryRepository.saveDiary = jest.fn().mockResolvedValue(updatedDiary);
 
       // when
@@ -276,6 +277,52 @@ describe('DiaryService', () => {
       await expect(diaryService.deleteMyDiary(user, id)).rejects.toThrowError(
         new NotFoundException('This diary is not exist'),
       );
+    });
+  });
+
+  describe('getDiariesStatisticsByYear', () => {
+    it('should return statistics', async () => {
+      // given
+      const year = 2020;
+
+      const diary1 = new Diary();
+      diary1.isFinished = true;
+      diary1.createdAt = new Date('2020-01-01');
+
+      const diary2 = new Diary();
+      diary2.isFinished = false;
+      diary2.createdAt = new Date('2020-01-01');
+
+      const diary3 = new Diary();
+      diary3.isFinished = true;
+      diary3.createdAt = new Date('2020-02-01');
+
+      const diaries: Diary[] = [diary1, diary2, diary3];
+
+      diaryRepository.find = jest.fn().mockResolvedValue(diaries);
+
+      // when
+      const result = await diaryService.getDiariesStatisticsByYear(user, year);
+
+      // then
+      const expected: DiariesYearStatisticsResponseDto = {
+        diariesStatisticsByYear: [
+          { month: 1, totalCount: 2, finishedDiariesCount: 1 },
+          { month: 2, totalCount: 1, finishedDiariesCount: 1 },
+          { month: 3, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 4, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 5, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 6, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 7, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 8, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 9, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 10, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 11, totalCount: 0, finishedDiariesCount: 0 },
+          { month: 12, totalCount: 0, finishedDiariesCount: 0 },
+        ],
+      };
+
+      expect(result).toEqual(expected);
     });
   });
 
