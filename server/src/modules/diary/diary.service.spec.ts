@@ -117,7 +117,7 @@ describe('DiaryService', () => {
       //then
       await expect(
         diaryService.findMyDiary(user, diaryId),
-      ).rejects.toThrowError(NotFoundException);
+      ).rejects.toThrowError(new NotFoundException('This diary is not exist'));
     });
   });
 
