@@ -1,7 +1,6 @@
 import { Diary, DiaryMeta, User } from '@src/entities';
 import { EntityRepository, Repository } from 'typeorm';
 import { GetDiariesDto } from './dto';
-import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
 
 @EntityRepository(Diary)
 export class DiaryRepository extends Repository<Diary> {
@@ -16,36 +15,27 @@ export class DiaryRepository extends Repository<Diary> {
   }
 
   async findMyDiaries(user: User, getDiariesDto: GetDiariesDto) {
-    const { page, limit } = getDiariesDto;
+    const { limit, page, createdDate } = getDiariesDto;
 
-    return await this.createQueryBuilder('diary')
+    const queryBuilder = this.createQueryBuilder('diary')
       .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
       .select(['diary', 'diary_meta'])
       .where('diary.user_id = :userId', { userId: user.id })
       .orderBy('diary.createdAt', 'DESC')
       .skip((page - 1) * limit)
-      .take(limit)
-      .getMany();
-  }
+      .take(limit);
 
-  async findMyDiariesByDate(
-    user: User,
-    findDiariesByDateDto: FindDiariesByDateDto,
-  ) {
-    const { limit, page, startDate, endDate } = findDiariesByDateDto;
+    if (createdDate) {
+      const startDate = new Date(createdDate);
+      const endDate = new Date(createdDate);
 
-    return await this.createQueryBuilder('diary')
-      .leftJoinAndSelect('diary.diaryMeta', 'diary_meta')
-      .select(['diary', 'diary_meta'])
-      .where('diary.user_id = :userId', { userId: user.id })
-      .andWhere('diary.createdAt BETWEEN :startDate AND :endDate', {
+      queryBuilder.andWhere('diary.createdAt BETWEEN :startDate AND :endDate', {
         startDate,
         endDate,
-      })
-      .orderBy('diary.createdAt', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit)
-      .getMany();
+      });
+    }
+
+    return await queryBuilder.getMany();
   }
 
   async saveDiary(diary: Diary, diaryMeta: DiaryMeta) {
