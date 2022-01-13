@@ -57,9 +57,7 @@ describe('DiaryService', () => {
 
       const diaries: Diary[] = [diary1, diary2];
 
-      diaryRepository.findMyDiariesByDate = jest
-        .fn()
-        .mockResolvedValue(diaries);
+      diaryRepository.findMyDiaries = jest.fn().mockResolvedValue(diaries);
 
       // when
       const result = await diaryService.findMyDiaries(user, getDiariesDto);

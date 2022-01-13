@@ -7,7 +7,6 @@ import { CreateDiaryDto, DiariesExistsDatesDto, GetDiariesDto } from './dto';
 import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
-import { FindDiariesByDateDto } from './dto/find-diaries-by-date.dto';
 import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
 
 @Injectable()
@@ -17,33 +16,7 @@ export class DiaryService {
     user: User,
     getDiariesDto: GetDiariesDto,
   ): Promise<Diary[]> {
-    let diaries: Diary[] = [];
-
-    if (getDiariesDto.createdDate) {
-      const { limit, page, createdDate } = getDiariesDto;
-
-      const startDate = new Date(createdDate);
-      const endDate = new Date(createdDate);
-
-      startDate.setHours(0, 0, 0);
-      endDate.setHours(23, 59, 59);
-
-      const findDiariesByDateDto: FindDiariesByDateDto = {
-        limit,
-        page,
-        startDate,
-        endDate,
-      };
-
-      diaries = await this.diaryRepository.findMyDiariesByDate(
-        user,
-        findDiariesByDateDto,
-      );
-    } else {
-      diaries = await this.diaryRepository.findMyDiaries(user, getDiariesDto);
-    }
-
-    return diaries;
+    return await this.diaryRepository.findMyDiaries(user, getDiariesDto);
   }
 
   async findMyDiary(user: User, id: number): Promise<Diary> {
