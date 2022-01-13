@@ -75,23 +75,25 @@ describe('DiaryController', () => {
       diaryService.findMyDiaries = jest.fn().mockResolvedValue([diary]);
 
       // when
-      const serialized = [
-        {
-          id: '1',
-          createdAt: new Date('2020-01-01'),
-          isFinished: false,
-          title: 'title',
-          content: 'content',
-        },
-      ];
-
       const result = await diaryController.findMyDiaries(
         requestUserDto,
         getDiariesDto,
       );
 
+      const expected = {
+        diaries: [
+          {
+            id: '1',
+            createdAt: new Date('2020-01-01'),
+            isFinished: false,
+            title: 'title',
+            content: 'content',
+          },
+        ],
+      };
+
       // then
-      expect(result).toEqual({ diaries: serialized });
+      expect(result).toEqual(expected);
     });
   });
 
@@ -178,15 +180,17 @@ describe('DiaryController', () => {
       );
 
       // then
-      const serialized = {
-        id: '1',
-        createdAt: new Date('2020-01-01'),
-        isFinished: false,
-        title: 'title',
-        content: 'content',
+      const expected = {
+        diary: {
+          id: '1',
+          createdAt: new Date('2020-01-01'),
+          isFinished: false,
+          title: 'title',
+          content: 'content',
+        },
       };
 
-      expect(result).toEqual({ diary: serialized });
+      expect(result).toEqual(expected);
     });
   });
 
@@ -212,15 +216,17 @@ describe('DiaryController', () => {
       const result = await diaryController.findMyDiary(requestUserDto, diaryId);
 
       // then
-      const serialized = {
-        id: '1',
-        createdAt: new Date('2020-01-01'),
-        isFinished: false,
-        title: 'title',
-        content: 'content',
+      const expected = {
+        diary: {
+          id: '1',
+          createdAt: new Date('2020-01-01'),
+          isFinished: false,
+          title: 'title',
+          content: 'content',
+        },
       };
 
-      expect(result).toEqual({ diary: serialized });
+      expect(result).toEqual(expected);
     });
   });
 
