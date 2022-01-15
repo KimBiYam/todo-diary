@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { Diary, DiaryMeta } from '@src/entities';
 import { diaries } from '@src/__fixtures__/diary/diaries';
 import { diary } from '@src/__fixtures__/diary/diary';
 import { user } from '@src/__fixtures__/user/user';
+import { QueryFailedError } from 'typeorm';
 import { DiaryRepository } from './diary.repository';
 import { GetDiariesDto } from './dto';
 
@@ -142,6 +144,83 @@ describe('DiaryRepository', () => {
         },
       );
       expect(result).toEqual(diaries);
+    });
+  });
+
+  describe('saveDiary', () => {
+    it('should commit transaction when succeed', async () => {
+      // given
+      const diary = new Diary();
+      const diaryMeta = new DiaryMeta();
+
+      const connect = jest.fn();
+      const startTransaction = jest.fn();
+      const release = jest.fn();
+      const commitTransaction = jest.fn();
+
+      const getRepository = () => ({
+        save: jest.fn(),
+      });
+
+      const manager = {
+        connection: {
+          createQueryRunner: () => ({
+            connect,
+            startTransaction,
+            release,
+            commitTransaction,
+            manager: { getRepository },
+          }),
+        },
+      };
+
+      Object.defineProperty(diaryRepository, 'manager', { value: manager });
+
+      // when
+      await diaryRepository.saveDiary(diary, diaryMeta);
+
+      // then
+      expect(connect).toBeCalled();
+      expect(commitTransaction).toBeCalled();
+      expect(release).toBeCalled();
+    });
+
+    it('should rollback transaction when throw exception', async () => {
+      // given
+      const diary = new Diary();
+      const diaryMeta = new DiaryMeta();
+
+      const connect = jest.fn();
+      const startTransaction = jest.fn();
+      const release = jest.fn();
+      const rollbackTransaction = jest.fn();
+
+      const getRepository = () => ({
+        save: jest
+          .fn()
+          .mockRejectedValue(new QueryFailedError('query', [], 'driveError')),
+      });
+
+      const manager = {
+        connection: {
+          createQueryRunner: () => ({
+            connect,
+            startTransaction,
+            release,
+            rollbackTransaction,
+            manager: { getRepository },
+          }),
+        },
+      };
+
+      Object.defineProperty(diaryRepository, 'manager', { value: manager });
+
+      // then
+      await expect(
+        diaryRepository.saveDiary(diary, diaryMeta),
+      ).rejects.toThrowError(QueryFailedError);
+      expect(rollbackTransaction).toBeCalled();
+      expect(release).toBeCalled();
     });
   });
 });
