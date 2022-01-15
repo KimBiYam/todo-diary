@@ -128,6 +128,9 @@ describe('DiaryRepository', () => {
       const startDate = new Date(createdDate);
       const endDate = new Date(createdDate);
 
+      startDate.setHours(0, 0, 0);
+      endDate.setHours(23, 59, 59);
+
       expect(leftJoinAndSelect).toBeCalledWith('diary.diaryMeta', 'diary_meta');
       expect(select).toBeCalledWith(['diary', 'diary_meta']);
       expect(where).toBeCalledWith('diary.user_id = :userId', {
