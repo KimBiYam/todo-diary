@@ -1,9 +1,12 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class todoDiary1642772404243 implements MigrationInterface {
-  name = 'todoDiary1642772404243';
+export class todoDiary1642774238704 implements MigrationInterface {
+  name = 'todoDiary1642774238704';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      "ALTER DATABASE todo_diary DEFAULT CHARACTER SET='utf8' COLLATE='utf8_general_ci'",
+    );
     await queryRunner.query(
       'CREATE TABLE `diary_meta` (`id` bigint NOT NULL AUTO_INCREMENT, `content` varchar(5000) NOT NULL, `diary_id` bigint NULL, UNIQUE INDEX `REL_df831d3fb38b389b49c67be741` (`diary_id`), PRIMARY KEY (`id`)) ENGINE=InnoDB',
     );
@@ -24,6 +27,16 @@ export class todoDiary1642772404243 implements MigrationInterface {
     );
     await queryRunner.query(
       'ALTER TABLE `social_account` ADD CONSTRAINT `FK_365d4084b1feb693468d6248411` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE',
+    );
+    await queryRunner.query(
+      'ALTER TABLE `diary_meta` CONVERT TO CHARACTER SET utf8',
+    );
+    await queryRunner.query(
+      'ALTER TABLE `diary` convert to character set utf8',
+    );
+    await queryRunner.query('ALTER TABLE `user` convert to character set utf8');
+    await queryRunner.query(
+      'ALTER TABLE `social_account` convert to character set utf8',
     );
   }
 
