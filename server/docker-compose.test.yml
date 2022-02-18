@@ -5,8 +5,6 @@ services:
     image: mariadb:10.5.8
     container_name: todo-diary-test-mariadb
     restart: always
-    networks:
-      - app-network
     ports:
       - 3306:3306
     env_file:
