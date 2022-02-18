@@ -6,17 +6,17 @@ import { diary } from '@src/test/__fixtures__/diary/diary';
 import { user } from '@src/test/__fixtures__/user/user';
 import { ResultSetHeader } from 'mysql2';
 import { Connection, DeleteResult } from 'typeorm';
-import { UserService } from '../user';
-import { DiaryRepository } from './diary.repository';
-import { DiaryService } from './diary.service';
+import { UserService } from '../../user';
+import { DiaryRepository } from '.././diary.repository';
+import { DiaryService } from '../diary.service';
 import {
   CreateDiaryDto,
   DiariesExistsDatesDto,
   GetDiariesDto,
   UpdateDiaryDto,
-} from './dto';
-import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
-import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
+} from '../dto';
+import { DiariesStatisticsDto } from '../dto/diaries-statistics.dto';
+import { DiariesYearStatisticsResponseDto } from '../dto/diaries-year-statistics-response.dto';
 
 describe('DiaryService', () => {
   let diaryService: DiaryService;
