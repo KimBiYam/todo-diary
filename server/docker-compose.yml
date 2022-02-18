@@ -3,7 +3,7 @@ version: '3.2'
 services:
   backend:
     image: todo-diary-backend
-    container_name: todo-diary-backend
+    container_name: todo-diary-prod-backend
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -15,7 +15,7 @@ services:
 
   nginx:
     image: nginx:stable
-    container_name: nestjs-boilerplate-nginx
+    container_name: todo-diary-prod-nginx
     restart: always
     depends_on:
       - backend

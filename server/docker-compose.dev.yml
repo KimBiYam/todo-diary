@@ -3,7 +3,7 @@ version: '3.2'
 services:
   mariadb:
     image: mariadb:10.5.8
-    container_name: nestjs-boilerplate-mariadb
+    container_name: todo-diary-dev-mariadb
     restart: always
     networks:
       - app-network
@@ -21,7 +21,7 @@ services:
 
   backend:
     image: todo-diary-backend
-    container_name: todo-diary-backend
+    container_name: todo-diary-dev-backend
     build:
       context: ./
       dockerfile: ./Dockerfile.dev
