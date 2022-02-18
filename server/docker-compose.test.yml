@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  mariadb:
+    image: mariadb:10.5.8
+    container_name: todo-diary-test-mariadb
+    restart: always
+    networks:
+      - app-network
+    ports:
+      - 3306:3306
+    env_file:
+      - .env.test
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DEFAULT_DATABASE}
+      TZ: ${DB_TIME_ZONE}
+
