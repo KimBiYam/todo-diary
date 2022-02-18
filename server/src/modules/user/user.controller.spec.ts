@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { user } from '@src/__fixtures__/user/user';
-import { mockUserService } from '@src/__mocks__/services/mock.user.service';
+import { user } from '@src/test/__fixtures__/user/user';
+import { mockUserService } from '@src/test/__mocks__/services/mock.user.service';
 import { UserService } from '.';
 import { RequestUserDto } from './dto';
 import { UserController } from './user.controller';
