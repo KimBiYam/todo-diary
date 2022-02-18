@@ -7,18 +7,18 @@ import { user } from '@src/test/__fixtures__/user/user';
 import { mockDiaryService } from '@src/test/__mocks__/services/mock.diary.service';
 import { mockUserService } from '@src/test/__mocks__/services/mock.user.service';
 import { DeleteResult } from 'typeorm';
-import { UserService } from '../user';
-import { RequestUserDto } from '../user/dto';
-import { DiaryController } from './diary.controller';
-import { DiaryService } from './diary.service';
+import { UserService } from '../../user';
+import { RequestUserDto } from '../../user/dto';
+import { DiaryController } from '../diary.controller';
+import { DiaryService } from '../diary.service';
 import {
   CreateDiaryDto,
   DiariesExistsDatesDto,
   DiariesYearStatisticsRequestDto,
   GetDiariesDto,
   UpdateDiaryDto,
-} from './dto';
-import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
+} from '../dto';
+import { DiariesYearStatisticsResponseDto } from '../dto/diaries-year-statistics-response.dto';
 
 describe('DiaryController', () => {
   let diaryController: DiaryController;

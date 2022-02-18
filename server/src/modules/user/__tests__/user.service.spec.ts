@@ -1,8 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { user } from '@src/test/__fixtures__/user/user';
-import { UserRepository } from './user.repository';
-import { UserService } from './user.service';
+import { UserRepository } from '../user.repository';
+import { UserService } from '../user.service';
 
 describe('UserService', () => {
   let userService: UserService;

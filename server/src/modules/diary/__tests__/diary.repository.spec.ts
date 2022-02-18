@@ -4,8 +4,8 @@ import { diaries } from '@src/test/__fixtures__/diary/diaries';
 import { diary } from '@src/test/__fixtures__/diary/diary';
 import { user } from '@src/test/__fixtures__/user/user';
 import { QueryFailedError } from 'typeorm';
-import { DiaryRepository } from './diary.repository';
-import { GetDiariesDto } from './dto';
+import { DiaryRepository } from '../diary.repository';
+import { GetDiariesDto } from '../dto';
 
 describe('DiaryRepository', () => {
   let diaryRepository: DiaryRepository;
