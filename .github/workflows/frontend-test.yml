@@ -1,4 +1,4 @@
-name: Run backend test
+name: Run frontend test
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     - master
 
 jobs:
-  run-backend-test:
+  run-frontend-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,15 +27,13 @@ jobs:
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
-          working-directory: server 
+          working-directory: webapp 
 
       - name: Install packages
         if: steps.node-cache.outputs.cache-hit != 'true'
         run: npm ci
-        working-directory: server
+        working-directory: webapp
 
       - name: Run test
-        run: |
-          ./run-test.sh up
-          npm run test
-        working-directory: server
+        run: npm run test
+        working-directory: webapp
