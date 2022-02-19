@@ -1,7 +1,7 @@
 #!/bin/bash
 
 up() {
-    docker-compose --env-file .env.test -f docker-compose.test.yml up --build
+    docker-compose --env-file .env.test -f docker-compose.test.yml up -d
 }
 
 down() {
