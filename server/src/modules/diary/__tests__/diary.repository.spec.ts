@@ -172,19 +172,19 @@ describe('DiaryRepository', () => {
         save: jest.fn(),
       });
 
-      const manager = {
-        connection: {
-          createQueryRunner: () => ({
-            connect,
-            startTransaction,
-            release,
-            commitTransaction,
-            manager: { getRepository },
-          }),
-        },
+      const dataSource = {
+        createQueryRunner: () => ({
+          connect,
+          startTransaction,
+          release,
+          commitTransaction,
+          manager: { getRepository },
+        }),
       };
 
-      Object.defineProperty(diaryRepository, 'manager', { value: manager });
+      Object.defineProperty(diaryRepository, 'dataSource', {
+        value: dataSource,
+      });
 
       // when
       await diaryRepository.saveDiary(diary, diaryMeta);
@@ -211,19 +211,19 @@ describe('DiaryRepository', () => {
           .mockRejectedValue(new QueryFailedError('query', [], 'driveError')),
       });
 
-      const manager = {
-        connection: {
-          createQueryRunner: () => ({
-            connect,
-            startTransaction,
-            release,
-            rollbackTransaction,
-            manager: { getRepository },
-          }),
-        },
+      const dataSource = {
+        createQueryRunner: () => ({
+          connect,
+          startTransaction,
+          release,
+          rollbackTransaction,
+          manager: { getRepository },
+        }),
       };
 
-      Object.defineProperty(diaryRepository, 'manager', { value: manager });
+      Object.defineProperty(diaryRepository, 'dataSource', {
+        value: dataSource,
+      });
 
       // then
       await expect(

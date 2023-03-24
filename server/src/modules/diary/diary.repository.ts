@@ -47,7 +47,7 @@ export class DiaryRepository extends Repository<Diary> {
   }
 
   async saveDiary(diary: Diary, diaryMeta: DiaryMeta) {
-    const queryRunner = this.manager.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
 
     try {
       await queryRunner.connect();

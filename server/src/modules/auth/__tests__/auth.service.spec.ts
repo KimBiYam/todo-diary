@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { dataSourceMock } from '@src/test/__mocks__/typeorm/mock.data-source';
+import { DataSource } from 'typeorm';
 import { UserService } from '../../user';
 import { UserRepository } from '../../user/user.repository';
 import { AuthService } from '../auth.service';
@@ -20,9 +20,12 @@ describe('AuthService', () => {
         { provide: JwtService, useValue: {} },
         { provide: HttpService, useValue: {} },
         { provide: ConfigService, useValue: {} },
-        { provide: Connection, useValue: {} },
-        { provide: getRepositoryToken(SocialAccountRepository), useValue: {} },
+        { provide: SocialAccountRepository, useValue: {} },
         { provide: UserRepository, useValue: {} },
+        {
+          provide: DataSource,
+          useValue: dataSourceMock,
+        },
       ],
     }).compile();
 
