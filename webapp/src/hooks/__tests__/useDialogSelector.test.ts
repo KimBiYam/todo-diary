@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { RootState } from '../../reducers/rootReducer';
 import { prepareMockWrapper } from '../../utils/testUtil';
 import useDialogSelector from '../useDialogSelector';

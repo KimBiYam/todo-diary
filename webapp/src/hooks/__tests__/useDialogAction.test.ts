@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import {
   closeDialog,
   openDialog,
@@ -10,12 +10,12 @@ import useDialogAction from '../useDialogAction';
 
 describe('useDialogAction hook', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   const setup = (initialState?: RootState) => {
@@ -65,7 +65,7 @@ describe('useDialogAction hook', () => {
       result.current.openDialog('test', openDialogTime);
     });
 
-    jest.runAllTimers();
+    vi.runAllTimers();
 
     //then
     setTimeout(() => {
