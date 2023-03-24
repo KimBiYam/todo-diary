@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
 import { SocialAccountDto } from './dto';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
 import { ConfigService } from '@nestjs/config';
@@ -21,7 +21,7 @@ export class AuthService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
     private readonly socialAccountRepository: SocialAccountRepository,
-    private readonly connection: Connection,
+    private readonly dataSource: DataSource,
   ) {}
 
   private readonly logger = new Logger('AuthService');
@@ -91,7 +91,7 @@ export class AuthService {
   async createSocialAccount(socialAccountDto: SocialAccountDto) {
     const { socialId, email, displayName, photoUrl, provider } =
       socialAccountDto;
-    const queryRunner = this.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
 
     const foundUser = await queryRunner.connection

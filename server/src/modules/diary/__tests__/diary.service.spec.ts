@@ -1,11 +1,10 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Diary } from '@src/entities';
 import { diary } from '@src/test/__fixtures__/diary/diary';
 import { user } from '@src/test/__fixtures__/user/user';
 import { ResultSetHeader } from 'mysql2';
-import { Connection, DeleteResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 import { UserService } from '../../user';
 import { DiaryRepository } from '.././diary.repository';
 import { DiaryService } from '../diary.service';
@@ -27,8 +26,7 @@ describe('DiaryService', () => {
       providers: [
         DiaryService,
         { provide: UserService, useValue: {} },
-        { provide: Connection, useValue: {} },
-        { provide: getRepositoryToken(DiaryRepository), useValue: {} },
+        { provide: DiaryRepository, useValue: {} },
       ],
     }).compile();
 
