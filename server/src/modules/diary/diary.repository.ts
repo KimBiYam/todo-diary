@@ -1,9 +1,14 @@
+import { Injectable } from '@nestjs/common';
 import { Diary, DiaryMeta, User } from '@src/entities';
-import { EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { GetDiariesDto } from './dto';
 
-@EntityRepository(Diary)
+@Injectable()
 export class DiaryRepository extends Repository<Diary> {
+  constructor(private dataSource: DataSource) {
+    super(Diary, dataSource.createEntityManager());
+  }
+
   async findMyDiary(user: User, id: number) {
     return await this.createQueryBuilder('diary')
       .leftJoinAndSelect('diary.user', 'user')
