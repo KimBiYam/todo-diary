@@ -2,11 +2,11 @@ import axios, { AxiosError } from 'axios';
 import { BACKEND_SERVER_URL } from '../constants';
 import tokenStorage from '../storage/tokenStorage';
 import { StatusCodes } from 'http-status-codes';
-import { store } from '..';
 import { logout } from '../reducers/user';
 import { openDialog } from '../reducers/dialog';
 import { createBrowserHistory } from 'history';
 import HttpError from './models/httpError';
+import { store } from '../main';
 
 const apiClient = axios.create({ baseURL: BACKEND_SERVER_URL });
 
@@ -14,7 +14,7 @@ apiClient.interceptors.request.use((config) => {
   const accessToken = tokenStorage.getToken();
 
   config.headers.Authorization =
-    `${process.env.REACT_APP_TOKEN_PREFIX} ${accessToken}` || '';
+    `${import.meta.env.VITE_TOKEN_PREFIX} ${accessToken}` || '';
 
   return config;
 });
