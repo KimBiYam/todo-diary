@@ -16,7 +16,7 @@ const GoogleSignInButton = ({
   useEffect(() => {
     window.gapi.load('auth2', () => {
       const auth2 = window.gapi.auth2.init({
-        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         cookiepolicy: 'single_host_origin',
       });
 

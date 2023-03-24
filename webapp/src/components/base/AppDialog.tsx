@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { memo, useEffect, useState } from 'react';
-import { setTimeout } from 'timers';
 import useDialogSelector from '../../hooks/useDialogSelector';
 import { COLORS } from '../../styles';
 import { fadeIn, fadeOut } from '../../styles/transitions';
@@ -16,7 +15,7 @@ const AppDialog = memo(() => {
 
   useEffect(() => {
     const transitionDuration = 1 * 1000;
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: number;
 
     if (isOpen) {
       setVisible(true);
