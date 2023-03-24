@@ -7,8 +7,6 @@ import useDialogAction from '../hooks/useDialogAction';
 import useUserAction from '../hooks/useUserAction';
 import tokenStorage from '../storage/tokenStorage';
 
-export type GithubSignInPageProps = {};
-
 const GithubSignInPage = () => {
   const { userLogIn, userLogOut } = useUserAction();
   const { openDialog } = useDialogAction();
@@ -33,7 +31,7 @@ const GithubSignInPage = () => {
       tokenStorage.setToken(accessToken);
       userLogIn(user);
     } catch (e) {
-      openDialog(String(e));
+      openDialog(String((e as any).message));
       userLogOut();
       history.push('/');
     }
