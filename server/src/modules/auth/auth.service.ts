@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  HttpService,
   Injectable,
   Logger,
 } from '@nestjs/common';
@@ -13,6 +12,7 @@ import { SocialAccountRepository } from './social-account.repository';
 import { CommonUtil } from '@src/util/common.util';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../user/user.repository';
+import { HttpService } from '@nestjs/axios';
 
 const API_GITHUB_ACCESS_TOKEN = 'https://github.com/login/oauth/access_token';
 const API_GITHUB_USER = 'https://api.github.com/user';

@@ -1,5 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { DiaryMeta } from '@src/entities';
-import { EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
-@EntityRepository(DiaryMeta)
-export class DiaryMetaRepository extends Repository<DiaryMeta> {}
+@Injectable()
+export class DiaryMetaRepository extends Repository<DiaryMeta> {
+  constructor(private dataSource: DataSource) {
+    super(DiaryMeta, dataSource.createEntityManager());
+  }
+}

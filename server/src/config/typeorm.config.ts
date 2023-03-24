@@ -1,10 +1,10 @@
 import { SocialAccount, User, Diary, DiaryMeta } from '@src/entities';
 import { join } from 'path';
-import { ConnectionOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 
 const isProduction = process.env.NODE_ENV === 'PRODUCTION';
 
-const config: ConnectionOptions = {
+const config: DataSourceOptions = {
   type: 'mariadb',
   host: process.env.DB_HOST,
   port: Number(process.env.MARIADB_PORT),
@@ -15,12 +15,8 @@ const config: ConnectionOptions = {
   migrationsRun: isProduction,
   charset: process.env.DB_CHARSET,
   logging: !isProduction,
-  entities: [User, SocialAccount, Diary, DiaryMeta],
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
-  cli: {
-    entitiesDir: join(__dirname, '../entities'),
-    migrationsDir: join(__dirname, '../migrations'),
-  },
 };
 
 export = config;

@@ -1,5 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { SocialAccount } from '@src/entities';
-import { EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 
-@EntityRepository(SocialAccount)
-export class SocialAccountRepository extends Repository<SocialAccount> {}
+@Injectable()
+export class SocialAccountRepository extends Repository<SocialAccount> {
+  constructor(private dataSource: DataSource) {
+    super(SocialAccount, dataSource.createEntityManager());
+  }
+}

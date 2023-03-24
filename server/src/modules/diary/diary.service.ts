@@ -34,7 +34,7 @@ export class DiaryService {
     const lastDate = DateUtil.getLastDateOfYear(year);
 
     const diaries = await this.diaryRepository.find({
-      where: { createdAt: Between(firstDate, lastDate), user: user },
+      where: { createdAt: Between(firstDate, lastDate), user: { id: user.id } },
     });
 
     return diaries;
@@ -45,7 +45,8 @@ export class DiaryService {
     const lastDate = DateUtil.getLastDateOfMonth(year, month);
 
     const diaries = await this.diaryRepository.find({
-      where: { createdAt: Between(firstDate, lastDate), user: user },
+      relations: { user: true },
+      where: { createdAt: Between(firstDate, lastDate), user: { id: user.id } },
     });
 
     return diaries;
@@ -142,8 +143,9 @@ export class DiaryService {
   };
 
   getDiariesStatistics(diaries: Diary[]) {
-    const finishedDiariesCount = diaries.filter((diary) => diary.isFinished)
-      .length;
+    const finishedDiariesCount = diaries.filter(
+      (diary) => diary.isFinished,
+    ).length;
 
     const diariesStatisticsDto: DiariesStatisticsDto = {
       totalCount: diaries.length,
