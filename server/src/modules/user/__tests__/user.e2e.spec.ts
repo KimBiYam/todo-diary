@@ -6,7 +6,6 @@ import { configModuleOption } from '@src/config';
 import { SocialAccount, User } from '@src/entities';
 import { SocialAccountRepository } from '@src/modules/auth/social-account.repository';
 import { getMariaDBTestTypeOrmModule } from '@src/test/util/getMariaDBTestTypeOrmModule';
-import { getConnection } from 'typeorm';
 import { UserModule } from '..';
 import { UserRepository } from '../user.repository';
 
@@ -42,7 +41,7 @@ describe('User (e2e)', () => {
   });
 
   afterAll(async () => {
-    await getConnection().close();
+    await app.close();
   });
 
   describe('/api/v1/users/me (GET)', () => {

@@ -3,7 +3,8 @@ import { Diary, DiaryMeta } from '@src/entities';
 import { diaries } from '@src/test/__fixtures__/diary/diaries';
 import { diary } from '@src/test/__fixtures__/diary/diary';
 import { user } from '@src/test/__fixtures__/user/user';
-import { QueryFailedError } from 'typeorm';
+import { dataSourceMock } from '@src/test/__mocks__/typeorm/mock.data-source';
+import { DataSource, QueryFailedError } from 'typeorm';
 import { DiaryRepository } from '../diary.repository';
 import { GetDiariesDto } from '../dto';
 
@@ -12,7 +13,13 @@ describe('DiaryRepository', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [DiaryRepository],
+      providers: [
+        DiaryRepository,
+        {
+          provide: DataSource,
+          useValue: dataSourceMock,
+        },
+      ],
     }).compile();
 
     diaryRepository = module.get<DiaryRepository>(DiaryRepository);

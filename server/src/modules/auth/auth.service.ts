@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { google } from 'googleapis';
 import { SocialAccount, User } from '@src/entities';
@@ -93,13 +89,8 @@ export class AuthService {
   }
 
   async createSocialAccount(socialAccountDto: SocialAccountDto) {
-    const {
-      socialId,
-      email,
-      displayName,
-      photoUrl,
-      provider,
-    } = socialAccountDto;
+    const { socialId, email, displayName, photoUrl, provider } =
+      socialAccountDto;
     const queryRunner = this.connection.createQueryRunner();
     await queryRunner.connect();
 
