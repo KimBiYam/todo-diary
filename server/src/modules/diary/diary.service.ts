@@ -8,6 +8,7 @@ import { CommonUtil } from '@src/util/common.util';
 import { DateUtil } from '@src/util/date.util';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
+import { DiaryDatesDto } from './dto/diary-dates.dto';
 
 @Injectable()
 export class DiaryService {
@@ -113,14 +114,14 @@ export class DiaryService {
   async getDatesTheDiaryExists(
     user: User,
     diariesExistsDatesDto: DiariesExistsDatesDto,
-  ) {
+  ): Promise<DiaryDatesDto> {
     const { year, month } = diariesExistsDatesDto;
 
     const diaries = await this.findDiariesByMonth(user, year, month);
 
     const dates = new Set(diaries.map((diary) => diary.createdAt.getDate()));
 
-    return [...dates];
+    return new DiaryDatesDto([...dates]);
   }
 
   groupDiariesByMonth = (diaries: Diary[]) => {

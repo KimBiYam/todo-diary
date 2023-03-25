@@ -18,15 +18,14 @@ export default class LoggingInterceptor implements NestInterceptor {
     const request = ctx.switchToHttp().getRequest();
     const response = ctx.switchToHttp().getResponse();
 
-    const { ip, method, path: url } = request;
-    const userAgent = request.get('user-agent') || '';
+    if (!response.on) return next.handle();
 
     response.on('close', () => {
       const { statusCode } = response;
       const contentLength = response.get('content-length');
 
       this.logger.log(
-        `${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
+        `${request?.method} ${request?.url} ${statusCode} ${contentLength} - ${request?.userAgent} ${request?.ip}`,
       );
     });
 
