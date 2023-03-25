@@ -1,7 +1,17 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType()
 export class DiariesYearStatisticsResponseDto {
-  diariesStatisticsByYear: {
-    totalCount: number;
-    finishedDiariesCount: number;
-    month: number;
-  }[];
+  @Field(() => [DiariesStatisticsByYear])
+  diariesStatisticsByYear: DiariesStatisticsByYear[];
+}
+
+@ObjectType()
+class DiariesStatisticsByYear {
+  @Field()
+  totalCount: number;
+  @Field()
+  finishedDiariesCount: number;
+  @Field()
+  month: number;
 }

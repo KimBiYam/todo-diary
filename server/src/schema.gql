@@ -1,0 +1,73 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DiaryMeta {
+  id: ID!
+  content: String!
+  diary: Diary!
+}
+
+type Diary {
+  id: ID!
+  title: String!
+  createdAt: DateTime!
+  isFinished: Boolean!
+  diaryMeta: DiaryMeta!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: ID!
+  username: String
+  email: String
+  displayName: String!
+  photoUrl: String
+  createdAt: DateTime!
+  isCertified: Boolean!
+  diaries: [Diary!]!
+}
+
+type DiaryDatesDto {
+  dates: [Int!]!
+}
+
+type DiariesYearStatisticsResponseDto {
+  diariesStatisticsByYear: [DiariesStatisticsByYear!]!
+}
+
+type DiariesStatisticsByYear {
+  totalCount: Float!
+  finishedDiariesCount: Float!
+  month: Float!
+}
+
+type Query {
+  findUserProfile: User!
+  findMyDiaries(page: Float!, limit: Float!, createdDate: String): [Diary!]!
+  getDiariesStatisticsByYear(year: Float!): DiariesYearStatisticsResponseDto!
+  getDatesTheDiaryExists(year: Float!, month: Float!): DiaryDatesDto!
+  findMyDiary(id: Int!): Diary!
+}
+
+type Mutation {
+  createDiary(createDiaryDto: CreateDiaryDto!): Diary!
+  updateMyDiary(updateDiaryDto: UpdateDiaryDto!, id: Int!): Diary!
+  deleteMyDiary(id: Int!): Boolean!
+}
+
+input CreateDiaryDto {
+  title: String!
+  content: String!
+}
+
+input UpdateDiaryDto {
+  title: String
+  content: String
+  isFinished: Boolean
+}

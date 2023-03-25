@@ -74,10 +74,8 @@ export class DiaryController {
   ) {
     const user = await this.userService.findUserById(requestUserDto.id);
 
-    const diariesStatisticsByYear = await this.diaryService.getDiariesStatisticsByYear(
-      user,
-      year,
-    );
+    const diariesStatisticsByYear =
+      await this.diaryService.getDiariesStatisticsByYear(user, year);
 
     return diariesStatisticsByYear;
   }
