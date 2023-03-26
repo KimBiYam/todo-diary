@@ -10,11 +10,11 @@ import {
   CreateDiaryDto,
   DiariesExistsDatesDto,
   DiariesYearStatisticsRequestDto,
-  GetDiariesDto,
   UpdateDiaryDto,
 } from './dto';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 import { DiaryDatesDto } from './dto/diary-dates.dto';
+import { GetDiariesArgs } from './dto/get-diaries.args';
 
 @Resolver(() => Diary)
 @UseGuards(ResolverJwtAuthGuard)
@@ -27,11 +27,13 @@ export class DiaryResolver {
   @Query(() => [Diary])
   async findMyDiaries(
     @RequestUserForResolver() requestUserDto: RequestUserDto,
-    @Args() getDiariesDto: GetDiariesDto,
+    @Args() getDiariesArgs: GetDiariesArgs,
   ): Promise<Diary[]> {
     const user = await this.userService.findUserById(requestUserDto.id);
-    const diaries = await this.diaryService.findMyDiaries(user, getDiariesDto);
-    return diaries;
+    return await this.diaryService.findMyDiariesWithOffset(
+      user,
+      getDiariesArgs,
+    );
   }
 
   @Query(() => DiariesYearStatisticsResponseDto)
@@ -40,7 +42,6 @@ export class DiaryResolver {
     @Args() { year }: DiariesYearStatisticsRequestDto,
   ): Promise<DiariesYearStatisticsResponseDto> {
     const user = await this.userService.findUserById(requestUserDto.id);
-
     return await this.diaryService.getDiariesStatisticsByYear(user, year);
   }
 

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ArgsType, Field } from '@nestjs/graphql';
 import {
   IsDateString,
   IsNumber,
@@ -6,18 +6,19 @@ import {
   ValidateIf,
 } from 'class-validator';
 
-export class GetDiariesDto {
-  @ApiProperty({ required: true, example: 1 })
+@ArgsType()
+export class GetDiariesArgs {
   @IsNumber()
-  page: number;
+  @Field()
+  offset: number;
 
-  @ApiProperty({ required: true, example: 10 })
   @IsNumber()
+  @Field()
   limit: number;
 
-  @ApiProperty({ required: false, nullable: true })
   @ValidateIf((object) => !!object.createdDate)
   @IsDateString()
   @IsOptional()
+  @Field(() => String, { nullable: true })
   createdDate?: string;
 }
