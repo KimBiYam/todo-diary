@@ -1,12 +1,12 @@
 import {
   ApolloClient,
   ApolloLink,
-  concat,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client';
 import tokenStorage from '../storage/tokenStorage';
 import { BACKEND_SERVER_URL } from '../constants';
+import { offsetLimitPagination } from '@apollo/client/utilities';
 
 const httpLink = new HttpLink({
   uri: `${BACKEND_SERVER_URL}/graphql`,
@@ -26,5 +26,13 @@ const authLink = new ApolloLink((operation, forward) => {
 
 export const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          Diary: offsetLimitPagination(),
+        },
+      },
+    },
+  }),
 });
