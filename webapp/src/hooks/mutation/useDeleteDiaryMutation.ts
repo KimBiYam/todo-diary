@@ -1,8 +1,16 @@
-import { useMutation, UseMutationOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
+import { gql, MutationFunctionOptions, useMutation } from '@apollo/client';
+import { MutationDeleteMyDiaryArgs } from '@generated/graphql';
 
-const useDeleteDiaryMutation = (
-  options?: UseMutationOptions<unknown, string, string>,
-) => useMutation((id: string) => diaryApi.deleteDiary(id), options);
-
-export default useDeleteDiaryMutation;
+export default function useDeleteDiaryMutation(
+  variables: MutationDeleteMyDiaryArgs,
+  options: MutationFunctionOptions = {},
+) {
+  return useMutation<{ deleteMyDiary: boolean }>(
+    gql`
+      mutation DeleteMyDiary($id: Int!) {
+        deleteMyDiary(id: $id)
+      }
+    `,
+    { variables, ...options },
+  );
+}

@@ -1,21 +1,20 @@
-import { useQuery, UseQueryOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
-import { DatesTheDiaryExistsQueryParams } from '../../types/diary.types';
+import { gql, useQuery } from '@apollo/client';
+import {
+  DiaryDatesDto,
+  QueryGetDatesTheDiaryExistsArgs,
+} from '@generated/graphql';
 
-const useDatesTheDiaryExistsQuery = (
-  { year, month }: DatesTheDiaryExistsQueryParams,
-  options?: UseQueryOptions<number[], string>,
-) =>
-  useQuery(
-    createKey(year, month),
-    () => diaryApi.getDatesTheDiaryExists(year, month),
-    options,
+export default function useDatesTheDiaryExistsQuery(
+  variables: QueryGetDatesTheDiaryExistsArgs,
+) {
+  return useQuery<DiaryDatesDto>(
+    gql`
+      query Query($year: Float!, $month: Float!) {
+        getDatesTheDiaryExists(year: $year, month: $month) {
+          dates
+        }
+      }
+    `,
+    { variables },
   );
-
-const defaultKey = 'datesTheDiaryExists';
-const createKey = (year: number, month: number) => [defaultKey, year, month];
-
-useDatesTheDiaryExistsQuery.defaultKey = defaultKey;
-useDatesTheDiaryExistsQuery.createKey = createKey;
-
-export default useDatesTheDiaryExistsQuery;
+}

@@ -1,15 +1,25 @@
-import { useQuery, UseQueryOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
-import HttpError from '../../api/models/httpError';
-import { Diary } from '../../types/diary.types';
+import { gql, QueryFunctionOptions, useQuery } from '@apollo/client';
+import { Diary, QueryFindMyDiaryArgs } from '@generated/graphql';
 
-const useDiaryQuery = (
-  id: string,
-  options?: UseQueryOptions<Diary, HttpError>,
-) => useQuery(createKey(id), () => diaryApi.getDiaryById(id), options);
-
-const createKey = (id: string) => ['diary', id];
-
-useDiaryQuery.createKey = createKey;
-
-export default useDiaryQuery;
+export default function useDiaryQuery(
+  variables: QueryFindMyDiaryArgs,
+  options: QueryFunctionOptions<{ findMyDiary: Diary }> = {},
+) {
+  return useQuery<{ findMyDiary: Diary }>(
+    gql`
+      query FindMyDiary($id: Int!) {
+        findMyDiary(id: $id) {
+          createdAt
+          id
+          isFinished
+          title
+          diaryMeta {
+            id
+            content
+          }
+        }
+      }
+    `,
+    { variables, ...options },
+  );
+}

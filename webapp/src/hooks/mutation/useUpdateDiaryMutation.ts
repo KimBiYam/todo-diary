@@ -1,13 +1,21 @@
-import { useMutation, UseMutationOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
-import { UpdateDiaryParams } from '../../types/diary.types';
+import { gql, MutationFunctionOptions, useMutation } from '@apollo/client';
+import { MutationUpdateMyDiaryArgs } from '@generated/graphql';
 
-const useUpdateDiaryMutation = (
-  options?: UseMutationOptions<unknown, string, UpdateDiaryParams>,
-) =>
-  useMutation(
-    (params: UpdateDiaryParams) => diaryApi.updateDiary(params),
-    options,
+export default function useUpdateDiaryMutation(
+  variables: MutationUpdateMyDiaryArgs,
+  options: MutationFunctionOptions = {},
+) {
+  return useMutation(
+    gql`
+      mutation UpdateMyDiary($updateDiaryDto: UpdateDiaryDto!, $id: Int!) {
+        updateMyDiary(updateDiaryDto: $updateDiaryDto, id: $id) {
+          title
+          diaryMeta {
+            content
+          }
+        }
+      }
+    `,
+    { variables, ...options },
   );
-
-export default useUpdateDiaryMutation;
+}

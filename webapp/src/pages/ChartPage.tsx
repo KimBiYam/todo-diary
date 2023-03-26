@@ -8,8 +8,6 @@ import { COLORS } from '../styles';
 import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useWindowSize from '../hooks/useWindowDimensions';
 
-export type ChartPageProps = {};
-
 const ChartPage = () => {
   const minYear = useMemo(() => 2010, []);
   const currentYear = useMemo(() => new Date().getFullYear(), []);
@@ -25,11 +23,7 @@ const ChartPage = () => {
     [setYear],
   );
 
-  const {
-    data: diariesStatistics,
-    isLoading,
-    isError,
-  } = useDiariesStatisticsQuery(year);
+  const { data, loading, error } = useDiariesStatisticsQuery({ year });
 
   return (
     <>
@@ -49,13 +43,11 @@ const ChartPage = () => {
           </div>
         </div>
         <div css={chartSection}>
-          {isLoading && <LoadingSpinner />}
-          {isError && !diariesStatistics && (
-            <p css={errorText}>서버 에러에요</p>
-          )}
-          {diariesStatistics && (
+          {loading && <LoadingSpinner />}
+          {error && !data && <p css={errorText}>서버 에러에요</p>}
+          {data && (
             <DiaryChart
-              diariesStatistics={diariesStatistics}
+              diariesStatistics={data}
               width={width * 0.8}
               height={height * 0.5}
             />

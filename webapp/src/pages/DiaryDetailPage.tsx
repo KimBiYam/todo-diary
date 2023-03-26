@@ -1,20 +1,18 @@
+import { ApolloError, gql, useMutation } from '@apollo/client';
 import { css } from '@emotion/react';
+import { Diary, MutationUpdateMyDiaryArgs } from '@generated/graphql';
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
-import HttpError from '../api/models/httpError';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
 import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
-import useDatesTheDiaryExistsQuery from '../hooks/query/useDatesTheDiaryExistsQuery';
 import useDiariesQuery from '../hooks/query/useDiariesQuery';
-import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
-import { Diary } from '../types/diary.types';
 import dateUtil from '../utils/dateUtil';
 import LoadingPage from './LoadingPage';
 
@@ -37,55 +35,52 @@ const DiaryDetailPage = () => {
     }
   }, []);
 
-  const handleDiaryQuerySuccess = (diary: Diary) => {
-    const { title, content } = diary;
-
-    setTitle(title);
-    setContent(content);
+  const handleDiaryQuerySuccess = (data: { findMyDiary: Diary }) => {
+    setTitle(data.findMyDiary.title);
+    setContent(data.findMyDiary.diaryMeta.content);
   };
 
-  const handleDiaryQueryError = (e: HttpError) => {
+  const handleDiaryQueryError = (e: ApolloError) => {
     openDialog(e.message);
     history.push('/');
   };
 
-  const {
-    data: diary,
-    isFetching,
-    refetch,
-  } = useDiaryQuery(id ?? '', {
-    enabled: id !== undefined,
-    onSuccess: handleDiaryQuerySuccess,
-    onError: handleDiaryQueryError,
-  });
+  const { data, loading, refetch } = useDiaryQuery(
+    { id: Number(id) },
+    {
+      skip: Number.isNaN(Number(id)),
+      onCompleted: handleDiaryQuerySuccess,
+      onError: handleDiaryQueryError,
+    },
+  );
 
   const finishedText = useMemo(
-    () => (diary?.isFinished ? '완료' : '미완료'),
-    [diary],
+    () => (data?.findMyDiary.isFinished ? '완료' : '미완료'),
+    [data?.findMyDiary.isFinished],
   );
 
   const infoTexts = useMemo(
     () =>
-      diary && [
-        `작성일 : ${dateUtil.getFormattedDate(diary?.createdAt)}`,
+      data?.findMyDiary && [
+        `작성일 : ${dateUtil.getFormattedDate(data.findMyDiary?.createdAt)}`,
         `완료 여부 : ${finishedText}`,
       ],
-    [diary],
+    [data?.findMyDiary],
   );
 
-  const handleMutateError = (e: string) => {
-    openDialog(e);
+  const handleMutateError = (e: ApolloError) => {
+    openDialog(e.message);
   };
 
   const invalidateDiaryQueries = () => {
-    if (diary) {
-      const createdYear = new Date(diary?.createdAt).getFullYear();
+    if (data?.findMyDiary) {
+      const createdYear = new Date(data.findMyDiary.createdAt).getFullYear();
 
       queryClient.invalidateQueries(useDiariesQuery.defaultKey);
-      queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
-      queryClient.invalidateQueries(
-        useDiariesStatisticsQuery.createKey(createdYear),
-      );
+      // queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
+      // queryClient.invalidateQueries(
+      //   useDiariesStatisticsQuery.createKey(createdYear),
+      // );
     }
   };
 
@@ -99,28 +94,59 @@ const DiaryDetailPage = () => {
     history.push('/');
   };
 
-  const { mutate: updateDiaryMutate, isLoading: isUpdateDiaryLoading } =
-    useUpdateDiaryMutation({
-      onSuccess: handleUpdateDiaryMutateSuccess,
-      onError: handleMutateError,
-    });
+  const [updateDiary, { loading: isUpdateDiaryLoading }] = useMutation<
+    Diary,
+    MutationUpdateMyDiaryArgs
+  >(
+    gql`
+      mutation UpdateMyDiary($updateDiaryDto: UpdateDiaryDto!, $id: Int!) {
+        updateMyDiary(updateDiaryDto: $updateDiaryDto, id: $id) {
+          title
+          diaryMeta {
+            content
+          }
+        }
+      }
+    `,
+    {
+      variables: {
+        id: Number(data?.findMyDiary.id),
+        updateDiaryDto: { content, title },
+      },
+    },
+  );
 
-  const { mutate: deleteDiaryMutate, isLoading: isDeleteDiaryLoading } =
-    useDeleteDiaryMutation({
-      onSuccess: handleDeleteDiaryMutateSuccess,
-      onError: handleMutateError,
-    });
+  const [changeDiaryFinished, { loading: isChangeDiaryFinishedLoading }] =
+    useMutation<Diary, MutationUpdateMyDiaryArgs>(
+      gql`
+        mutation UpdateMyDiary($updateDiaryDto: UpdateDiaryDto!, $id: Int!) {
+          updateMyDiary(updateDiaryDto: $updateDiaryDto, id: $id) {
+            isFinished
+          }
+        }
+      `,
+      {
+        variables: {
+          id: Number(data?.findMyDiary.id),
+          updateDiaryDto: { isFinished: !data?.findMyDiary.isFinished },
+        },
+      },
+    );
+
+  const [deleteDiary, { loading: isDeleteDiaryLoading }] =
+    useDeleteDiaryMutation(
+      {
+        id: Number(data?.findMyDiary.id),
+      },
+      {
+        onCompleted: handleDeleteDiaryMutateSuccess,
+        onError: handleMutateError,
+      },
+    );
 
   const handleFinishedButtonClick = () => {
-    if (diary) {
-      updateDiaryMutate({ id: diary.id, isFinished: !diary.isFinished });
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm() && diary) {
-      updateDiaryMutate({ id: diary.id, title, content });
+    if (data?.findMyDiary) {
+      changeDiaryFinished();
     }
   };
 
@@ -133,17 +159,24 @@ const DiaryDetailPage = () => {
     return true;
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (validateForm() && data?.findMyDiary) {
+      updateDiary();
+    }
+  };
+
   const handleDeleteClick = () => {
-    if (diary) {
-      deleteDiaryMutate(diary.id);
+    if (data?.findMyDiary) {
+      deleteDiary();
     }
   };
 
   const renderButtons = () =>
-    diary && (
+    data?.findMyDiary && (
       <>
         <MainButton
-          label={diary.isFinished ? '미완료' : '완료'}
+          label={data.findMyDiary.isFinished ? '미완료' : '완료'}
           color="primary"
           onClick={handleFinishedButtonClick}
         />
@@ -152,7 +185,12 @@ const DiaryDetailPage = () => {
       </>
     );
 
-  if (isFetching || isUpdateDiaryLoading || isDeleteDiaryLoading) {
+  if (
+    loading ||
+    isUpdateDiaryLoading ||
+    isDeleteDiaryLoading ||
+    isChangeDiaryFinishedLoading
+  ) {
     return <LoadingPage />;
   }
 
@@ -161,10 +199,10 @@ const DiaryDetailPage = () => {
       <Helmet>
         <title>Todo Diary | Diary Detail</title>
       </Helmet>
-      {diary && (
+      {data?.findMyDiary && (
         <form css={box} onSubmit={handleSubmit}>
           <DiaryCard
-            diary={diary}
+            diary={data.findMyDiary}
             infoTexts={infoTexts}
             onTitleChange={handleTitleChange}
             onContentChange={handleContentChange}

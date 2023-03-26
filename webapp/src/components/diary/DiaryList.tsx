@@ -1,11 +1,11 @@
 import { css } from '@emotion/react';
-import { useCallback, useMemo, useRef } from 'react';
+import { Diary } from '@generated/graphql';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import useScrollObserver from '../../hooks/useScrollObserver';
 import LoadingPage from '../../pages/LoadingPage';
 import { BREAK_POINTS } from '../../styles/breakPoints';
-import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
 import DiaryEmptyError from './DiaryEmptyError';
 import DiaryItem from './DiaryItem';
@@ -20,29 +20,31 @@ const PAGE_LIMIT = 10;
 const DiaryList = ({ selectedDate }: DiaryListProps) => {
   const history = useHistory();
   const scrollableTriggerRef = useRef<HTMLDivElement>(null);
+  const [page, setPage] = useState(false);
 
   const {
     data: diaries,
-    hasNextPage,
-    fetchNextPage,
-    isFetching,
-    isLoading,
-    isFetchingNextPage,
-  } = useDiariesQuery({
-    limit: PAGE_LIMIT,
-    createdDate:
-      selectedDate && dateUtil.getFormattedDate(selectedDate.toDateString()),
-  });
+    loading,
+    fetchMore,
+  } = useDiariesQuery(
+    {
+      page: 0,
+      limit: PAGE_LIMIT,
+      createdDate:
+        selectedDate && dateUtil.getFormattedDate(selectedDate.toDateString()),
+    },
+    {},
+  );
 
   const isShowSkeleton = useMemo(
-    () => isFetchingNextPage || isLoading,
-    [isFetchingNextPage, isLoading],
+    () => isFetchingNextPage || loading,
+    [isFetchingNextPage, loading],
   );
 
   useScrollObserver({
     targetRef: scrollableTriggerRef,
-    enabled: hasNextPage,
-    onIntersect: fetchNextPage,
+    enabled: true,
+    onIntersect: () => fetchMore({}),
   });
 
   const handleDiaryItemClick = useCallback(

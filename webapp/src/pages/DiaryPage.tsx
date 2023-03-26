@@ -4,13 +4,13 @@ import { Helmet } from 'react-helmet-async';
 import DatePicker from '../components/common/DatePicker';
 import DiaryList from '../components/diary/DiaryList';
 import { COLORS } from '../styles';
-import useDatesTheDiaryExistsQuery from '../hooks/query/useDatesTheDiaryExistsQuery';
-import { DatesTheDiaryExistsQueryParams } from '../types/diary.types';
+import { QueryGetDatesTheDiaryExistsArgs } from '@generated/graphql';
+import useDatesTheDiaryExistsQuery from '@src/hooks/query/useDatesTheDiaryExistsQuery';
 
 const DiaryPage = () => {
   const currentDate = useMemo(() => new Date(), []);
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [yearMonth, setYearMonth] = useState<DatesTheDiaryExistsQueryParams>({
+  const [yearMonth, setYearMonth] = useState<QueryGetDatesTheDiaryExistsArgs>({
     year: currentDate.getFullYear(),
     month: currentDate.getMonth() + 1,
   });
@@ -49,7 +49,7 @@ const DiaryPage = () => {
             selectedDate={selectedDate}
             onDateChange={handleDateChange}
             onMonthChange={handleMonthChange}
-            existsDates={existsDates}
+            existsDates={existsDates?.dates}
           />
           {selectedDate && (
             <button css={dateResetButton} onClick={handleDateResetClick}>

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
+import { Diary } from '@generated/graphql';
 import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
-import { Diary } from '../../types/diary.types';
 
 export type DiaryCardProps = {
   diary?: Diary;
@@ -40,7 +40,7 @@ const DiaryCard = ({
         onChange={onContentChange}
         css={contentWrapper}
         placeholder="내용을 입력하세요"
-        defaultValue={diary?.content}
+        defaultValue={diary?.diaryMeta.content}
         maxLength={5000}
       />
       {renderButtons && <div css={buttonWrapper}>{renderButtons()}</div>}

@@ -1,5 +1,3 @@
-console.log(import.meta.env);
-
 export const BACKEND_SERVER_URL = import.meta.env.DEV
   ? 'http://localhost:5000'
   : 'https://todo-diary-backend.herokuapp.com';

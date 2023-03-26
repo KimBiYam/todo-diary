@@ -5,8 +5,6 @@ import { COLORS } from '../../styles';
 import { fadeIn, fadeOut } from '../../styles/transitions';
 import { Z_INDEXES } from '../../styles';
 
-export type AppDialogProps = {};
-
 const AppDialog = memo(() => {
   const [visible, setVisible] = useState(false);
   const {
@@ -15,7 +13,7 @@ const AppDialog = memo(() => {
 
   useEffect(() => {
     const transitionDuration = 1 * 1000;
-    let timeoutId: number;
+    let timeoutId: NodeJS.Timeout;
 
     if (isOpen) {
       setVisible(true);
