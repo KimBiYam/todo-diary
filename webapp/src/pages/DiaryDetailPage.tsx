@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import { Diary, MutationUpdateMyDiaryArgs } from '@generated/graphql';
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useQueryClient } from 'react-query';
 import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
@@ -25,7 +24,6 @@ const DiaryDetailPage = () => {
   const { id } = useParams<DiaryDetailParams>();
   const { openDialog } = useDialogAction();
   const history = useHistory();
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (id === undefined) {
@@ -70,25 +68,12 @@ const DiaryDetailPage = () => {
     openDialog(e.message);
   };
 
-  const invalidateDiaryQueries = () => {
-    if (data?.findMyDiary) {
-      const createdYear = new Date(data.findMyDiary.createdAt).getFullYear();
-
-      // queryClient.invalidateQueries(useDiariesQuery.defaultKey);
-      // queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
-      // queryClient.invalidateQueries(
-      //   useDiariesStatisticsQuery.createKey(createdYear),
-      // );
-    }
-  };
-
   const handleUpdateDiaryMutateSuccess = () => {
     refetch();
-    invalidateDiaryQueries();
+    // invalidateDiaryQueries();
   };
 
   const handleDeleteDiaryMutateSuccess = () => {
-    invalidateDiaryQueries();
     history.push('/');
   };
 

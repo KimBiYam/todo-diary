@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { DiariesStatisticsByYear } from '@generated/graphql';
 import {
   CartesianGrid,
   Legend,
@@ -9,10 +10,9 @@ import {
   YAxis,
 } from 'recharts';
 import { COLORS } from '../../styles';
-import { DiariesStatistics } from '../../types/diary.types';
 
 export type DiaryChartProps = {
-  diariesStatistics: DiariesStatistics[];
+  diariesStatistics: DiariesStatisticsByYear[];
   width: number;
   height: number;
 };
