@@ -8,8 +8,6 @@ import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
-import useUpdateDiaryMutation from '../hooks/mutation/useUpdateDiaryMutation';
-import useDiariesQuery from '../hooks/query/useDiariesQuery';
 import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
@@ -76,7 +74,7 @@ const DiaryDetailPage = () => {
     if (data?.findMyDiary) {
       const createdYear = new Date(data.findMyDiary.createdAt).getFullYear();
 
-      queryClient.invalidateQueries(useDiariesQuery.defaultKey);
+      // queryClient.invalidateQueries(useDiariesQuery.defaultKey);
       // queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
       // queryClient.invalidateQueries(
       //   useDiariesStatisticsQuery.createKey(createdYear),
@@ -119,7 +117,10 @@ const DiaryDetailPage = () => {
   const [changeDiaryFinished, { loading: isChangeDiaryFinishedLoading }] =
     useMutation<Diary, MutationUpdateMyDiaryArgs>(
       gql`
-        mutation UpdateMyDiary($updateDiaryDto: UpdateDiaryDto!, $id: Int!) {
+        mutation ChangeDiaryFinished(
+          $updateDiaryDto: UpdateDiaryDto!
+          $id: Int!
+        ) {
           updateMyDiary(updateDiaryDto: $updateDiaryDto, id: $id) {
             isFinished
           }
