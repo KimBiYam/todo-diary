@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import {
   openDialogWithDelay,
   closeDialog as closeDialogAction,
 } from '../reducers/dialog';
+import useAppDispatch from './useAppDispatch';
 
 const useDialogAction = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const openDialog = useCallback(
     (text: string, openTime: number = 2 * 1000) => {

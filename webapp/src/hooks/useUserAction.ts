@@ -1,12 +1,10 @@
 import { useCallback } from 'react';
-import { useQueryClient } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { login, logout } from '../reducers/user';
 import tokenStorage from '../storage/tokenStorage';
 import { User } from '../types/auth.types';
 
 const useUserAction = () => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   const userLogIn = (user: User) => {
@@ -16,8 +14,7 @@ const useUserAction = () => {
   const userLogOut = useCallback(() => {
     tokenStorage.clearToken();
     dispatch(logout());
-    queryClient.clear();
-  }, [tokenStorage, dispatch, queryClient]);
+  }, [tokenStorage, dispatch]);
 
   return { userLogIn, userLogOut };
 };
