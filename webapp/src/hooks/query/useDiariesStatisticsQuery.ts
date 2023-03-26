@@ -1,19 +1,24 @@
-import { useQuery, UseQueryOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
-import { DiariesStatistics } from '../../types/diary.types';
+import { gql, useQuery } from '@apollo/client';
+import {
+  DiariesStatisticsByYear,
+  QueryGetDiariesStatisticsByYearArgs,
+} from '@generated/graphql';
 
-const useDiariesStatisticsQuery = (
-  year: number,
-  options?: UseQueryOptions<DiariesStatistics[], string>,
-) =>
-  useQuery(
-    createKey(year),
-    () => diaryApi.getDiariesStatisticsByYear(year),
-    options,
+export default function useDiariesStatisticsQuery(
+  variables: QueryGetDiariesStatisticsByYearArgs,
+) {
+  return useQuery<DiariesStatisticsByYear[]>(
+    gql`
+      query DiariesStatisticsByYear($year: Float!) {
+        getDiariesStatisticsByYear(year: $year) {
+          diariesStatisticsByYear {
+            finishedDiariesCount
+            month
+            totalCount
+          }
+        }
+      }
+    `,
+    { variables },
   );
-
-const createKey = (year: number) => ['diariesStatistics', year];
-
-useDiariesStatisticsQuery.createKey = createKey;
-
-export default useDiariesStatisticsQuery;
+}

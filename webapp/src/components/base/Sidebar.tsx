@@ -8,21 +8,21 @@ import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import Icon from '../common/Icon';
 import SidebarCategory from './SidebarCategory';
-import SidebarItem from './SidebarItem';
+import SidebarItem, { SidebarItemProps } from './SidebarItem';
 import UserProfile from './UserProfile';
-
-export type SidebarProps = {};
 
 const Sidebar = () => {
   const { user } = useUserSelector();
   const { userLogOut } = useUserAction();
 
-  const isActiveRootItem = useCallback((match, location) => {
+  const isActiveRootItem = useCallback<
+    Exclude<SidebarItemProps['isActive'], undefined>
+  >((match, location) => {
     if (location.pathname === '/') {
       return true;
     }
 
-    return match;
+    return !!match;
   }, []);
 
   return (

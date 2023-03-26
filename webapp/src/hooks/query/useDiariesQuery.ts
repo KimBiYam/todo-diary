@@ -1,49 +1,53 @@
-import { gql, useQuery } from '@apollo/client';
-import { Diary } from '@generated/graphql';
-import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
-import diaryApi from '../../api/diaryApi';
+import { Diary, QueryFindMyDiariesArgs } from '@generated/graphql';
+import { gql, QueryFunctionOptions, useQuery } from '@apollo/client';
 
-type DiariesQueryParams = {
-  limit: number;
-  createdDate?: string;
-};
-
-const useTestA = ({ limit, createdDate }: DiariesQueryParams) => {
-  useQuery<Diary[]>(gql`
-query FindMyDiaries(limit: ${limit},createdDate:${createdDate}  ){
-    createdAt
-  isFinished
-      id
-      title
-      diaryMeta{
-        content
-        id
+export default function useDiariesQuery(
+  variables: QueryFindMyDiariesArgs,
+  options: QueryFunctionOptions<{ findMyDiaries: Diary[] }> = {},
+) {
+  return useQuery<{ findMyDiaries: Diary[] }>(
+    gql`
+      query Query($page: Float!, $limit: Float!, $createdDate: String) {
+        findMyDiaries(page: $page, limit: $limit, createdDate: $createdDate) {
+          title
+          isFinished
+          id
+          createdAt
+          diaryMeta {
+            id
+            content
+          }
+        }
       }
-    }
-  )
-  
-    `);
-};
-
-const useDiariesQuery = (
-  { limit, createdDate }: DiariesQueryParams,
-  options: UseInfiniteQueryOptions<Diary[], string> = {},
-) =>
-  useInfiniteQuery(
-    createKey(createdDate),
-    ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit, createdDate),
-    {
-      getNextPageParam: (lastPage, allPages) => {
-        return lastPage.length === limit ? allPages.length + 1 : undefined;
-      },
-      ...options,
-    },
+    `,
+    { variables, ...options },
   );
+}
 
-const defaultKey = 'diaries';
-const createKey = (createdDate?: string) => [defaultKey, createdDate];
+// type DiariesQueryParams = {
+//   limit: number;
+//   createdDate?: string;
+// };
 
-useDiariesQuery.defaultKey = defaultKey;
-useDiariesQuery.createKey = createKey;
+// const useDiariesQuery = (
+//   { limit, createdDate }: DiariesQueryParams,
+//   options: UseInfiniteQueryOptions<Diary[], string> = {},
+// ) =>
+//   useInfiniteQuery(
+//     createKey(createdDate),
+//     ({ pageParam = 1 }) => diaryApi.getDiaries(pageParam, limit, createdDate),
+//     {
+//       getNextPageParam: (lastPage, allPages) => {
+//         return lastPage.length === limit ? allPages.length + 1 : undefined;
+//       },
+//       ...options,
+//     },
+//   );
 
-export default useDiariesQuery;
+// const defaultKey = 'diaries';
+// const createKey = (createdDate?: string) => [defaultKey, createdDate];
+
+// useDiariesQuery.defaultKey = defaultKey;
+// useDiariesQuery.createKey = createKey;
+
+// export default useDiariesQuery;

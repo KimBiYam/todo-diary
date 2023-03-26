@@ -1,18 +1,13 @@
+import { ApolloError } from '@apollo/client';
 import { css } from '@emotion/react';
 import { memo, useCallback } from 'react';
-import { useQueryClient } from 'react-query';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
-import useDatesTheDiaryExistsQuery from '../../hooks/query/useDatesTheDiaryExistsQuery';
-import useDiariesQuery from '../../hooks/query/useDiariesQuery';
-import useDiariesStatisticsQuery from '../../hooks/query/useDiariesStatisticsQuery';
 import useDialogAction from '../../hooks/useDialogAction';
 import useInput from '../../hooks/useInput';
 import LoadingPage from '../../pages/LoadingPage';
 import MainButton from '../common/MainButton';
 import DiaryCard from './DiaryCard';
-
-export type WriteFormProps = {};
 
 const WriteForm = memo(() => {
   const [title, , handleTitleChange] = useInput();
@@ -20,33 +15,27 @@ const WriteForm = memo(() => {
 
   const { openDialog } = useDialogAction();
   const history = useHistory();
-  const queryClient = useQueryClient();
 
   const handleWriteDiarySuccess = () => {
-    const currentYear = new Date().getFullYear();
-
-    queryClient.invalidateQueries(useDiariesQuery.defaultKey);
-    queryClient.invalidateQueries(useDatesTheDiaryExistsQuery.defaultKey);
-    queryClient.invalidateQueries(
-      useDiariesStatisticsQuery.createKey(currentYear),
-    );
-
     history.push('/');
   };
 
-  const handleWriteDiaryError = (errorMessage: string) => {
-    openDialog(errorMessage);
+  const handleWriteDiaryError = (e: ApolloError) => {
+    openDialog(e.message);
   };
 
-  const { mutate, isLoading } = useWriteDiaryMutation({
-    onSuccess: handleWriteDiarySuccess,
-    onError: handleWriteDiaryError,
-  });
+  const [mutate, { loading }] = useWriteDiaryMutation(
+    { createDiaryDto: { content, title } },
+    {
+      onCompleted: handleWriteDiarySuccess,
+      onError: handleWriteDiaryError,
+    },
+  );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      mutate({ title, content });
+      mutate();
     }
   };
 
@@ -64,7 +53,7 @@ const WriteForm = memo(() => {
     [],
   );
 
-  if (isLoading) {
+  if (loading) {
     return <LoadingPage />;
   }
 

@@ -7,21 +7,21 @@ import { BREAK_POINTS } from '../../styles/breakPoints';
 import { SIZES } from '../../styles/sizes';
 import { Z_INDEXES } from '../../styles/zIndexes';
 import Icon from '../common/Icon';
-import HeaderItem from './HeaderItem';
+import HeaderItem, { HeaderItemProps } from './HeaderItem';
 import UserProfile from './UserProfile';
-
-export type MobileHeaderProps = {};
 
 const MobileHeader = () => {
   const { user } = useUserSelector();
   const { userLogOut } = useUserAction();
 
-  const isActiveRootItem = useCallback((match, location) => {
+  const isActiveRootItem = useCallback<
+    Exclude<HeaderItemProps['isActive'], undefined>
+  >((match, location) => {
     if (location.pathname === '/') {
       return true;
     }
 
-    return match;
+    return !!match;
   }, []);
 
   return (

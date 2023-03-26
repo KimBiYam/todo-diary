@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
+import { Diary } from '@generated/graphql';
 import { memo, useMemo } from 'react';
 import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
-import { Diary } from '../../types/diary.types';
 import dateUtil from '../../utils/dateUtil';
 
 const TITLE_MAXIMUM_LENGTH = 20;
@@ -14,7 +14,7 @@ export type DiaryItemProps = {
 };
 
 const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
-  const { title, content, createdAt, isFinished } = diary;
+  const { title, createdAt, isFinished } = diary;
 
   const finishedText = useMemo(
     () => (isFinished ? '완료' : '미완료'),
@@ -27,8 +27,8 @@ const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {
   );
 
   const slicedContent = useMemo(
-    () => content.slice(0, CONTENT_MAXIMUM_LENGTH),
-    [content],
+    () => diary.diaryMeta.content.slice(0, CONTENT_MAXIMUM_LENGTH),
+    [diary.diaryMeta.content],
   );
 
   return (
