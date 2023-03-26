@@ -9,6 +9,7 @@ import { DateUtil } from '@src/util/date.util';
 import { DiariesYearStatisticsResponseDto } from './dto/diaries-year-statistics-response.dto';
 import { DiariesStatisticsDto } from './dto/diaries-statistics.dto';
 import { DiaryDatesDto } from './dto/diary-dates.dto';
+import { GetDiariesArgs } from './dto/get-diaries.args';
 
 @Injectable()
 export class DiaryService {
@@ -28,6 +29,34 @@ export class DiaryService {
     }
 
     return diary;
+  }
+
+  async findMyDiariesWithOffset(
+    user: User,
+    { limit, offset, createdDate }: GetDiariesArgs,
+  ): Promise<Diary[]> {
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
+
+    if (createdDate) {
+      const startDate = new Date(createdDate);
+      const endDate = new Date(createdDate);
+
+      startDate.setHours(0, 0, 0);
+      endDate.setHours(23, 59, 59);
+    }
+
+    return await this.diaryRepository.find({
+      relations: { diaryMeta: true },
+      take: limit,
+      skip: offset,
+      order: { createdAt: 'DESC' },
+      where: {
+        user: { id: user.id },
+        ...(startDate &&
+          endDate && { createdDate: Between(startDate, endDate) }),
+      },
+    });
   }
 
   async findDiariesByYear(user: User, year: number) {
