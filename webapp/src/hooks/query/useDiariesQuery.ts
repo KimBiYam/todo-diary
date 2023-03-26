@@ -1,10 +1,28 @@
+import { gql, useQuery } from '@apollo/client';
+import { Diary } from '@generated/graphql';
 import { useInfiniteQuery, UseInfiniteQueryOptions } from 'react-query';
 import diaryApi from '../../api/diaryApi';
-import { Diary } from '../../types/diary.types';
 
 type DiariesQueryParams = {
   limit: number;
   createdDate?: string;
+};
+
+const useTestA = ({ limit, createdDate }: DiariesQueryParams) => {
+  useQuery<Diary[]>(gql`
+query FindMyDiaries(limit: ${limit},createdDate:${createdDate}  ){
+    createdAt
+  isFinished
+      id
+      title
+      diaryMeta{
+        content
+        id
+      }
+    }
+  )
+  
+    `);
 };
 
 const useDiariesQuery = (

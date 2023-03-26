@@ -18,7 +18,11 @@
     "noEmitOnError": true,
     "sourceMap": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react"
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": "./",
+    "paths": {
+      "@generated/*": ["src/__generated__/*"]
+    }
   },
   "include": ["src"]
 }

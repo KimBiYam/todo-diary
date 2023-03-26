@@ -6,7 +6,7 @@ import { logout } from '../reducers/user';
 import { openDialog } from '../reducers/dialog';
 import { createBrowserHistory } from 'history';
 import HttpError from './models/httpError';
-import { store } from '../main';
+import { store } from '../modules/store';
 
 const apiClient = axios.create({ baseURL: BACKEND_SERVER_URL });
 

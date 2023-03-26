@@ -45,3 +45,5 @@ server/.env.dev
 webapp/.env
 webapp/.env.development
 
+# graphQL
+webapp/src/__generated__
