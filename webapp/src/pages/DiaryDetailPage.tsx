@@ -7,7 +7,9 @@ import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
-import useDiaryQuery from '../hooks/query/useDiaryQuery';
+import useDiaryQuery, {
+  FIND_MY_DIARY_QUERY,
+} from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
 import dateUtil from '../utils/dateUtil';
@@ -41,7 +43,7 @@ const DiaryDetailPage = () => {
     history.push('/');
   };
 
-  const { data, loading, refetch } = useDiaryQuery(
+  const { data, loading } = useDiaryQuery(
     { id: Number(id) },
     {
       skip: Number.isNaN(Number(id)),
@@ -68,17 +70,12 @@ const DiaryDetailPage = () => {
     openDialog(e.message);
   };
 
-  const handleUpdateDiaryMutateSuccess = () => {
-    refetch();
-    // invalidateDiaryQueries();
-  };
-
   const handleDeleteDiaryMutateSuccess = () => {
     history.push('/');
   };
 
   const [updateDiary, { loading: isUpdateDiaryLoading }] = useMutation<
-    Diary,
+    { updateMyDiary: Diary },
     MutationUpdateMyDiaryArgs
   >(
     gql`
@@ -116,6 +113,7 @@ const DiaryDetailPage = () => {
           id: Number(data?.findMyDiary.id),
           updateDiaryDto: { isFinished: !data?.findMyDiary.isFinished },
         },
+        refetchQueries: [],
       },
     );
 
