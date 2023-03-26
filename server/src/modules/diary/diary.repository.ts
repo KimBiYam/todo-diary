@@ -53,13 +53,17 @@ export class DiaryRepository extends Repository<Diary> {
       await queryRunner.connect();
       await queryRunner.startTransaction();
 
-      await queryRunner.manager.getRepository(DiaryMeta).save(diaryMeta);
-
-      const result = await queryRunner.manager.getRepository(Diary).save(diary);
+      const diaryMetaResult = await queryRunner.manager
+        .getRepository(DiaryMeta)
+        .save(diaryMeta);
+      const diaryResult = await queryRunner.manager
+        .getRepository(Diary)
+        .save(diary);
 
       await queryRunner.commitTransaction();
 
-      return result;
+      diaryResult.diaryMeta = diaryMetaResult;
+      return diaryResult;
     } catch (e) {
       queryRunner.rollbackTransaction();
       throw e;
