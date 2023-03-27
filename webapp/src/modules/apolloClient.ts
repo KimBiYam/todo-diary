@@ -28,6 +28,12 @@ export const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache({
     typePolicies: {
+      Diary: {
+        keyFields: ['id'],
+      },
+      User: {
+        keyFields: ['id'],
+      },
       Query: {
         fields: {
           Diary: offsetLimitPagination(),

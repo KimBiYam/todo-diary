@@ -7,9 +7,7 @@ import { useHistory, useParams } from 'react-router';
 import MainButton from '../components/common/MainButton';
 import DiaryCard from '../components/diary/DiaryCard';
 import useDeleteDiaryMutation from '../hooks/mutation/useDeleteDiaryMutation';
-import useDiaryQuery, {
-  FIND_MY_DIARY_QUERY,
-} from '../hooks/query/useDiaryQuery';
+import useDiaryQuery from '../hooks/query/useDiaryQuery';
 import useDialogAction from '../hooks/useDialogAction';
 import useInput from '../hooks/useInput';
 import dateUtil from '../utils/dateUtil';
