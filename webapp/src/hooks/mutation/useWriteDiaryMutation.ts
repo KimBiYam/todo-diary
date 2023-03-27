@@ -7,7 +7,7 @@ export default function useWriteDiaryMutation(
 ) {
   return useMutation<{ createDiary: Diary }>(
     gql`
-      mutation Mutation($createDiaryDto: CreateDiaryDto!) {
+      mutation CreateDiary($createDiaryDto: CreateDiaryDto!) {
         createDiary(createDiaryDto: $createDiaryDto) {
           title
           id
