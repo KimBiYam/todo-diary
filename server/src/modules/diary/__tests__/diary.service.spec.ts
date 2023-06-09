@@ -350,7 +350,7 @@ describe('DiaryService', () => {
       );
 
       // then
-      const expected = [1, 10, 20];
+      const expected = { dates: [1, 10, 20] };
 
       expect(result).toEqual(expected);
     });

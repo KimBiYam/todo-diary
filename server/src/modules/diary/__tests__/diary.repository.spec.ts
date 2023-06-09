@@ -169,7 +169,7 @@ describe('DiaryRepository', () => {
       const commitTransaction = jest.fn();
 
       const getRepository = () => ({
-        save: jest.fn(),
+        save: jest.fn().mockImplementation((data) => data),
       });
 
       const dataSource = {
