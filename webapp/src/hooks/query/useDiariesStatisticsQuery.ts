@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { graphql } from '@generated/gql';
 import {
   DiariesStatisticsByYear,

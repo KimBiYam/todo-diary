@@ -7,8 +7,9 @@ import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 import { InView } from 'react-intersection-observer';
 import { NetworkStatus } from '@apollo/client';
-import { Diary, FindMyDiariesQuery } from '@generated/graphql';
+import { FindMyDiariesQuery } from '@generated/graphql';
 import useDiariesQuery from '@src/hooks/query/useDiariesQuery';
+import dateUtil from '@src/utils/dateUtil';
 
 export type DiaryListProps = {
   selectedDate: Date | undefined;
@@ -24,6 +25,8 @@ const DiaryList = ({ selectedDate }: DiaryListProps) => {
   const { data, networkStatus, fetchMore } = useDiariesQuery({
     offset: 0,
     limit,
+    createdDate:
+      selectedDate && dateUtil.getFormattedDate(selectedDate.toDateString()),
   });
 
   const isShowSkeleton = useMemo(

@@ -47,7 +47,9 @@ const ChartPage = () => {
           {error && !data && <p css={errorText}>서버 에러에요</p>}
           {data && (
             <DiaryChart
-              diariesStatistics={data}
+              diariesStatistics={
+                data.getDiariesStatisticsByYear.diariesStatisticsByYear
+              }
               width={width * 0.8}
               height={height * 0.5}
             />

@@ -1,14 +1,13 @@
 import {
-  Diary,
   FindMyDiariesQuery,
-  QueryFindMyDiariesArgs,
+  FindMyDiariesQueryVariables,
 } from '@generated/graphql';
 import { QueryFunctionOptions, useQuery } from '@apollo/client';
 import { graphql } from '@generated/gql';
 
-const findMyDiariesQuery = graphql(`
-  query findMyDiaries($offset: Float!, $limit: Float!) {
-    findMyDiaries(offset: $offset, limit: $limit) {
+export const findMyDiariesQuery = graphql(`
+  query findMyDiaries($offset: Float!, $limit: Float!, $createdDate: String) {
+    findMyDiaries(offset: $offset, limit: $limit, createdDate: $createdDate) {
       title
       createdAt
       diaryMeta {
@@ -22,7 +21,7 @@ const findMyDiariesQuery = graphql(`
 `);
 
 export default function useDiariesQuery(
-  variables: QueryFindMyDiariesArgs,
+  variables: FindMyDiariesQueryVariables,
   options: QueryFunctionOptions<FindMyDiariesQuery> = {},
 ) {
   return useQuery(findMyDiariesQuery, {
