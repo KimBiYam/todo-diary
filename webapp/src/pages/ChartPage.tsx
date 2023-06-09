@@ -5,8 +5,8 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import DiaryChart from '../components/diary/DiaryChart';
 import YearPicker from '../components/common/YearPicker';
 import { COLORS } from '../styles';
-import useDiariesStatisticsQuery from '../hooks/query/useDiariesStatisticsQuery';
 import useWindowSize from '../hooks/useWindowDimensions';
+import useDiariesStatisticsQuery from '@src/hooks/query/useDiariesStatisticsQuery';
 
 const ChartPage = () => {
   const minYear = useMemo(() => 2010, []);

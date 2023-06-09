@@ -1,4 +1,5 @@
-import { gql, MutationFunctionOptions, useMutation } from '@apollo/client';
+import { MutationFunctionOptions, useMutation } from '@apollo/client';
+import { graphql } from '@generated/gql';
 import { Diary, MutationCreateDiaryArgs } from '@generated/graphql';
 
 export default function useWriteDiaryMutation(
@@ -6,7 +7,7 @@ export default function useWriteDiaryMutation(
   options: MutationFunctionOptions<{ createDiary: Diary }> = {},
 ) {
   return useMutation<{ createDiary: Diary }>(
-    gql`
+    graphql(`
       mutation CreateDiary($createDiaryDto: CreateDiaryDto!) {
         createDiary(createDiaryDto: $createDiaryDto) {
           title
@@ -19,7 +20,7 @@ export default function useWriteDiaryMutation(
           }
         }
       }
-    `,
+    `),
     { variables, ...options },
   );
 }

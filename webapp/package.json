@@ -41,8 +41,9 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "graphql:compile": "graphql-codegen",
-    "graphql:watch": "graphql-codegen -w"
+    "lint": "eslint ./src/**/*.{ts,tsx,js,jsx}",
+    "graphql:compile": "graphql-codegen --config codegen.ts",
+    "graphql:watch": "graphql-codegen -w --config codegen.ts"
   },
   "browserslist": {
     "production": [
@@ -58,8 +59,8 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.3.0",
-    "@graphql-codegen/cli": "^3.2.2",
-    "@graphql-codegen/client-preset": "^2.1.1",
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/client-preset": "^4.0.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/node": "^18.15.7",

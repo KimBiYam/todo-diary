@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Diary } from '@generated/graphql';
+import { Diary, FindMyDiariesQuery } from '@generated/graphql';
 import { memo, useMemo } from 'react';
 import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
@@ -9,8 +9,8 @@ const TITLE_MAXIMUM_LENGTH = 20;
 const CONTENT_MAXIMUM_LENGTH = 200;
 
 export type DiaryItemProps = {
-  diary: Diary;
-  onClick: (diary: Diary) => void;
+  diary: FindMyDiariesQuery['findMyDiaries'][number];
+  onClick: (diary: FindMyDiariesQuery['findMyDiaries'][number]) => void;
 };
 
 const DiaryItem = ({ diary, onClick }: DiaryItemProps) => {

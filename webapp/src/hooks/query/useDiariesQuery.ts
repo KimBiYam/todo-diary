@@ -1,31 +1,33 @@
-import { Diary, QueryFindMyDiariesArgs } from '@generated/graphql';
-import { gql, QueryFunctionOptions, useQuery } from '@apollo/client';
+import {
+  Diary,
+  FindMyDiariesQuery,
+  QueryFindMyDiariesArgs,
+} from '@generated/graphql';
+import { QueryFunctionOptions, useQuery } from '@apollo/client';
+import { graphql } from '@generated/gql';
+
+const findMyDiariesQuery = graphql(`
+  query findMyDiaries($offset: Float!, $limit: Float!) {
+    findMyDiaries(offset: $offset, limit: $limit) {
+      title
+      createdAt
+      diaryMeta {
+        id
+        content
+      }
+      id
+      isFinished
+    }
+  }
+`);
 
 export default function useDiariesQuery(
   variables: QueryFindMyDiariesArgs,
-  options: QueryFunctionOptions<{
-    findMyDiaries: Diary[];
-  }> = {},
+  options: QueryFunctionOptions<FindMyDiariesQuery> = {},
 ) {
-  return useQuery<{ findMyDiaries: Diary[] }>(
-    gql`
-      query FindMyDiaries($offset: Float!, $limit: Float!) {
-        findMyDiaries(offset: $offset, limit: $limit) {
-          createdAt
-          diaryMeta {
-            id
-            content
-          }
-          id
-          isFinished
-          title
-        }
-      }
-    `,
-    {
-      notifyOnNetworkStatusChange: true,
-      variables,
-      ...options,
-    },
-  );
+  return useQuery(findMyDiariesQuery, {
+    notifyOnNetworkStatusChange: true,
+    variables,
+    ...options,
+  });
 }

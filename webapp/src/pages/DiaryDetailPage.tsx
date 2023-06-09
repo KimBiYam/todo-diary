@@ -1,6 +1,11 @@
-import { ApolloError, gql, useMutation } from '@apollo/client';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import { css } from '@emotion/react';
-import { Diary, MutationUpdateMyDiaryArgs } from '@generated/graphql';
+import { graphql } from '@generated/gql';
+import {
+  Diary,
+  FindMyDiaryQuery,
+  MutationUpdateMyDiaryArgs,
+} from '@generated/graphql';
 import { useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useHistory, useParams } from 'react-router';
@@ -31,7 +36,7 @@ const DiaryDetailPage = () => {
     }
   }, []);
 
-  const handleDiaryQuerySuccess = (data: { findMyDiary: Diary }) => {
+  const handleDiaryQuerySuccess = (data: FindMyDiaryQuery) => {
     setTitle(data.findMyDiary.title);
     setContent(data.findMyDiary.diaryMeta.content);
   };
@@ -42,7 +47,7 @@ const DiaryDetailPage = () => {
   };
 
   const { data, loading } = useDiaryQuery(
-    { id: Number(id) },
+    { findMyDiaryId: Number(id) },
     {
       skip: Number.isNaN(Number(id)),
       onCompleted: handleDiaryQuerySuccess,
@@ -76,7 +81,7 @@ const DiaryDetailPage = () => {
     { updateMyDiary: Diary },
     MutationUpdateMyDiaryArgs
   >(
-    gql`
+    graphql(`
       mutation UpdateMyDiary($updateDiaryDto: UpdateDiaryDto!, $id: Int!) {
         updateMyDiary(updateDiaryDto: $updateDiaryDto, id: $id) {
           title
@@ -85,7 +90,7 @@ const DiaryDetailPage = () => {
           }
         }
       }
-    `,
+    `),
     {
       variables: {
         id: Number(data?.findMyDiary.id),
@@ -96,7 +101,7 @@ const DiaryDetailPage = () => {
 
   const [changeDiaryFinished, { loading: isChangeDiaryFinishedLoading }] =
     useMutation<Diary, MutationUpdateMyDiaryArgs>(
-      gql`
+      graphql(`
         mutation ChangeDiaryFinished(
           $updateDiaryDto: UpdateDiaryDto!
           $id: Int!
@@ -105,7 +110,7 @@ const DiaryDetailPage = () => {
             isFinished
           }
         }
-      `,
+      `),
       {
         variables: {
           id: Number(data?.findMyDiary.id),

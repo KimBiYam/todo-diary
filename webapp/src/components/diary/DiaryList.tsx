@@ -1,15 +1,14 @@
 import { css } from '@emotion/react';
-import { Diary } from '@generated/graphql';
 import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
-import useDiariesQuery from '../../hooks/query/useDiariesQuery';
 import { BREAK_POINTS } from '../../styles/breakPoints';
-import dateUtil from '../../utils/dateUtil';
 import DiaryEmptyError from './DiaryEmptyError';
 import DiaryItem from './DiaryItem';
 import DiaryItemSkeleton from './DiaryItemSkeleton';
 import { InView } from 'react-intersection-observer';
 import { NetworkStatus } from '@apollo/client';
+import { Diary, FindMyDiariesQuery } from '@generated/graphql';
+import useDiariesQuery from '@src/hooks/query/useDiariesQuery';
 
 export type DiaryListProps = {
   selectedDate: Date | undefined;
@@ -25,8 +24,6 @@ const DiaryList = ({ selectedDate }: DiaryListProps) => {
   const { data, networkStatus, fetchMore } = useDiariesQuery({
     offset: 0,
     limit,
-    createdDate:
-      selectedDate && dateUtil.getFormattedDate(selectedDate.toDateString()),
   });
 
   const isShowSkeleton = useMemo(
@@ -37,7 +34,8 @@ const DiaryList = ({ selectedDate }: DiaryListProps) => {
   );
 
   const handleDiaryItemClick = useCallback(
-    (diary: Diary) => history.push(`/diary/${diary.id}`),
+    (diary: FindMyDiariesQuery['findMyDiaries'][number]) =>
+      history.push(`/diary/${diary.id}`),
     [],
   );
 
