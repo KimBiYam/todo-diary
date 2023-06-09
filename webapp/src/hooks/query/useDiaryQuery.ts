@@ -1,12 +1,29 @@
 import { QueryFunctionOptions, useQuery } from '@apollo/client';
-import { gql } from '@generated/gql';
-import { Diary, QueryFindMyDiaryArgs } from '@generated/graphql';
+import { graphql } from '@generated/gql';
+import {
+  FindMyDiaryQuery,
+  FindMyDiaryQueryVariables,
+} from '@generated/graphql';
+
+const findMyDiaryQuery = graphql(`
+  query findMyDiary($findMyDiaryId: Int!) {
+    findMyDiary(id: $findMyDiaryId) {
+      createdAt
+      diaryMeta {
+        content
+      }
+      id
+      isFinished
+      title
+    }
+  }
+`);
 
 export default function useDiaryQuery(
-  variables: QueryFindMyDiaryArgs,
-  options: QueryFunctionOptions<{ findMyDiary: Diary }> = {},
+  variables: FindMyDiaryQueryVariables,
+  options: QueryFunctionOptions<FindMyDiaryQuery> = {},
 ) {
-  return useQuery<{ findMyDiary: Diary }>(gql, {
+  return useQuery(findMyDiaryQuery, {
     variables,
     ...options,
   });

@@ -1,10 +1,10 @@
 import { css } from '@emotion/react';
-import { Diary } from '@generated/graphql';
+import { FindMyDiaryQuery } from '@generated/graphql';
 import { COLORS } from '../../styles';
 import { BREAK_POINTS } from '../../styles/breakPoints';
 
 export type DiaryCardProps = {
-  diary?: Diary;
+  diary?: FindMyDiaryQuery['findMyDiary'];
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onContentChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   renderButtons?: () => React.ReactNode;

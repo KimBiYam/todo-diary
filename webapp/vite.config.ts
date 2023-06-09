@@ -9,6 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@src': path.resolve(__dirname, './src'),
+      '@generated': path.relative(__dirname, './src/__generated__'),
     },
   },
   plugins: [

@@ -1,22 +1,19 @@
-import { gql, useQuery } from '@apollo/client';
-import {
-  DiaryDatesDto,
-  QueryGetDatesTheDiaryExistsArgs,
-} from '@generated/graphql';
+import { useQuery } from '@apollo/client';
+import { graphql } from '@generated/gql';
+import { QueryGetDatesTheDiaryExistsArgs } from '@generated/graphql';
+
+const getDatesTheDiaryExistsQuery = graphql(`
+  query GetDatesTheDiaryExists($year: Float!, $month: Float!) {
+    getDatesTheDiaryExists(year: $year, month: $month) {
+      dates
+    }
+  }
+`);
 
 export default function useDatesTheDiaryExistsQuery(
   variables: QueryGetDatesTheDiaryExistsArgs,
 ) {
-  return useQuery<DiaryDatesDto>(
-    gql`
-      query GetDatesTheDiaryExists($year: Float!, $month: Float!) {
-        getDatesTheDiaryExists(year: $year, month: $month) {
-          dates
-        }
-      }
-    `,
-    {
-      variables,
-    },
-  );
+  return useQuery(getDatesTheDiaryExistsQuery, {
+    variables,
+  });
 }
