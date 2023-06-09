@@ -1,5 +1,3 @@
-import { SocialAccount, User, Diary, DiaryMeta } from '@src/entities';
-import { join } from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 const isProduction = process.env.NODE_ENV === 'PRODUCTION';

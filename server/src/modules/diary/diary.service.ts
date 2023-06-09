@@ -39,8 +39,8 @@ export class DiaryService {
     let endDate: Date | null = null;
 
     if (createdDate) {
-      const startDate = new Date(createdDate);
-      const endDate = new Date(createdDate);
+      startDate = new Date(createdDate);
+      endDate = new Date(createdDate);
 
       startDate.setHours(0, 0, 0);
       endDate.setHours(23, 59, 59);
@@ -53,8 +53,7 @@ export class DiaryService {
       order: { createdAt: 'DESC' },
       where: {
         user: { id: user.id },
-        ...(startDate &&
-          endDate && { createdDate: Between(startDate, endDate) }),
+        ...(startDate && endDate && { createdAt: Between(startDate, endDate) }),
       },
     });
   }
