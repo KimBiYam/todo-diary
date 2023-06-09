@@ -1,6 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { graphql } from '@generated/gql';
-import { QueryGetDatesTheDiaryExistsArgs } from '@generated/graphql';
+import {
+  GetDatesTheDiaryExistsQueryVariables,
+  QueryGetDatesTheDiaryExistsArgs,
+} from '@generated/graphql';
 
 const getDatesTheDiaryExistsQuery = graphql(`
   query GetDatesTheDiaryExists($year: Float!, $month: Float!) {
@@ -11,7 +14,7 @@ const getDatesTheDiaryExistsQuery = graphql(`
 `);
 
 export default function useDatesTheDiaryExistsQuery(
-  variables: QueryGetDatesTheDiaryExistsArgs,
+  variables: GetDatesTheDiaryExistsQueryVariables,
 ) {
   return useQuery(getDatesTheDiaryExistsQuery, {
     variables,

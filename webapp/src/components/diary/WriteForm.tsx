@@ -1,5 +1,6 @@
 import { ApolloError } from '@apollo/client';
 import { css } from '@emotion/react';
+import { findMyDiariesQuery } from '@src/hooks/query/useDiariesQuery';
 import { memo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import useWriteDiaryMutation from '../../hooks/mutation/useWriteDiaryMutation';
@@ -29,6 +30,8 @@ const WriteForm = memo(() => {
     {
       onCompleted: handleWriteDiarySuccess,
       onError: handleWriteDiaryError,
+      awaitRefetchQueries: true,
+      refetchQueries: [findMyDiariesQuery],
     },
   );
 

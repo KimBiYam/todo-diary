@@ -5,7 +5,7 @@ import {
   FindMyDiaryQueryVariables,
 } from '@generated/graphql';
 
-const findMyDiaryQuery = graphql(`
+export const findMyDiaryQuery = graphql(`
   query findMyDiary($findMyDiaryId: Int!) {
     findMyDiary(id: $findMyDiaryId) {
       createdAt

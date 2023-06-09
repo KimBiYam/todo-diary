@@ -15,7 +15,7 @@ const DiaryPage = () => {
     month: currentDate.getMonth() + 1,
   });
 
-  const { data: existsDates } = useDatesTheDiaryExistsQuery(yearMonth);
+  const { data } = useDatesTheDiaryExistsQuery(yearMonth);
 
   const handleMonthChange = useCallback(
     (date: Date) => {
@@ -49,7 +49,7 @@ const DiaryPage = () => {
             selectedDate={selectedDate}
             onDateChange={handleDateChange}
             onMonthChange={handleMonthChange}
-            existsDates={existsDates?.dates}
+            existsDates={data?.getDatesTheDiaryExists.dates}
           />
           {selectedDate && (
             <button css={dateResetButton} onClick={handleDateResetClick}>
